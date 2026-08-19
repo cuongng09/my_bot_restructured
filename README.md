@@ -22,12 +22,6 @@
 
 ---
 
-## 🩹 Changelog v5.1 — Bản vá lỗi & tối ưu
-
-> Bản này rà soát toàn bộ mã nguồn v5.0, phát hiện và sửa các lỗi logic + lỗ hổng bảo mật
-
----
-
 ## 🛠️ Yêu Cầu Hệ Thống
 
 1. **Python:** 3.10+ (Khuyến nghị Python 3.11 hoặc 3.12)
@@ -96,12 +90,6 @@ pip install -r requirements.txt
 ```powershell
 python my_bot.py
 ```
-
----
-
-## ⚙️ Cấu Hình `.env`
-
-Sao chép `.env.example` thành `.env` rồi điền giá trị thật. Các biến chính:
 
 ---
 
