@@ -6,6 +6,7 @@ llm_engine.py — Giao tiếp với Ollama: model cache, build grounded messages
 from __future__ import annotations
 
 import asyncio
+from datetime import datetime
 import json
 import time
 from typing import Optional
@@ -66,6 +67,10 @@ def build_grounded_messages(
         "hay bổ sung — kiến thức đó có thể đã lỗi thời. Nếu không có khối dữ liệu này, bạn mới được dùng kiến "
         "thức chung của mình để trò chuyện bình thường."
     )
+
+    now_str = datetime.now().strftime("%d/%m/%Y")
+    system_prompt += f"\n\n📅 Hôm nay là ngày {now_str}. Đây là thông tin quan trọng để xác định 'hiện tại/mới nhất' là gì."
+
     if profile_summary:
         system_prompt += (
             f"\n\n📋 HỒ SƠ VỀ NGƯỜI BẠN ĐANG TRÒ CHUYỆN (dùng để trả lời gần gũi/đúng ngữ cảnh hơn, "

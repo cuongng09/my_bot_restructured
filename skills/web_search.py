@@ -194,24 +194,35 @@ async def raw_search_data(query: str) -> list[dict]:
     results = []
     try:
         results = await asyncio.wait_for(
-            loop.run_in_executor(_SEARCH_EXECUTOR, _ddg, query), timeout=4.0
+            loop.run_in_executor(_SEARCH_EXECUTOR, _ddg, query), timeout=8.0
         )
-    except Exception:
+    except Exception as e:
+        logger.warning(f"⚠️ DDGS lỗi/timeout cho query '{query}': {e}")
         results = []
 
     if not results:
+        logger.info(f"ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query '{query}'")
         results = await _raw_search_fallback(query)
 
     if not results:
         en_query = await _to_english(query)
         if en_query and en_query.lower() != query.lower():
+            logger.info(f"ℹ️ Fallback (vi) rỗng, thử fallback HTML (en): '{en_query}'")
             results = await _raw_search_fallback(en_query)
+
+    if not results:
+        logger.warning(f"❌ Tất cả các nguồn search đều thất bại cho query gốc: '{query}'")
 
     return await enrich_with_page_content(results, max_pages=3)
 
 
 # ── Format for RAG ────────────────────────────────────────────────────────────
 def format_web_context(raw_data: list[dict]) -> str:
+    if not raw_data:
+        # ⚠️ QUAN TRỌNG: không được trả về "" — chuỗi rỗng là falsy, khiến llm_engine.py
+        # hiểu nhầm là "không cần tra web" và cho phép model dùng kiến thức nội tại (dễ bịa).
+        # Trả về câu báo hiệu để vẫn kích hoạt nhánh RAG, buộc model phải thừa nhận không có dữ liệu.
+        return "(Đã thử tìm kiếm trên web nhưng KHÔNG tìm được kết quả nào — có thể do lỗi mạng hoặc bị chặn.)"
     context_bits = []
     for i, r in enumerate(raw_data, 1):
         body_text = r['body'].strip() if r['body'].strip() else "Không cào được nội dung chi tiết."
