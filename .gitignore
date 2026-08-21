@@ -1,10 +1,15 @@
 .env
 __pycache__/
 *.pyc
-data/*.db
-data/*.db-*
-logs/*.log*
-voices/*.onnx
-voices/*.onnx.json
-models/
+
+# Bỏ qua dữ liệu SQLite và log trong thư mục chatAi_bots
+chatAi_bots/data/*.db
+chatAi_bots/data/*.db-*
+chatAi_bots/logs/*.log*
+
+# Bỏ qua file giọng nói, model và môi trường ảo
+chatAi_bots/voices/*.onnx
+chatAi_bots/voices/*.onnx.json
+chatAi_bots/models/
+chatAi_bots/venv/
 venv/
