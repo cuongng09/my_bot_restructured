@@ -101,7 +101,9 @@ def build_grounded_messages(
 
     if web_context and last_msg.get("role") == "user":
         concise_instruction = (
-            "\n⚠️ ĐẶC BIỆT: Yêu cầu trả lời CỰC KỲ NGẮN GỌN (tối đa 3-4 câu), đi thẳng vào số liệu/sự việc chính."
+            "\n⚠️ ĐẶC BIỆT: Yêu cầu trả lời CỰC KỲ NGẮN GỌN (tối đa 3-4 câu, HOẶC 1 bảng tối đa 5-6 hàng nếu "
+            "bắt buộc phải dùng bảng), đi thẳng vào số liệu/sự việc chính. TUYỆT ĐỐI KHÔNG liệt kê lần lượt "
+            "từng nguồn/từng đơn vị một cách máy móc."
             if force_concise else ""
         )
         grounded_user_content = (
@@ -115,10 +117,12 @@ def build_grounded_messages(
             f"- Chỉ dùng thông tin có trong DỮ LIỆU INTERNET ở trên, không tự suy diễn, không bịa thêm số liệu.\n"
             f"- Nếu DỮ LIỆU INTERNET không đủ, hãy nói thẳng là chưa tìm thấy đủ thông tin.\n"
             f"- Nếu lịch sử trò chuyện trước đó có thông tin khác với DỮ LIỆU INTERNET, dùng DỮ LIỆU INTERNET.\n"
-            f"- Dùng gạch đầu dòng, bảng so sánh nếu cần, nhưng vẫn giữ văn phong tự nhiên.\n"
-            f"- Danh sách link đầy đủ sẽ được thêm tự động vào cuối tin nhắn.\n"
+            f"- 🚫 KHÔNG được sao chép/liệt kê lại nguyên văn nhiều 'Nguồn [n]' nếu số liệu của chúng GIỐNG NHAU "
+            f"hoặc gần giống nhau — hãy GỘP các đơn vị/thương hiệu có cùng mức giá vào chung 1 dòng "
+            f"(ví dụ: 'SJC, PNJ, DOJI: mua X / bán Y'), chỉ tách dòng riêng khi số liệu THỰC SỰ khác nhau.\n"
+            f"- Ưu tiên diễn giải bằng lời của chính bạn hơn là dựng lại y hệt cấu trúc bảng/đoạn văn gốc.\n"
             f"{concise_instruction}"
-            f"{table_instruction}\n"
+            f"{'' if force_concise else table_instruction}\n"
         )
         formatted.append({"role": "user", "content": grounded_user_content})
     elif is_comparison and last_msg.get("role") == "user":
@@ -131,8 +135,11 @@ def build_grounded_messages(
 
 # ── LLM calls ─────────────────────────────────────────────────────────────────
 def _gen_options(has_web: bool) -> dict:
+    # 🆕 num_ctx=4096 quá nhỏ khi web_context (nhiều nguồn scrape) được nhét vào prompt —
+    # context bị tràn khiến model nhỏ (Ollama local) "quên" chỉ dẫn tổng hợp và rơi vào
+    # lặp lại/copy thô dữ liệu. Tăng lên 8192 khi có web_context.
     return (
-        {"temperature": 0.15, "top_p": 0.8, "num_ctx": 4096}
+        {"temperature": 0.15, "top_p": 0.8, "num_ctx": 8192, "repeat_penalty": 1.3}
         if has_web else
         {"temperature": 0.6,  "top_p": 0.9, "num_ctx": 4096}
     )

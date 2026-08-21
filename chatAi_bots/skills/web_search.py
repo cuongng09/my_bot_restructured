@@ -61,7 +61,7 @@ async def _to_english(text: str) -> str:
 
 
 # ── Page content fetching ─────────────────────────────────────────────────────
-async def _fetch_page_snippet(url: str, max_chars: int = 2000) -> str:
+async def _fetch_page_snippet(url: str, max_chars: int = 900) -> str:
     headers = {
         "User-Agent": "MyTelegramBot/1.0 (https://t.me/my_bot; contact: admin@example.com)",
         "Accept-Language": "vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -217,16 +217,67 @@ async def raw_search_data(query: str) -> list[dict]:
 
 
 # ── Format for RAG ────────────────────────────────────────────────────────────
-def format_web_context(raw_data: list[dict]) -> str:
+def _normalize_for_dedup(text: str) -> str:
+    """Chuẩn hóa để so trùng lặp: bỏ khoảng trắng thừa, chữ hoa/thường, dấu câu."""
+    t = re.sub(r'\s+', ' ', text.lower()).strip()
+    t = re.sub(r'[^\w\s]', '', t)
+    return t
+
+
+def _dedupe_sources(raw_data: list[dict], similarity_threshold: float = 0.8) -> list[dict]:
+    """🆕 Nhiều trang (đặc biệt tin giá vàng/chứng khoán) copy/mirror gần như y nguyên
+    nội dung nhau. Nếu đưa hết vào prompt, model sẽ liệt kê lại từng nguồn trùng lặp
+    thay vì tổng hợp — đây chính là nguyên nhân câu trả lời bị lặp lại/liệt kê dài dòng.
+    Hàm này loại các nguồn có nội dung gần giống (>=80%) nguồn đã giữ trước đó,
+    chỉ giữ lại bản đầu tiên."""
+    kept: list[dict] = []
+    kept_norms: list[str] = []
+    for r in raw_data:
+        body = (r.get("body") or "").strip()
+        norm = _normalize_for_dedup(body)[:600]
+        if not norm:
+            kept.append(r)
+            kept_norms.append(norm)
+            continue
+        is_dup = False
+        for prev_norm in kept_norms:
+            if not prev_norm:
+                continue
+            shorter, longer = sorted([norm, prev_norm], key=len)
+            if not shorter:
+                continue
+            # Tỉ lệ trùng thô: bao nhiêu % nội dung ngắn hơn xuất hiện trong nội dung dài hơn
+            overlap = sum(1 for w in set(shorter.split()) if w in longer)
+            ratio = overlap / max(len(set(shorter.split())), 1)
+            if ratio >= similarity_threshold:
+                is_dup = True
+                break
+        if not is_dup:
+            kept.append(r)
+            kept_norms.append(norm)
+    return kept
+
+
+def format_web_context(raw_data: list[dict], max_total_chars: int = 3500) -> str:
     if not raw_data:
         # ⚠️ QUAN TRỌNG: không được trả về "" — chuỗi rỗng là falsy, khiến llm_engine.py
         # hiểu nhầm là "không cần tra web" và cho phép model dùng kiến thức nội tại (dễ bịa).
         # Trả về câu báo hiệu để vẫn kích hoạt nhánh RAG, buộc model phải thừa nhận không có dữ liệu.
         return "(Đã thử tìm kiếm trên web nhưng KHÔNG tìm được kết quả nào — có thể do lỗi mạng hoặc bị chặn.)"
+
+    deduped = _dedupe_sources(raw_data)
+
     context_bits = []
-    for i, r in enumerate(raw_data, 1):
+    total_len = 0
+    for i, r in enumerate(deduped, 1):
         body_text = r['body'].strip() if r['body'].strip() else "Không cào được nội dung chi tiết."
-        context_bits.append(f"Nguồn [{i}]:\nTiêu đề: {r['title']}\nURL: {r['href']}\nNội dung: {body_text}")
+        bit = f"Nguồn [{i}]:\nTiêu đề: {r['title']}\nURL: {r['href']}\nNội dung: {body_text}"
+        # 🆕 Giới hạn tổng độ dài context đưa vào prompt — tránh tràn num_ctx của model nhỏ,
+        # nguyên nhân khiến model "quên" chỉ dẫn tổng hợp và rơi vào lặp lại/liệt kê thô.
+        if total_len + len(bit) > max_total_chars and context_bits:
+            break
+        context_bits.append(bit)
+        total_len += len(bit)
     return "\n\n".join(context_bits)
 
 
