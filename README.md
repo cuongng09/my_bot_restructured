@@ -154,11 +154,11 @@ cd C:\Users\ngcwn\OneDrive\Documents\GitHub\chatAi_bots\win
 
 - **Tab 1 — Path:** Nhấp `...` và trỏ đến đúng file `python.exe` trong môi trường ảo:
   ```powershell
-  C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Scripts\python.exe
+  C:\C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\chatAi_bots\venv\Scripts\python.exe
   ```
 - **Tab 2 — Startup directory:** Trỏ đến thư mục chứa code:
   ```powershell
-  C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured
+  C:\C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\chatAi_bots
   ```
 - **Tab 3 — Arguments:** Điền tên file chính:
   ```powershell
