@@ -1,0 +1,2044 @@
+2026-08-19 07:31:59,413 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 07:32:00,573 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 07:32:00,792 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 07:37:22,475 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 07:37:23,687 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 07:37:23,906 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 07:41:23,724 | INFO | my_bot.local_voice | 🧠 Đang nạp model faster-whisper 'small' (cpu/int8)...
+2026-08-19 07:41:54,119 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Timed out
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_application.py", line 1315, in process_update
+    await coroutine
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_handlers\basehandler.py", line 159, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\handlers\text_handler.py", line 133, in handle_text
+    await update.effective_chat.send_action(ChatAction.TYPING)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_chat.py", line 1279, in send_chat_action
+    return await self.get_bot().send_chat_action(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 2652, in send_chat_action
+    return await super().send_chat_action(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 3771, in send_chat_action
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 296, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-08-19 07:41:56,544 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Timed out
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_application.py", line 1315, in process_update
+    await coroutine
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_handlers\basehandler.py", line 159, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\handlers\voice_handler.py", line 99, in handle_voice
+    await safe_reply(update, f"🎙️ *Nghe được:* `{transcribed}`")
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\utils.py", line 95, in safe_reply
+    await target.reply_text(chunk)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_message.py", line 2228, in reply_text
+    return await self.get_bot().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 3150, in send_message
+    return await super().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 1138, in send_message
+    return await self._send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 638, in _send_message
+    result = await super()._send_message(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 828, in _send_message
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 296, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-08-19 09:23:37,085 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-19 09:23:38,095 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-19 09:23:39,599 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-19 09:23:41,868 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-19 09:23:45,255 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-19 09:23:50,338 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-19 11:48:34,835 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 11:48:36,465 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 11:48:36,683 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 11:52:26,930 | WARNING | my_bot | ⚠️ STT engine chính lỗi ([Lỗi âm thanh: chưa cài ffmpeg — cần ffmpeg trong PATH]) — thử fallback...
+2026-08-19 11:53:39,756 | WARNING | my_bot | ⚠️ STT engine chính lỗi ([Lỗi âm thanh: chưa cài ffmpeg — cần ffmpeg trong PATH]) — thử fallback...
+2026-08-19 11:55:57,780 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 11:55:58,992 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 11:55:59,217 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 11:56:02,910 | WARNING | my_bot | ⚠️ STT engine chính lỗi ([Lỗi âm thanh: chưa cài ffmpeg — cần ffmpeg trong PATH]) — thử fallback...
+2026-08-19 12:10:11,587 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-08-19 18:25:13,350 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 18:25:15,395 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 18:25:18,465 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 18:25:20,198 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 18:25:20,436 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 18:25:22,718 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-19 19:00:56,573 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 19:00:57,983 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 19:00:58,206 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 19:01:36,452 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://vn.investing.com/equities/black-spade-acquisition: All connection attempts failed
+2026-08-19 19:51:42,884 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 19:51:44,234 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 19:51:44,455 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 20:17:07,439 | WARNING | my_bot | ⚠️ Lỗi Ollama stream (lần 1/2): 
+2026-08-19 20:40:33,427 | WARNING | my_bot | ⚠️ Lỗi gọi Ollama (lần 1/2): 
+2026-08-19 20:42:48,751 | WARNING | my_bot | ⚠️ Lỗi gọi Ollama (lần 1/2): 
+2026-08-19 20:43:34,645 | WARNING | my_bot | ⚠️ Lỗi gọi Ollama (lần 2/2): 
+2026-08-19 20:45:38,219 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 20:45:40,124 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 20:45:40,356 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 20:46:07,031 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 20:46:08,671 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 20:46:08,897 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 20:49:25,283 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 20:49:27,199 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 20:49:27,426 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 21:09:17,007 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 21:09:18,560 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 21:09:18,782 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 21:09:42,239 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'link vtv go xem bóng đá vn vs malay hôm nya'
+2026-08-19 21:09:44,550 | INFO | my_bot | ℹ️ Fallback (vi) rỗng, thử fallback HTML (en): 'vtv link go watch Vietnam vs Malaysia football today'
+2026-08-19 21:11:20,401 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ là ai'
+2026-08-19 21:24:47,787 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 21:24:49,491 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 21:24:49,720 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 21:25:06,018 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ là ai'
+2026-08-19 21:27:44,577 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Timed out
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_application.py", line 1315, in process_update
+    await coroutine
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_handlers\basehandler.py", line 159, in handle_update
+    return await self.callback(update, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\handlers\text_handler.py", line 133, in handle_text
+    await update.effective_chat.send_action(ChatAction.TYPING)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_chat.py", line 1279, in send_chat_action
+    return await self.get_bot().send_chat_action(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 2652, in send_chat_action
+    return await super().send_chat_action(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 3771, in send_chat_action
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 296, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+2026-08-19 21:28:08,049 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'giá vàng'
+2026-08-19 21:30:11,676 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ hiện tại'
+2026-08-19 21:32:19,920 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'top repo github tháng 8'
+2026-08-19 21:32:55,336 | WARNING | my_bot | ⚠️ Lỗi gọi Ollama (lần 1/2): 
+2026-08-19 21:34:56,623 | WARNING | my_bot | ⚠️ Lỗi gọi Ollama (lần 2/2): 
+2026-08-19 21:35:42,601 | WARNING | my_bot | ⚠️ Lỗi gọi Ollama (lần 1/2): 
+2026-08-19 23:28:24,802 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 23:28:27,698 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-19 23:28:28,654 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-19 23:28:28,883 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-19 23:28:31,164 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-20 07:18:17,787 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-08-20 18:17:49,172 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-20 18:17:50,967 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-20 18:17:55,599 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-20 18:17:56,642 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-20 18:17:56,864 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-20 18:17:59,140 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-21 02:58:58,235 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:58:59,313 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:00,826 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:03,090 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:06,470 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:11,549 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:19,154 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:30,554 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 02:59:47,631 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 03:00:13,273 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 03:00:43,270 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 03:01:13,271 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 101, in handle_async_request
+    raise exc
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_async\connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_backends\anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpcore\_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "C:\Users\ngcwn\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\httpx\_transports\default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_utils\networkloop.py", line 154, in do_action
+    action_cb_task.result()
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 4767, in get_updates
+    await self._post(
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\ext\_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\venv\Lib\site-packages\telegram\request\_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo failed
+2026-08-21 10:31:05,009 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 10:31:06,461 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 10:31:06,681 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 10:40:37,671 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 10:40:38,804 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 10:40:39,030 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot

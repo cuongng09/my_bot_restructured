@@ -14,6 +14,7 @@ from telegram.ext import ContextTypes
 
 import database as db
 import reasoning
+import tencent_memory
 from bot_logger import logger
 from config import LONG_TERM_MEMORY_EVERY_N_TURNS, STREAM_EDIT_INTERVAL, should_trigger_web_search
 from llm_engine import chat_with_llm, chat_with_llm_stream
@@ -28,7 +29,13 @@ from skills.ocr import perform_translation
 
 
 async def _update_long_term_memory(uid: int, model: str):
-    """Tóm tắt lịch sử gần đây + hồ sơ cũ thành hồ sơ mới (nền, không chặn phản hồi)."""
+    """🆕 Nếu đã bật MEMORY_TENCENTDB_ENABLED, KHÔNG cần tự gọi LLM tóm tắt nữa —
+    Gateway TencentDB Agent Memory tự trích xuất L1/L2/L3 ở nền dựa trên các lượt hội
+    thoại đã được đẩy lên qua tencent_memory.add_turn(). Hàm này chỉ còn là fallback
+    cho trường hợp KHÔNG bật Memory Gateway, giữ nguyên hành vi cũ (tự tóm tắt bằng
+    chính Ollama vào cột profile_summary trong SQLite)."""
+    if tencent_memory.MEMORY_ENABLED:
+        return
     try:
         recent = await db.get_recent_messages(uid, limit_pairs=10)
         old_summary = (await db.get_settings(uid))["profile_summary"]
@@ -147,9 +154,21 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     nickname = settings["nickname"]
     persona, profile_summary = settings["persona"], settings["profile_summary"]
 
+    # 🆕 Nếu bật TencentDB Agent Memory: dùng trí nhớ đa tầng (L1 atomic + L3 persona)
+    # do Gateway tự chưng cất thay cho profile_summary tự tóm tắt trong SQLite.
+    if tencent_memory.MEMORY_ENABLED:
+        try:
+            memory_context = await tencent_memory.get_memory_context(uid, text)
+            if memory_context:
+                profile_summary = memory_context
+        except Exception as e:
+            logger.warning(f"⚠️ Lỗi lấy context từ TencentDB Memory: {e}")
+
     await add_to_history(uid, "user", text)
     history = await db.get_history(uid)
     model = await get_user_model(uid)
+    if tencent_memory.MEMORY_ENABLED:
+        asyncio.create_task(tencent_memory.add_turn(uid, "user", text))
 
     # Hidden reasoning cho câu hỏi phức tạp
     complexity = reasoning.classify_complexity(text)
@@ -171,6 +190,8 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             ACTIVE_GEN_TASKS.pop(uid, None)
 
     await add_to_history(uid, "assistant", reply)
+    if tencent_memory.MEMORY_ENABLED:
+        asyncio.create_task(tencent_memory.add_turn(uid, "assistant", reply))
 
     should_summarize = await db.bump_turn_and_should_summarize(uid, every_n_turns=LONG_TERM_MEMORY_EVERY_N_TURNS)
     if should_summarize:
