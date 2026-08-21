@@ -1,3 +1,4 @@
 2026-08-21 22:35:42,811 | INFO | my_bot | 🚀 Bot đang khởi động...
 2026-08-21 22:35:44,159 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
 2026-08-21 22:35:44,382 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 22:37:25,363 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'giá cổ phiếu fpt'
