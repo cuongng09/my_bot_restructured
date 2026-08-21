@@ -141,7 +141,7 @@ sudo systemctl restart telegram-bot.service
 1. Trỏ về đúng thư mục dự án:
 
 ```powershell
-cd C:\Users\ngcwn\OneDrive\Documents\GitHub\chatAi_bots\win
+cd C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\chatAi_bots
 ```
 
 2. Gọi lệnh cài đặt Service:
