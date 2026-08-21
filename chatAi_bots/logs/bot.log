@@ -2042,3 +2042,34 @@ telegram.error.NetworkError: httpx.ConnectError: [Errno 11001] getaddrinfo faile
 2026-08-21 10:40:37,671 | INFO | my_bot | 🚀 Bot đang khởi động...
 2026-08-21 10:40:38,804 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
 2026-08-21 10:40:39,030 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 11:31:16,876 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 11:31:18,366 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 11:31:18,588 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 11:40:46,378 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ là ai'
+2026-08-21 11:41:54,143 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ là ai'
+2026-08-21 11:47:53,196 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 11:47:56,614 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 11:47:57,634 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 11:47:57,852 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 11:48:00,120 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-21 11:51:31,882 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ là ai'
+2026-08-21 11:53:05,098 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ là ai'
+2026-08-21 11:54:00,301 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'giá vàng'
+2026-08-21 11:55:00,880 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ'
+2026-08-21 11:56:00,227 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'giá cổ phiếu png'
+2026-08-21 11:57:02,532 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'tổng thống mỹ hiện tại'
+2026-08-21 11:58:11,335 | INFO | my_bot | ℹ️ DDGS rỗng, thử fallback HTML (vi) cho query 'lên lịch đi chơi hà nội chi tiết trong 2 ngày'
+2026-08-21 11:58:13,081 | INFO | my_bot | ℹ️ Fallback (vi) rỗng, thử fallback HTML (en): 'Schedule a detailed trip to Hanoi for 2 days'
+2026-08-21 18:35:21,018 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-08-21 20:29:40,754 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 20:29:41,956 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 20:29:46,047 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 20:29:47,910 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 20:29:48,128 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 20:29:50,409 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-21 20:51:08,538 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 20:51:09,995 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 20:51:10,214 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-21 20:51:27,772 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-21 20:51:29,292 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-21 20:51:29,616 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
