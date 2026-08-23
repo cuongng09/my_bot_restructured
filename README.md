@@ -56,6 +56,18 @@ sudo apt-get install -y tesseract-ocr tesseract-ocr-vie
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
+
+4. Tạo file cấu hình `.env` từ mẫu và điền các biến bắt buộc (tối thiểu `TELEGRAM_TOKEN`):
+
+```bash
+cp .env.example .env
+nano .env   # điền TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS, v.v.
+```
+
+5. Chạy thử bot (Ctrl+C để dừng, xem [phần Khởi Chạy](#-khởi-chạy-bot) để chạy nền/tự khởi động):
+
+```bash
 python3 my_bot.py
 deactivate
 ```
@@ -85,11 +97,52 @@ python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-3. Khởi chạy bot:
+3. Tạo file cấu hình `.env` từ mẫu và điền các biến bắt buộc (tối thiểu `TELEGRAM_TOKEN`):
+
+```powershell
+Copy-Item .env.example .env
+notepad .env   # điền TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS, v.v.
+```
+
+4. Khởi chạy bot:
 
 ```powershell
 python my_bot.py
 ```
+
+---
+
+## 🏮 Trạm Điều Khiển Web (Dashboard)
+
+Repo đi kèm một dashboard quản trị chạy trên trình duyệt (`webapp/`), dùng FastAPI + Uvicorn.
+Thư viện cần thiết (`fastapi`, `uvicorn`) **đã nằm sẵn trong `requirements.txt`** — không cần cài
+thêm gì nếu bạn đã làm bước `pip install -r requirements.txt` ở trên.
+
+1. Cấu hình (tùy chọn) trong `.env` — đã có sẵn giá trị mặc định hợp lý:
+
+```env
+WEBAPP_HOST=0.0.0.0     # địa chỉ SERVER lắng nghe (0.0.0.0 = mọi card mạng)
+WEBAPP_PORT=8080
+WEBAPP_TOKEN=           # để trống = không xác thực; điền 1 chuỗi bất kỳ để bật đăng nhập token
+```
+
+2. Chạy thử — **luôn chạy từ thư mục gốc `bot/`** (nơi có `config.py`), độc lập với `my_bot.py`:
+
+```bash
+# Linux/macOS (đã kích hoạt venv)
+python -m webapp.main
+```
+
+```powershell
+# Windows (đã kích hoạt venv)
+python -m webapp.main
+```
+
+3. Mở trình duyệt tại `http://localhost:8080` (không gõ `0.0.0.0:8080`, sẽ không kết nối được).
+
+Webapp chỉ đọc dữ liệu (SQLite ở chế độ read-only), không tranh chấp với tiến trình bot, nên có thể
+chạy song song với `my_bot.py` mà không lo xung đột. Xem cách chạy **tự động cùng hệ thống** ở phần
+[Khởi Chạy Bot](#-khởi-chạy-bot) bên dưới.
 
 ---
 
@@ -136,48 +189,78 @@ sudo systemctl status telegram-bot.service
 sudo systemctl restart telegram-bot.service
 ```
 
-### 3. Chạy dưới dạng Dịch Vụ Windows Service (NSSM - Khuyến nghị)
+Muốn Trạm Điều Khiển Web cũng tự khởi động cùng hệ thống, tạo thêm 1 service riêng
+`/etc/systemd/system/telegram-bot-webapp.service` (chạy độc lập, không tranh chấp gì với bot):
 
-1. Trỏ về đúng thư mục dự án:
+```ini
+[Unit]
+Description=Telegram AI Bot - Web Dashboard
+After=network.target telegram-bot.service
 
-```powershell
-cd C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\chatAi_bots
+[Service]
+Type=simple
+WorkingDirectory=/home/cwng/Documents/GitHub/chatAi_bots
+ExecStart=/home/cwng/Documents/GitHub/chatAi_bots/venv/bin/python3 -m webapp.main
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-2. Gọi lệnh cài đặt Service:
-
-```powershell
-.\nssm.exe install TelegramBotService
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable telegram-bot-webapp.service
+sudo systemctl start telegram-bot-webapp.service
+sudo systemctl status telegram-bot-webapp.service
 ```
 
-3. Điền bảng thông số NSSM GUI. Một cửa sổ bảng điều khiển NSSM sẽ bật lên, điền chính xác từng mục:
+> Nhớ sửa `WorkingDirectory` và đường dẫn `venv` trong cả 2 file `.service` cho khớp với thư mục
+> dự án thật trên máy bạn (mặc định ở trên chỉ là ví dụ).
 
-- **Tab 1 — Path:** Nhấp `...` và trỏ đến đúng file `python.exe` trong môi trường ảo:
-  ```powershell
-  C:\C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\chatAi_bots\venv\Scripts\python.exe
-  ```
-- **Tab 2 — Startup directory:** Trỏ đến thư mục chứa code:
-  ```powershell
-  C:\C:\Users\ngcwn\OneDrive\Documents\GitHub\my_bot_restructured\chatAi_bots
-  ```
-- **Tab 3 — Arguments:** Điền tên file chính:
-  ```powershell
-  my_bot.py
-  ```
+### 3. Chạy dưới dạng Windows Service (NSSM - script tự động, khuyến nghị)
 
-4. Khởi chạy và kiểm tra Service:
+Repo đã có sẵn script PowerShell tự động hoá toàn bộ việc cài NSSM cho **cả bot lẫn webapp** —
+không cần điền tay qua giao diện NSSM nữa.
+
+1. Mở PowerShell với quyền **Administrator**, di chuyển vào thư mục gốc dự án (`chatAi_bots/`):
 
 ```powershell
-.\nssm.exe start TelegramBotService
+cd C:\Users\<tên-bạn>\...\my_bot_restructured\chatAi_bots
 ```
 
-Các lệnh quản lý Bot tiện lợi về sau (chạy trên PowerShell Admin):
+2. Đảm bảo đã có `venv\` (đã tạo ở bước Cài Đặt) và có `nssm.exe` — repo đã kèm sẵn `nssm.exe`
+   ở thư mục gốc, hoặc bạn có thể copy bản khác vào `.\scripts\nssm.exe`.
+
+3. Chạy script cài đặt — thêm `-WithWebapp` để cài luôn service cho Trạm Điều Khiển Web:
 
 ```powershell
-.\nssm.exe status TelegramBotService
-.\nssm.exe restart TelegramBotService
-.\nssm.exe stop TelegramBotService
-.\nssm.exe remove TelegramBotService confirm
+.\scripts\install_nssm_service.ps1 -WithWebapp
+```
+
+Script sẽ tự động:
+- Tạo service **MyBotTelegram** (`python my_bot.py`) và **MyBotWebapp** (`python -m webapp.main`).
+- Trỏ đúng `venv\Scripts\python.exe` và thư mục dự án làm `AppDirectory`.
+- Bật tự khởi động cùng Windows (`SERVICE_AUTO_START`) và tự restart nếu crash.
+- Ghi log riêng (có xoay vòng) vào `logs\MyBotTelegram.out.log` / `logs\MyBotWebapp.out.log`.
+- Tự khởi động cả 2 service ngay sau khi cài xong.
+
+> ⚠️ Sau khi cài service, **không chạy tay** `python my_bot.py` nữa — sẽ bị Telegram báo lỗi
+> Conflict vì 2 tiến trình cùng poll 1 token. Dùng lệnh NSSM để dừng trước nếu cần chạy tay.
+
+Các lệnh quản lý tiện lợi về sau (PowerShell Admin):
+
+```powershell
+Get-Service MyBotTelegram, MyBotWebapp        # xem trạng thái
+nssm restart MyBotTelegram                    # khởi động lại bot
+nssm restart MyBotWebapp                      # khởi động lại webapp
+nssm stop MyBotTelegram                       # dừng bot (để chạy tay tạm thời)
+Get-Content .\logs\bot.log -Wait -Tail 30      # xem log trực tiếp
+
+# Gỡ toàn bộ service khi cần
+.\scripts\uninstall_nssm_service.ps1
 ```
 
 ---
