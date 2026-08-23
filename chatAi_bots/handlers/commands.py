@@ -40,25 +40,22 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
     text = (
         "📖 *HƯỚNG DẪN SỬ DỤNG*\n\n"
+        "🏮 *Bắt đầu ở đây:* `/ui` — mở Trạm Điều Khiển. Hầu hết cài đặt (mô hình, tính "
+        "cách, giọng nói, thời tiết, tin tức, dịch văn bản...) đều chọn bằng nút bấm, "
+        "không cần nhớ lệnh.\n\n"
         "💬 *Trò chuyện:* gõ bất kỳ điều gì — mình trả lời tự nhiên, giữ ngữ cảnh hội thoại.\n"
         "🎙️ *Voice:* gửi tin nhắn thoại — mình nghe, trả lời bằng cả text lẫn giọng nói.\n"
-        "`/stt <local|groq>` — chọn engine nghe giọng nói\n"
-        "`/ttsmode <off|smart|always>` — bật/tắt trả lời kèm voice note\n"
         "🖼️ *Ảnh/PDF:* gửi ảnh hoặc PDF chứa chữ Anh/Việt — mình OCR + dịch sang chiều còn lại.\n\n"
-        "*Lệnh nhanh:*\n"
-        "`/ui` — mở bảng điều khiển trung tâm\n"
-        "`/weather <thành phố>` — thời tiết + chất lượng không khí\n"
-        "`/news [nguồn]` — tin tức nhanh (vnexpress, tuoitre, thanhnien, dantri, bbcvietnamese)\n"
-        "`/autoweb` — bật/tắt tự động tra cứu web cho mọi tin nhắn\n"
+        "*Lệnh gõ tay nhanh:*\n"
         "`/nickname <tên>` — đặt tên gọi riêng\n"
-        "`/persona <tên>` — đổi tính cách bot (ban_than / chuyen_gia / hai_huoc / co_van)\n"
-        "`/voice <tên>` — đổi giọng đọc khi trả lời bằng voice\n"
+        "`/weather <thành phố>` — thời tiết bất kỳ đâu (không giới hạn như nút trong /ui)\n"
+        "`/news <nguồn>` — vnexpress / tuoitre / thanhnien / dantri / bbcvietnamese\n"
         "`/export` — xuất lịch sử hội thoại ra file .txt\n"
         "`/stop` — dừng phản hồi AI đang tạo dở\n"
         "`/reset` — xóa lịch sử hội thoại\n"
-        "`/ping` — kiểm tra kết nối tới Ollama\n"
-        + ("`/shutdown`, `/reboot` — [Admin] quản trị server\n"
+        + ("`/ping`, `/shutdown`, `/reboot` — [Admin] quản trị server\n"
            if is_admin(update.effective_user.id) else "")
+        + "\n💡 _Tính cách, giọng nói, tự động tìm web... đều đổi được trong `/ui`._"
     )
     await safe_reply(update, text)
 

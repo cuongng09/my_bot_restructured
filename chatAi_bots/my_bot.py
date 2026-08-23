@@ -21,17 +21,22 @@ from __future__ import annotations
 
 import httpx
 from telegram import Update
+from telegram.error import NetworkError
 from telegram.ext import (
     Application, CommandHandler, MessageHandler, CallbackQueryHandler,
     ContextTypes, filters,
 )
+from telegram.request import HTTPXRequest
 
 import database as db
 import reasoning     # noqa: F401  (nạp trước để SYSTEM_PROMPT_BASE fallback sẵn sàng)
 import local_voice    # noqa: F401
 
 from bot_logger import logger
-from config import TELEGRAM_TOKEN, OLLAMA_BASE_URL, DEFAULT_MODEL, DB_PATH, ALLOWED_IDS, ADMIN_IDS
+from config import (
+    TELEGRAM_TOKEN, OLLAMA_BASE_URL, DEFAULT_MODEL, DB_PATH, ALLOWED_IDS, ADMIN_IDS,
+    TELEGRAM_CONNECT_TIMEOUT, TELEGRAM_READ_TIMEOUT,
+)
 
 import llm_engine
 import utils
@@ -92,25 +97,36 @@ async def post_init(application: Application):
     if not ADMIN_IDS:
         logger.info("ℹ️ ADMIN_USER_IDS đang để trống — không ai dùng được lệnh quản trị server.")
 
-    from telegram import BotCommand
-    commands = [
+    from telegram import BotCommand, BotCommandScopeChat, BotCommandScopeDefault
+
+    # Danh sách gợi ý khi gõ "/" trong Telegram. Đây chỉ là GỢI Ý HIỂN THỊ — mọi lệnh
+    # (kể cả không nằm trong danh sách, vd /weather, /news, /stt...) vẫn hoạt động bình
+    # thường khi gõ tay. Rút gọn còn 6 lệnh cốt lõi vì /ui giờ đã có nút bấm cho hầu hết
+    # thao tác (mô hình, tính cách, giọng nói, thời tiết, tin tức, dịch...) — liệt kê
+    # thêm ở đây chỉ gây rối, không thêm chức năng.
+    default_commands = [
         BotCommand("start",    "Khởi động bot"),
+        BotCommand("ui",       "🏮 Mở Trạm Điều Khiển — trung tâm điều khiển bot"),
         BotCommand("help",     "📖 Xem hướng dẫn sử dụng đầy đủ"),
-        BotCommand("ui",       "🛠 Mở Dashboard UI Đa cấp trung tâm"),
-        BotCommand("weather",  "🌤️ Thời tiết theo thành phố — vd: /weather Hà Nội"),
-        BotCommand("news",     "📰 Tin tức nhanh — vd: /news tuoitre"),
         BotCommand("nickname", "👤 Đặt tên gọi riêng"),
-        BotCommand("stt",      "🎙️ Chọn engine nghe giọng nói (local/groq)"),
-        BotCommand("ttsmode",  "🔊 Bật/tắt trả lời kèm voice note (off/smart/always)"),
-        BotCommand("export",   "🗂️ Xuất lịch sử hội thoại"),
         BotCommand("stop",     "🚫 Dừng phản hồi đang tạo"),
-        BotCommand("reset",    "♻ Reset toàn bộ lịch sử chat"),
-        BotCommand("autoweb",  "🌐 Bật/tắt tự động tìm kiếm cho MỌI tin nhắn"),
-        BotCommand("ping",     "🏓 Kiểm tra kết nối Ollama"),
-        BotCommand("shutdown", "🛑 [Admin] Tắt nguồn server (cần xác nhận)"),
-        BotCommand("reboot",   "🔁 [Admin] Khởi động lại server (cần xác nhận)"),
+        BotCommand("reset",    "♻ Xóa lịch sử hội thoại"),
     ]
-    await application.bot.set_my_commands(commands)
+    await application.bot.set_my_commands(default_commands, scope=BotCommandScopeDefault())
+
+    # Admin thấy thêm 3 lệnh quản trị trong menu CỦA RIÊNG HỌ — người dùng thường không
+    # thấy các lệnh này nữa (trước đây ai cũng thấy "Tắt nguồn server" dù không có quyền
+    # dùng, vừa rối vừa lộ thông tin không cần thiết).
+    admin_commands = default_commands + [
+        BotCommand("ping",     "🏓 Kiểm tra kết nối Ollama"),
+        BotCommand("shutdown", "🛑 Tắt nguồn server (cần xác nhận)"),
+        BotCommand("reboot",   "🔁 Khởi động lại server (cần xác nhận)"),
+    ]
+    for admin_id in ADMIN_IDS:
+        try:
+            await application.bot.set_my_commands(admin_commands, scope=BotCommandScopeChat(chat_id=admin_id))
+        except Exception as e:
+            logger.warning(f"⚠️ Không đặt được menu lệnh riêng cho admin {admin_id}: {e}")
 
 
 async def post_shutdown(application: Application):
@@ -133,11 +149,26 @@ async def global_error_handler(update: object, ctx: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
+    # request: timeout dài hơn mặc định (5s) — tránh TimedOut khi mạng tới
+    # api.telegram.org chậm/không ổn định.
+    request_kwargs = dict(
+        connect_timeout=TELEGRAM_CONNECT_TIMEOUT,
+        read_timeout=TELEGRAM_READ_TIMEOUT,
+        write_timeout=TELEGRAM_READ_TIMEOUT,
+        pool_timeout=TELEGRAM_CONNECT_TIMEOUT,
+    )
+    # PTB khuyến nghị dùng 2 instance HTTPXRequest riêng cho API thường vs long-polling
+    # (get_updates cần pool_timeout dài hơn do giữ connection lâu).
+    telegram_request = HTTPXRequest(**request_kwargs)
+    updates_request = HTTPXRequest(**{**request_kwargs, "pool_timeout": TELEGRAM_READ_TIMEOUT})
+
     # concurrent_updates(True): mỗi update chạy trong 1 Task riêng (song song), cần thiết để
     # /stop hoạt động đúng trong lúc bot đang stream câu trả lời cho update khác.
     app = (
         Application.builder()
         .token(TELEGRAM_TOKEN)
+        .request(telegram_request)
+        .get_updates_request(updates_request)
         .concurrent_updates(True)
         .post_init(post_init)
         .post_shutdown(post_shutdown)
@@ -169,7 +200,14 @@ def main():
     app.add_handler(MessageHandler(filters.Document.ALL | filters.PHOTO, handle_media))
 
     logger.info("🚀 Bot đang khởi động...")
-    app.run_polling(drop_pending_updates=True)
+    try:
+        app.run_polling(drop_pending_updates=True, bootstrap_retries=3)
+    except NetworkError as e:
+        logger.error(
+            f"❌ Không kết nối được tới Telegram API sau nhiều lần thử: {e}\n\n"
+            f"💡 Đây là lỗi MẠNG, không phải lỗi code — kiểm tra kết nối internet rồi chạy lại "
+            f"(nếu mạng của bạn chặn api.telegram.org, cần dùng VPN ở cấp hệ thống)."
+        )
 
 
 if __name__ == "__main__":

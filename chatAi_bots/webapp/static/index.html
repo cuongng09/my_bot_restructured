@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trạm Điều Khiển — My Bot</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23C1401F%22/><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22none%22 stroke=%22%23C9A227%22 stroke-width=%224%22/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+
+  <!-- ── Màn hình nhập token (chỉ hiện khi WEBAPP_TOKEN được cấu hình) ── -->
+  <div class="gate" id="gate" hidden>
+    <div class="gate__card">
+      <div class="brand__mark">🏮</div>
+      <h1>Trạm Điều Khiển</h1>
+      <p>Nhập token quản trị để mở bảng điều khiển.</p>
+      <input type="password" id="gate-input" placeholder="Token quản trị" autocomplete="off" />
+      <button id="gate-submit">Mở trạm</button>
+      <div class="gate__error" id="gate-error"></div>
+    </div>
+  </div>
+
+  <!-- ── Trang chính ── -->
+  <div class="wrap" id="app" hidden>
+
+    <header class="header">
+      <div class="brand">
+        <span class="brand__mark">🏮</span>
+        <div>
+          <h1>Trạm Điều Khiển</h1>
+          <div class="brand__sub">Bảng quản trị · My Bot</div>
+        </div>
+      </div>
+      <div class="header__right">
+        <span class="clock" id="clock">--:--:--</span>
+        <div class="seal" id="seal">
+          <span class="seal__stamp"><span class="seal__glyph">安</span></span>
+          <span class="seal__text" id="seal-text">Đang kiểm tra…</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Hàng thẻ số liệu ── -->
+    <section class="stat-grid">
+      <div class="card">
+        <div class="eyebrow">Mô hình đang dùng</div>
+        <div class="stat-card__value stat-card__value--small mono" id="stat-model">—</div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Hoạt động hôm nay</div>
+        <div class="stat-card__value" id="stat-active">—</div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">CPU</div>
+        <div class="stat-card__value" id="stat-cpu">—</div>
+        <div class="stat-card__bar"><div class="stat-card__bar-fill" id="stat-cpu-bar" style="width:0%"></div></div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">RAM</div>
+        <div class="stat-card__value" id="stat-ram">—</div>
+        <div class="stat-card__bar"><div class="stat-card__bar-fill" id="stat-ram-bar" style="width:0%"></div></div>
+      </div>
+    </section>
+
+    <!-- ── Nhật ký + Cấu hình ── -->
+    <section class="split">
+      <div class="panel">
+        <h2 class="section-title">📜 Nhật ký gần đây</h2>
+        <div class="log-feed" id="log-feed">
+          <div class="log-empty">Đang tải nhật ký…</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="section-title">⚙️ Cấu hình hệ thống</h2>
+        <div class="kv-list" id="kv-list">
+          <div class="kv-row"><span class="kv-row__label">Ollama</span><span class="kv-row__value">—</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Bảng người dùng ── -->
+    <section class="panel">
+      <h2 class="section-title">👥 Người dùng</h2>
+      <div class="table-wrap">
+        <table class="users" id="users-table">
+          <thead>
+            <tr>
+              <th>UID</th><th>Tên gọi</th><th>Mô hình</th><th>Tính cách</th>
+              <th>Tin nhắn</th><th>Hoạt động cuối</th><th>Vai trò</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            <tr><td colspan="7" class="empty-state">Đang tải…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Trạm Điều Khiển tự làm mới mỗi 10 giây · dữ liệu đọc trực tiếp từ bot, không chỉnh sửa.</span>
+      <span id="server-time-footer">—</span>
+    </footer>
+
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

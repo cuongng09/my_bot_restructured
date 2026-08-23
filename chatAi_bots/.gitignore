@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+data/*.db
+data/*.db-*
+logs/*.log*
+voices/*.onnx
+voices/*.onnx.json
+models/
+scripts/nssm.exe
+scripts/*.log

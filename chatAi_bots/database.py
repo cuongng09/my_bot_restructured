@@ -161,7 +161,7 @@ async def get_settings(uid: int) -> dict:
         row = await cur.fetchone()
     if row is None:
         return {
-            "model": None, "voice_mode": "smart", "stt_engine": "groq", "auto_web": False,
+            "model": None, "voice_mode": "smart", "stt_engine": "local", "auto_web": False,
             "media_mode": None, "nickname": None,
             "persona": "ban_than", "profile_summary": "", "turns_since_summary": 0, "tts_voice": "",
         }

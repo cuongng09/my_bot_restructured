@@ -26,6 +26,8 @@ def _require_env(name: str) -> str:
 
 # ── Telegram & Ollama ──────────────────────────────────────────────────────────
 TELEGRAM_TOKEN   = _require_env("TELEGRAM_TOKEN")
+TELEGRAM_CONNECT_TIMEOUT = float(os.getenv("TELEGRAM_CONNECT_TIMEOUT", "15"))
+TELEGRAM_READ_TIMEOUT    = float(os.getenv("TELEGRAM_READ_TIMEOUT", "30"))
 OLLAMA_BASE_URL  = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_MODEL    = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
 OLLAMA_TIMEOUT_SEC    = int(os.getenv("OLLAMA_TIMEOUT_SEC", "120"))
@@ -50,7 +52,17 @@ DB_PATH  = os.getenv("DB_PATH", "data/bot_data.db")
 LOG_FILE = os.getenv("LOG_FILE", "logs/bot.log")
 
 # ── Optional API keys ─────────────────────────────────────────────────────────
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")   # dùng cho engine STT Groq Whisper (/stt groq)
+
+# ── Trạm Điều Khiển Web (webapp/) ───────────────────────────────────────────────
+WEBAPP_HOST = os.getenv("WEBAPP_HOST", "0.0.0.0")
+WEBAPP_PORT = int(os.getenv("WEBAPP_PORT", "8080"))
+# Token bảo vệ trang quản trị — để trống = KHÔNG có xác thực (chỉ nên để trống khi
+# chạy sau reverse-proxy/VPN riêng). Đặt một chuỗi bất kỳ để bật màn hình đăng nhập.
+WEBAPP_TOKEN = os.getenv("WEBAPP_TOKEN", "")
+# URL công khai để hiện nút "Mở Trạm Điều Khiển Web" trong /ui (Telegram) — vd:
+# http://192.168.1.10:8080 hoặc https://bot.example.com. Để trống thì ẩn nút này.
+WEBAPP_PUBLIC_URL = os.getenv("WEBAPP_PUBLIC_URL", "")
 
 # ── Tesseract ─────────────────────────────────────────────────────────────────
 TESSERACT_CMD = os.getenv("TESSERACT_CMD", r"C:\Program Files\Tesseract-OCR\tesseract.exe")
