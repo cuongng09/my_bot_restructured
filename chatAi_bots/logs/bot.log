@@ -70,3 +70,21 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2026-08-23 12:15:23,997 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
 2026-08-23 12:15:24,215 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
 2026-08-23 12:15:26,484 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-23 18:19:08,092 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-23 18:19:09,112 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-23 18:19:09,345 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-23 18:19:09,348 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-23 19:59:10,133 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-23 19:59:10,840 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-23 19:59:11,060 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-23 19:59:11,063 | WARNING | my_bot | ⚠️ Model mặc định 'qwen3.8' chưa được cài trong Ollama. Model hiện có: ['gemma4:latest', 'qwen3.8:latest']
+2026-08-23 20:07:25,776 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-23 20:07:26,476 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-23 20:07:26,695 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-23 20:15:54,883 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-23 20:15:55,543 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-23 20:15:55,763 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-24 05:21:01,840 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-24 05:21:02,521 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-24 05:21:02,735 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-24 05:29:38,436 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://vn.investing.com/equities/fpt-corp: All connection attempts failed

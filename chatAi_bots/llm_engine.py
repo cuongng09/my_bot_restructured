@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import time
 from typing import Optional
 
@@ -14,7 +15,7 @@ import reasoning
 from bot_logger import logger
 from config import (
     OLLAMA_BASE_URL, OLLAMA_TIMEOUT_SEC, OLLAMA_RETRY_ATTEMPTS,
-    COMPARISON_TRIGGER_KEYWORDS,
+    COMPARISON_TRIGGER_KEYWORDS, should_trigger_web_search,
 )
 
 # HTTP client được inject từ my_bot.post_init (tránh tạo nhiều client)
@@ -43,6 +44,71 @@ async def get_ollama_models(force: bool = False) -> list[str]:
         return models
     except Exception:
         return _MODEL_CACHE["models"]
+
+
+# ── Web-search decision (LLM tự quyết định, thay cho match từ khóa) ────────────
+_SEARCH_DECISION_SYSTEM = (
+    "Bạn là bộ phân loại nội bộ, KHÔNG trò chuyện với người dùng. Nhiệm vụ DUY NHẤT: "
+    "xác định tin nhắn dưới đây có cần TRA CỨU INTERNET THỜI GIAN THỰC để trả lời chính xác hay không.\n\n"
+    "CẦN search nếu liên quan tới: giá cả/tỷ giá/lãi suất hiện tại, tin tức/sự kiện gần đây, "
+    "kết quả thể thao/bầu cử, ai đang giữ chức vụ/vai trò gì ở thời điểm hiện tại, thời tiết, "
+    "thông tin về sản phẩm/công nghệ/phiên bản mới, hoặc bất kỳ điều gì có thể đã thay đổi so với "
+    "kiến thức huấn luyện (đã lỗi thời).\n\n"
+    "KHÔNG cần search nếu là: chào hỏi/tâm sự/trò chuyện phiếm, kiến thức phổ thông cố định "
+    "(lịch sử, khoa học, toán, định nghĩa), yêu cầu sáng tạo (viết văn/thơ/code/dịch thuật), "
+    "câu hỏi về chính người dùng, bot, hoặc cuộc trò chuyện đang diễn ra.\n\n"
+    "CHỈ trả lời bằng đúng 1 dòng JSON thuần túy, KHÔNG kèm giải thích, KHÔNG dùng markdown/code "
+    "fence, đúng format sau:\n"
+    '{"need_search": true hoặc false, "query": "câu truy vấn tìm kiếm ngắn gọn súc tích nếu need_search=true, ngược lại để rỗng"}'
+)
+
+
+async def decide_web_search(text: str, model: str) -> dict:
+    """Hỏi LLM xem tin nhắn `text` có cần tra cứu web thời gian thực hay không.
+
+    Trả về {"need_search": bool, "query": str}. Đây là một lệnh gọi Ollama RIÊNG,
+    tách biệt khỏi câu trả lời chính — nhanh, temperature=0, không mang theo lịch sử
+    hội thoại (không cần ngữ cảnh dài để phân loại) và giới hạn output ngắn.
+
+    Nếu lệnh gọi LLM lỗi (Ollama down, model chưa pull, JSON không parse được...),
+    fallback về match từ khóa cũ trong config.should_trigger_web_search để bot vẫn
+    hoạt động được thay vì crash hoặc luôn tắt search.
+    """
+    try:
+        r = await _http_client.post(
+            f"{OLLAMA_BASE_URL}/api/chat",
+            json={
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": _SEARCH_DECISION_SYSTEM},
+                    {"role": "user", "content": text},
+                ],
+                "stream": False,
+                "options": {"temperature": 0.0, "top_p": 0.9, "num_ctx": 1024, "num_predict": 120},
+            },
+            timeout=15.0,
+        )
+        r.raise_for_status()
+        raw = r.json()["message"]["content"].strip()
+
+        # Model đôi khi vẫn kèm ```json ... ``` hoặc text thừa quanh JSON — cắt ra phần {...} đầu tiên.
+        raw = raw.strip().strip("`")
+        if raw.lower().startswith("json"):
+            raw = raw[4:].strip()
+        match = re.search(r"\{.*\}", raw, re.DOTALL)
+        if match:
+            raw = match.group(0)
+
+        data = json.loads(raw)
+        need_search = bool(data.get("need_search", False))
+        query = (data.get("query") or "").strip() or text
+        return {"need_search": need_search, "query": query}
+
+    except Exception as e:
+        logger.warning(
+            f"⚠️ Lỗi khi hỏi LLM có cần search web không ({e}) — fallback sang match từ khóa cũ."
+        )
+        return {"need_search": should_trigger_web_search(text), "query": text}
 
 
 # ── Grounded message builder ───────────────────────────────────────────────────

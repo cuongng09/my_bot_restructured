@@ -16,7 +16,7 @@ import database as db
 import reasoning
 from bot_logger import logger
 from config import LONG_TERM_MEMORY_EVERY_N_TURNS
-from llm_engine import chat_with_llm
+from llm_engine import chat_with_llm, decide_web_search
 from skills.voice import transcribe_for_user, maybe_send_voice_reply
 from skills.web_search import raw_search_data, format_web_context, format_sources_footer
 from handlers.text_handler import _update_long_term_memory
@@ -39,15 +39,22 @@ async def _process_voice_reply(
     """Tìm web (nếu cần) + gọi LLM không-stream (tối ưu cho voice — concise)."""
     web_context, sources_footer = "", ""
     auto_web = await get_auto_web_mode(uid)
-    if auto_web:
-        await update.effective_chat.send_action(ChatAction.TYPING)
-        try:
-            raw_data = await raw_search_data(transcribed_text)
+    try:
+        if auto_web:
+            need_search, search_query = True, transcribed_text
+        else:
+            decision = await decide_web_search(transcribed_text, model)
+            need_search = decision["need_search"]
+            search_query = decision["query"]
+
+        if need_search:
+            await update.effective_chat.send_action(ChatAction.TYPING)
+            raw_data = await raw_search_data(search_query)
             if raw_data:
                 web_context = format_web_context(raw_data)
                 sources_footer = format_sources_footer(raw_data)
-        except Exception as e:
-            logger.warning(f"⚠️ Lỗi tìm kiếm web (voice): {e}")
+    except Exception as e:
+        logger.warning(f"⚠️ Lỗi tìm kiếm web (voice): {e}")
 
     complexity = reasoning.classify_complexity(transcribed_text)
     length_hint = {

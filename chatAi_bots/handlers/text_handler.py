@@ -15,8 +15,8 @@ from telegram.ext import ContextTypes
 import database as db
 import reasoning
 from bot_logger import logger
-from config import LONG_TERM_MEMORY_EVERY_N_TURNS, STREAM_EDIT_INTERVAL, should_trigger_web_search
-from llm_engine import chat_with_llm, chat_with_llm_stream
+from config import LONG_TERM_MEMORY_EVERY_N_TURNS, STREAM_EDIT_INTERVAL
+from llm_engine import chat_with_llm, chat_with_llm_stream, decide_web_search
 from skills.web_search import raw_search_data, format_web_context, format_sources_footer
 from utils import (
     is_allowed, is_addressed_in_group, is_rate_limited,
@@ -131,11 +131,28 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return await safe_reply(update, f"🔤 **Bản dịch Google:**\n\n{reply}")
 
     await update.effective_chat.send_action(ChatAction.TYPING)
+
+    settings = await db.get_settings(uid)
+    nickname = settings["nickname"]
+    persona, profile_summary = settings["persona"], settings["profile_summary"]
+    model = await get_user_model(uid)
+
     web_context, force_concise, sources_footer = "", False, ""
     try:
         auto_web = await get_auto_web_mode(uid)
-        if auto_web or should_trigger_web_search(text):
-            raw_data = await raw_search_data(text)
+        if auto_web:
+            need_search, search_query = True, text
+        else:
+            # Để chính LLM đọc câu hỏi và quyết định có cần tra web hay không, thay vì
+            # match từ khóa cứng — bắt được cả những câu hỏi thời sự không chứa đúng
+            # từ khóa định sẵn, đồng thời không trigger nhầm khi từ khóa xuất hiện
+            # nhưng ngữ cảnh không thực sự cần tra cứu.
+            decision = await decide_web_search(text, model)
+            need_search = decision["need_search"]
+            search_query = decision["query"]
+
+        if need_search:
+            raw_data = await raw_search_data(search_query)
             if raw_data:
                 web_context = format_web_context(raw_data)
                 sources_footer = format_sources_footer(raw_data)
@@ -143,13 +160,8 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.warning(f"⚠️ Lỗi tìm kiếm web: {e}")
 
-    settings = await db.get_settings(uid)
-    nickname = settings["nickname"]
-    persona, profile_summary = settings["persona"], settings["profile_summary"]
-
     await add_to_history(uid, "user", text)
     history = await db.get_history(uid)
-    model = await get_user_model(uid)
 
     # Hidden reasoning cho câu hỏi phức tạp
     complexity = reasoning.classify_complexity(text)
