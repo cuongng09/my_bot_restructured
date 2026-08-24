@@ -168,8 +168,8 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/cwng/Documents/GitHub/chatAi_bots
-ExecStart=/home/cwng/Documents/GitHub/chatAi_bots/venv/bin/python3 /home/cwng/Documents/GitHub/chatAi_bots/my_bot.py
+WorkingDirectory=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots
+ExecStart=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/bin/python3 /home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/my_bot.py
 Restart=on-failure
 RestartSec=5
 StandardOutput=journal
@@ -199,8 +199,8 @@ After=network.target telegram-bot.service
 
 [Service]
 Type=simple
-WorkingDirectory=/home/cwng/Documents/GitHub/chatAi_bots
-ExecStart=/home/cwng/Documents/GitHub/chatAi_bots/venv/bin/python3 -m webapp.main
+WorkingDirectory=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots
+ExecStart=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/bin/python3 -m webapp.main
 Restart=on-failure
 RestartSec=5
 StandardOutput=journal

@@ -19,6 +19,8 @@ hiện tại luôn hiển thị ngay tại chỗ (✅) thay vì phải đoán ho
 
 from __future__ import annotations
 
+from urllib.parse import urlparse
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
@@ -33,6 +35,45 @@ from skills.voice import groq_client
 from skills.weather import skill_weather
 from skills.news import skill_news
 from utils import is_allowed, is_admin, safe_reply, get_auto_web_mode, get_user_model
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 🔗 Validate WEBAPP_PUBLIC_URL trước khi dùng làm nút bấm Telegram
+# ─────────────────────────────────────────────────────────────────────────────
+_INVALID_BUTTON_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "::1"}
+_webapp_url_warned = False  # chỉ log cảnh báo 1 lần, tránh spam log mỗi lần mở /ui
+
+
+def _valid_webapp_button_url() -> str | None:
+    """Trả về WEBAPP_PUBLIC_URL nếu dùng được làm nút inline Telegram, ngược lại None.
+
+    Telegram Bot API từ chối TOÀN BỘ bàn phím inline (lỗi Button_url_invalid) nếu một
+    nút có url trỏ tới localhost/127.0.0.1/0.0.0.0 hoặc thiếu scheme http(s) — vì máy
+    người dùng mở Telegram không thể resolve các host đó về máy chạy bot. Nếu không
+    validate trước, cả lệnh /ui sẽ crash (không hiện gì) thay vì chỉ riêng nút này lỗi.
+    """
+    global _webapp_url_warned
+    url = (WEBAPP_PUBLIC_URL or "").strip()
+    if not url:
+        return None
+
+    try:
+        parsed = urlparse(url)
+    except Exception:
+        parsed = None
+
+    host = (parsed.hostname or "").lower() if parsed else ""
+    is_valid = bool(parsed) and parsed.scheme in ("http", "https") and host not in _INVALID_BUTTON_HOSTS
+
+    if not is_valid and not _webapp_url_warned:
+        _webapp_url_warned = True
+        logger.warning(
+            f"⚠️ WEBAPP_PUBLIC_URL='{url}' không dùng được làm nút Telegram (localhost/127.0.0.1 "
+            f"hoặc thiếu http/https) — Telegram sẽ từ chối, nên nút '🌐 Mở Trạm Điều Khiển Web' "
+            f"đã được TỰ ẨN để /ui không bị lỗi. Hãy đổi WEBAPP_PUBLIC_URL trong .env sang địa chỉ "
+            f"IP LAN của máy chạy bot (vd http://192.168.1.10:8080) hoặc domain/HTTPS công khai."
+        )
+    return url if is_valid else None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -65,8 +106,8 @@ async def _render_main(uid: int) -> tuple[str, InlineKeyboardMarkup]:
             InlineKeyboardButton("🖥️ Hệ thống", callback_data="menu_sys"),
             InlineKeyboardButton("❓ Trợ giúp",  callback_data="menu_help"),
         ])
-        if WEBAPP_PUBLIC_URL:
-            rows.append([InlineKeyboardButton("🌐 Mở Trạm Điều Khiển Web", url=WEBAPP_PUBLIC_URL)])
+        if webapp_url := _valid_webapp_button_url():
+            rows.append([InlineKeyboardButton("🌐 Mở Trạm Điều Khiển Web", url=webapp_url)])
     else:
         rows.append([InlineKeyboardButton("❓ Trợ giúp", callback_data="menu_help")])
     return text, InlineKeyboardMarkup(rows)
@@ -375,8 +416,8 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
              InlineKeyboardButton("📁 Xem tệp tin", callback_data="sys_files")],
             [InlineKeyboardButton("🏓 Ping Ollama", callback_data="sys_ping")],
         ]
-        if WEBAPP_PUBLIC_URL:
-            kb.append([InlineKeyboardButton("🌐 Mở Trạm Điều Khiển Web", url=WEBAPP_PUBLIC_URL)])
+        if webapp_url := _valid_webapp_button_url():
+            kb.append([InlineKeyboardButton("🌐 Mở Trạm Điều Khiển Web", url=webapp_url)])
         kb.append([
             InlineKeyboardButton("🔁 Khởi động lại", callback_data="sys_reboot"),
             InlineKeyboardButton("🛑 Tắt server",    callback_data="sys_shutdown"),
