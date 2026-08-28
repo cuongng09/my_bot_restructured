@@ -1,4 +1,937 @@
-2026-08-24 16:58:07,430 | INFO | my_bot | 🚀 Bot đang khởi động...
-2026-08-24 16:58:08,087 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
-2026-08-24 16:58:08,302 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
-2026-08-24 16:58:21,386 | WARNING | my_bot | ⚠️ WEBAPP_PUBLIC_URL='http://0.0.0.0:8080' không dùng được làm nút Telegram (localhost/127.0.0.1 hoặc thiếu http/https) — Telegram sẽ từ chối, nên nút '🌐 Mở Trạm Điều Khiển Web' đã được TỰ ẨN để /ui không bị lỗi. Hãy đổi WEBAPP_PUBLIC_URL trong .env sang địa chỉ IP LAN của máy chạy bot (vd http://192.168.1.10:8080) hoặc domain/HTTPS công khai.
+2026-08-25 20:04:16,273 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-25 20:04:16,936 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-25 20:04:17,215 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-25 20:05:06,632 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://thetechgorilla.com/how-to-get-help-in-windows-11/: Client error '403 Forbidden' for url 'https://thetechgorilla.com/how-to-get-help-in-windows-11/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-08-25 20:10:27,399 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-25 20:10:28,145 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-25 20:10:28,387 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-25 20:10:40,379 | INFO | my_bot | 🔎 Search query: 'thổng thống mỹ'
+2026-08-25 20:10:41,772 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Danh sách Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Danh_sách_Tổng_thống_Hoa_Kỳ) | [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) | [Đặc điểm lịch sử 47 đời Tổng thống Mỹ đến nay](https://toancauvisa.com/cac-doi-tong-thong-my-den-nay-tong-thong-dau-tien-la-ai/) | [Danh sách Tổng thống Hoa Kỳ - Wikiwand](https://www.wikiwand.com/vi/Danh_sách_Tổng_thống_Hoa_Kỳ) | [Danh sách các tổng thống Mỹ vĩ đại nhất thời đại](https://dinhcucacnuoc.com/danh-sach-cac-tong-thong-my-vi-dai-nhat/)
+2026-08-26 06:28:01,497 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-26 06:28:05,933 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-26 06:28:06,155 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-26 06:28:06,156 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-08-26 06:38:48,411 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-26 06:38:49,149 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-26 06:38:49,379 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-26 06:39:07,223 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-26 06:39:07,905 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-26 06:39:08,124 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-26 06:39:30,452 | INFO | my_bot | 🔎 Search query: 'tổng thống mỹ'
+2026-08-26 06:39:31,766 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) | [Danh sách Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Danh_sách_Tổng_thống_Hoa_Kỳ) | [Cập Nhật Mới Nhất về Tổng Thống Mỹ Donald Trump](https://www.24h.com.vn/donald-trump-c415e4024.html) | [Đặc điểm lịch sử 47 đời Tổng thống Mỹ đến nay](https://toancauvisa.com/cac-doi-tong-thong-my-den-nay-tong-thong-dau-tien-la-ai/) | [Tin tức Tổng thống Mỹ Donald Trump mới nhất trên VnExpress](https://vnexpress.net/chu-de/donald-trump-1023)
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=3599, total_chars=9791
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[0] role=system chars=2712 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[2] role=assistant chars=339 preview=Ngày 1: - Sáng: Hoàn Kiếm Lake, Nhà hát Lớn. - Trưa: Thưởng thức phở ở Phở 29. - Chiều: Thăm Nhà thờ Lớn, Bảo tàng Hồ Chí Minh. - Tối: Dạo phố cổ, ăn cơm rang.  Ngày 2: - Sáng: Đền Ngọc Sơn, Tháp Rùa. - Trưa: Tràng Tiền 
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[3] role=user chars=8 preview=giá vàng
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[4] role=assistant chars=700 preview=Giá vàng hôm nay (25/08/2026) của các thương hiệu như SJC, DOJI, PNJ dao động từ 147,000 - 150,600 nghìn đồng/lượng.  📎 *Nguồn tham khảo:* [1] [Giá vàng hôm nay các thương hiệu Sjc, 9999, 24k, 18k của PNJ, Doji mớ…](http
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[5] role=user chars=14 preview=thổng thống mỹ
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[6] role=assistant chars=648 preview=Dữ liệu không chứa thông tin về Tổng thống Mỹ.  📎 *Nguồn tham khảo:* [1] [How to Get Help in Windows 11: 3 Quick & Easy Ways](https://www.wikihow.com/Get-Help-in-Windows-11) [2] [How To Get Help In Windows 11 (All Method
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[7] role=user chars=14 preview=thổng thống mỹ
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[8] role=assistant chars=773 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ Hoa Kỳ, cũng là Tổng tư lệnh của các lực lượng vũ trang. George Washington là Tổng thống đầu tiên, nhậm chức từ 1789-1797.  📎 *Nguồn tham khảo:* [1] [Danh sách Tổ
+2026-08-26 06:39:33,020 | INFO | my_bot | Ollama message[9] role=user chars=4478 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Tổng thống Hoa Kỳ - Wikipedia tiếng Việt URL: https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ Nội dung: Tổng thống Hoa Kỳ là nguyên thủ quốc gia và người đứng đ
+2026-08-26 06:40:13,844 | INFO | my_bot | 🔎 Search query: 'tổng thống mỹ hiện tại là ai'
+2026-08-26 06:40:14,992 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) | [Danh sách Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Danh_sách_Tổng_thống_Hoa_Kỳ) | [Tổng thống Mỹ bây giờ là ai | AI Hay - Hỏi ngay đáp hay](https://ai-hay.vn/tong-thong-my-bay-gio-la-ai-pN1UmHzSJ5m) | [Ông Donald Trump chính thức trở thành Tổng thống thứ 47 của ](https://baochinhphu.vn/ong-donald-trump-chinh-thuc-tro-thanh-tong-thong-thu-47-cua-nuoc-my-102250121085315608.htm) | [Donald Trump - Tổng thống Hoa Kỳ thứ 47](https://special.nhandan.vn/donald-trump-tong-thong-thu-47-hoa-ky/index.html)
+2026-08-26 06:40:15,964 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=2232, total_chars=8889
+2026-08-26 06:40:15,964 | INFO | my_bot | Ollama message[0] role=system chars=2712 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-26 06:40:15,964 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-26 06:40:15,964 | INFO | my_bot | Ollama message[2] role=assistant chars=700 preview=Giá vàng hôm nay (25/08/2026) của các thương hiệu như SJC, DOJI, PNJ dao động từ 147,000 - 150,600 nghìn đồng/lượng.  📎 *Nguồn tham khảo:* [1] [Giá vàng hôm nay các thương hiệu Sjc, 9999, 24k, 18k của PNJ, Doji mớ…](http
+2026-08-26 06:40:15,965 | INFO | my_bot | Ollama message[3] role=user chars=14 preview=thổng thống mỹ
+2026-08-26 06:40:15,965 | INFO | my_bot | Ollama message[4] role=assistant chars=648 preview=Dữ liệu không chứa thông tin về Tổng thống Mỹ.  📎 *Nguồn tham khảo:* [1] [How to Get Help in Windows 11: 3 Quick & Easy Ways](https://www.wikihow.com/Get-Help-in-Windows-11) [2] [How To Get Help In Windows 11 (All Method
+2026-08-26 06:40:15,965 | INFO | my_bot | Ollama message[5] role=user chars=14 preview=thổng thống mỹ
+2026-08-26 06:40:15,965 | INFO | my_bot | Ollama message[6] role=assistant chars=773 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ Hoa Kỳ, cũng là Tổng tư lệnh của các lực lượng vũ trang. George Washington là Tổng thống đầu tiên, nhậm chức từ 1789-1797.  📎 *Nguồn tham khảo:* [1] [Danh sách Tổ
+2026-08-26 06:40:15,965 | INFO | my_bot | Ollama message[7] role=user chars=13 preview=tổng thống mỹ
+2026-08-26 06:40:15,965 | INFO | my_bot | Ollama message[8] role=assistant chars=784 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ, lãnh đạo chính quyền liên bang và Quân đội Hoa Kỳ. Theo Hiến pháp, họ phải ít nhất 35 tuổi, đã sống ở Hoa Kỳ 14 năm và là công dân Hoa Kỳ.  📎 *Nguồn tham khảo:* 
+2026-08-26 06:40:15,966 | INFO | my_bot | Ollama message[9] role=user chars=3126 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Tổng thống Hoa Kỳ - Wikipedia tiếng Việt URL: https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ Nội dung: Tổng thống Hoa Kỳ là nguyên thủ quốc gia và người đứng đ
+2026-08-26 06:40:25,518 | INFO | my_bot | Ollama payload summary: messages=3, web_context_chars=0, total_chars=11599
+2026-08-26 06:40:25,518 | INFO | my_bot | Ollama message[0] role=system chars=799 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-26 06:40:25,518 | INFO | my_bot | Ollama message[1] role=system chars=519 preview=Bạn là bộ máy tóm tắt hồ sơ người dùng. Dựa trên đoạn hội thoại được cung cấp và hồ sơ cũ (nếu có), hãy viết lại một đoạn HỒ SƠ NGẮN GỌN (tối đa 5-6 gạch đầu dòng) về người dùng: sở thích, thói quen, công việc/lĩnh vực q
+2026-08-26 06:40:25,519 | INFO | my_bot | Ollama message[2] role=user chars=10281 preview=ĐOẠN HỘI THOẠI GẦN ĐÂY: Người dùng: bằng lái xe hạng c1 năm 2026 Trợ lý: Theo dữ liệu, bằng lái xe hạng C1 năm 2026 sẽ có cấu trúc đề thi và quy trình học thi mới. Thời gian học là 3-6 tháng, chi phí khoảng 26.5-30.5 tri
+2026-08-26 06:40:58,399 | INFO | my_bot | 🔎 Search query: 'top repo github hôm qua'
+2026-08-26 06:40:59,537 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [GitHub Trending — Daily, Weekly & Monthly Repos | TopGit](https://topgit.dev/trending) | [Top GitHub Repositories](https://git-leaderboard.dev/) | [Trending repositories on GitHub this week · GitHub](https://github.com/trending?since=weekly) | [Github-Ranking/Top100/Top-100-stars.md at master · EvanLi/Gi](https://github.com/EvanLi/Github-Ranking/blob/master/Top100/Top-100-stars.md) | [GitHub Trending — Daily, Weekly & Monthly Top Repos](https://trending.magikaru.com/)
+2026-08-26 06:41:02,191 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=4164, total_chars=10870
+2026-08-26 06:41:02,191 | INFO | my_bot | Ollama message[0] role=system chars=2712 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[2] role=assistant chars=648 preview=Dữ liệu không chứa thông tin về Tổng thống Mỹ.  📎 *Nguồn tham khảo:* [1] [How to Get Help in Windows 11: 3 Quick & Easy Ways](https://www.wikihow.com/Get-Help-in-Windows-11) [2] [How To Get Help In Windows 11 (All Method
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[3] role=user chars=14 preview=thổng thống mỹ
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[4] role=assistant chars=773 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ Hoa Kỳ, cũng là Tổng tư lệnh của các lực lượng vũ trang. George Washington là Tổng thống đầu tiên, nhậm chức từ 1789-1797.  📎 *Nguồn tham khảo:* [1] [Danh sách Tổ
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[5] role=user chars=13 preview=tổng thống mỹ
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[6] role=assistant chars=784 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ, lãnh đạo chính quyền liên bang và Quân đội Hoa Kỳ. Theo Hiến pháp, họ phải ít nhất 35 tuổi, đã sống ở Hoa Kỳ 14 năm và là công dân Hoa Kỳ.  📎 *Nguồn tham khảo:* 
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[7] role=user chars=28 preview=tổng thống mỹ hiện tại là ai
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[8] role=assistant chars=740 preview=Tổng thống Hoa Kỳ hiện tại là Donald Trump, nhậm chức vào ngày 20/1/2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sách Tổng thống Ho
+2026-08-26 06:41:02,192 | INFO | my_bot | Ollama message[9] role=user chars=5053 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: GitHub Trending — Daily, Weekly & Monthly Repos | TopGit URL: https://topgit.dev/trending Nội dung: GITHUB TRENDING Daily GitHub Trending Repositories Top repos
+2026-08-26 06:42:00,712 | INFO | my_bot | 🔎 Search query: 'top trending github nơ'
+2026-08-26 06:42:00,963 | INFO | my_bot | 🔎 Kết quả search (method=ddgs, 5 kết quả): [Đăng tin tuyển dụng miễn phí – Tìm CV ứng viên trên TopCV](https://tuyendung.topcv.vn/) | [Tuyển dụng, tìm việc làm 24h, tìm việc nhanh, hiệu quả cùng ](https://www.topcv.vn/viec-lam) | [Toplist.vn danh sách top khách quan đầy đủ và chính xác nhất](https://toplist.vn/) | [TOP | Định nghĩa trong Từ điển tiếng Anh Cambridge](https://dictionary.cambridge.org/vi/dictionary/english/top) | [TOP | English meaning - Cambridge Dictionary](https://dictionary.cambridge.org/dictionary/english/top)
+2026-08-26 06:42:01,197 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://www.topcv.vn/viec-lam: Client error '403 Forbidden' for url 'https://www.topcv.vn/viec-lam'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-08-26 06:42:01,199 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://tuyendung.topcv.vn/: Client error '403 Forbidden' for url 'https://tuyendung.topcv.vn/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=3131, total_chars=9940
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[2] role=assistant chars=773 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ Hoa Kỳ, cũng là Tổng tư lệnh của các lực lượng vũ trang. George Washington là Tổng thống đầu tiên, nhậm chức từ 1789-1797.  📎 *Nguồn tham khảo:* [1] [Danh sách Tổ
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[3] role=user chars=13 preview=tổng thống mỹ
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[4] role=assistant chars=784 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ, lãnh đạo chính quyền liên bang và Quân đội Hoa Kỳ. Theo Hiến pháp, họ phải ít nhất 35 tuổi, đã sống ở Hoa Kỳ 14 năm và là công dân Hoa Kỳ.  📎 *Nguồn tham khảo:* 
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[5] role=user chars=28 preview=tổng thống mỹ hiện tại là ai
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[6] role=assistant chars=740 preview=Tổng thống Hoa Kỳ hiện tại là Donald Trump, nhậm chức vào ngày 20/1/2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sách Tổng thống Ho
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[7] role=user chars=23 preview=top repo github hôm qua
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[8] role=assistant chars=704 preview=Dữ liệu không cung cấp thông tin về top repo GitHub hôm qua. Bạn có thể xem thông tin cập nhật hàng ngày trên trang [GitHub Trending](https://topgit.dev/trending) để có cái nhìn tổng quan.  📎 *Nguồn tham khảo:* [1] [GitH
+2026-08-26 06:42:01,920 | INFO | my_bot | Ollama message[9] role=user chars=4019 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Đăng tin tuyển dụng miễn phí – Tìm CV ứng viên trên TopCV URL: https://tuyendung.topcv.vn/ Nội dung: Đăng tin tuyển dụng miễn phí, tìm hồ sơ ứng viên xin việc, 
+2026-08-26 06:42:42,955 | INFO | my_bot | 🔎 Search query: 'top trending github now'
+2026-08-26 06:42:44,133 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Trending repositories on GitHub today · GitHub](https://github.com/trending) | [Trending GitHub Repositories — Star Rankings Today](https://github.attentionvc.ai/trending/repos) | [GitHub Trending — Daily, Weekly & Monthly Top Repos](https://trending.magikaru.com/) | [GitHub Trending — Daily, Weekly & Monthly Repos | TopGit](https://topgit.dev/trending) | [Live trending GitHub repositories — daily momentum ranking |](https://trendshift.io/)
+2026-08-26 06:42:51,442 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=5103, total_chars=12034
+2026-08-26 06:42:51,442 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[2] role=assistant chars=784 preview=Tổng thống Hoa Kỳ là người đứng đầu nhà nước và chính phủ, lãnh đạo chính quyền liên bang và Quân đội Hoa Kỳ. Theo Hiến pháp, họ phải ít nhất 35 tuổi, đã sống ở Hoa Kỳ 14 năm và là công dân Hoa Kỳ.  📎 *Nguồn tham khảo:* 
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[3] role=user chars=28 preview=tổng thống mỹ hiện tại là ai
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[4] role=assistant chars=740 preview=Tổng thống Hoa Kỳ hiện tại là Donald Trump, nhậm chức vào ngày 20/1/2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sách Tổng thống Ho
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[5] role=user chars=23 preview=top repo github hôm qua
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[6] role=assistant chars=704 preview=Dữ liệu không cung cấp thông tin về top repo GitHub hôm qua. Bạn có thể xem thông tin cập nhật hàng ngày trên trang [GitHub Trending](https://topgit.dev/trending) để có cái nhìn tổng quan.  📎 *Nguồn tham khảo:* [1] [GitH
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[7] role=user chars=22 preview=top trending github nơ
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[8] role=assistant chars=885 preview=Dữ liệu không cung cấp thông tin về top trending trên GitHub. Bạn có thể xem trực tiếp trên trang GitHub Trends để cập nhật thông tin mới nhất.  📎 *Nguồn tham khảo:* [1] [Trending repositories on GitHub this week · GitHu
+2026-08-26 06:42:51,443 | INFO | my_bot | Ollama message[9] role=user chars=5992 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Trending repositories on GitHub today · GitHub URL: https://github.com/trending Nội dung: freestylefly / awesome-gpt-image-2 Prompt as Code | GPT-Image2 工业级提示词引
+2026-08-26 08:11:45,974 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Bad Gateway
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.NetworkError: Bad Gateway
+2026-08-26 08:11:54,982 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Bad Gateway
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.NetworkError: Bad Gateway
+2026-08-26 08:12:08,074 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Bad Gateway
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.NetworkError: Bad Gateway
+2026-08-26 09:15:23,655 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: Bad Gateway
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 375, in _request_wrapper
+    raise exception
+telegram.error.NetworkError: Bad Gateway
+2026-08-26 09:24:33,352 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ReadError: 
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ReadError: 
+2026-08-26 09:24:34,860 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ConnectError: 
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ConnectError: 
+2026-08-26 11:01:06,919 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ReadError: 
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ReadError: 
+2026-08-26 12:49:35,000 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ReadError: 
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ReadError: 
+2026-08-26 15:14:47,383 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-08-26 18:26:12,245 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-26 18:26:20,047 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-26 18:26:20,258 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-27 12:53:15,370 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-08-28 08:58:45,579 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-08-28 08:58:53,398 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-08-28 08:58:53,612 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-08-28 08:59:25,584 | INFO | my_bot | 🔎 Search query: 'giá vàng'
+2026-08-28 08:59:26,799 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Giá vàng hôm nay các thương hiệu Sjc, 9999, 24k, 18k của PNJ](https://www.24h.com.vn/gia-vang-hom-nay-c425.html) | [Giá Vàng hôm nay - Giá Vàng miếng, giá Vàng nhẫn hôm nay | B](https://bieudovang.com/gia-vang/) | [Giá vàng hôm nay 28/08 - Biểu đồ Giá vàng SJC - Vàng miếng 9](https://giavang.org/) | [Bảo Tín Minh Châu - Cập Nhật Giá Vàng Mới Nhất, Mua Bán Vàng](https://btmc.vn/gia-vang-theo-ngay.html) | [Biểu đồ giá vàng thế giới hôm nay- XAU/USD](https://webgia.com/gia-vang/the-gioi/)
+2026-08-28 08:59:28,337 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=6061, total_chars=12908
+2026-08-28 08:59:28,337 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-28 08:59:28,338 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-28 08:59:28,338 | INFO | my_bot | Ollama message[2] role=assistant chars=740 preview=Tổng thống Hoa Kỳ hiện tại là Donald Trump, nhậm chức vào ngày 20/1/2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sách Tổng thống Ho
+2026-08-28 08:59:28,338 | INFO | my_bot | Ollama message[3] role=user chars=23 preview=top repo github hôm qua
+2026-08-28 08:59:28,338 | INFO | my_bot | Ollama message[4] role=assistant chars=704 preview=Dữ liệu không cung cấp thông tin về top repo GitHub hôm qua. Bạn có thể xem thông tin cập nhật hàng ngày trên trang [GitHub Trending](https://topgit.dev/trending) để có cái nhìn tổng quan.  📎 *Nguồn tham khảo:* [1] [GitH
+2026-08-28 08:59:28,338 | INFO | my_bot | Ollama message[5] role=user chars=22 preview=top trending github nơ
+2026-08-28 08:59:28,339 | INFO | my_bot | Ollama message[6] role=assistant chars=885 preview=Dữ liệu không cung cấp thông tin về top trending trên GitHub. Bạn có thể xem trực tiếp trên trang GitHub Trends để cập nhật thông tin mới nhất.  📎 *Nguồn tham khảo:* [1] [Trending repositories on GitHub this week · GitHu
+2026-08-28 08:59:28,339 | INFO | my_bot | Ollama message[7] role=user chars=23 preview=top trending github now
+2026-08-28 08:59:28,339 | INFO | my_bot | Ollama message[8] role=assistant chars=720 preview=Top trending GitHub repositories today bao gồm:  - freestylefly / awesome-gpt-image-2 - mukul975 / Anthropic-Cybersecurity-Skills  Bạn có thể xem thêm thông tin trực tiếp trên trang [GitHub Trending](https://github.com/t
+2026-08-28 08:59:28,339 | INFO | my_bot | Ollama message[9] role=user chars=6935 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Giá vàng hôm nay các thương hiệu Sjc, 9999, 24k, 18k của PNJ, Doji mới nhất URL: https://www.24h.com.vn/gia-vang-hom-nay-c425.html Nội dung: Giá vàng hôm nay 28
+2026-08-28 09:02:55,763 | INFO | my_bot | 🔎 Search query: 'tổng thống mỹ hiện tại là ai'
+2026-08-28 09:02:56,939 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) | [Danh sách Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Danh_sách_Tổng_thống_Hoa_Kỳ) | [Tổng thống Mỹ bây giờ là ai | AI Hay - Hỏi ngay đáp hay](https://ai-hay.vn/tong-thong-my-bay-gio-la-ai-pN1UmHzSJ5m) | [Ông Donald Trump chính thức trở thành Tổng thống thứ 47 của ](https://nhandan.vn/ong-donald-trump-chinh-thuc-tro-thanh-tong-thong-thu-47-cua-nuoc-my-post857026.html) | [Đặc điểm lịch sử 47 đời Tổng thống Mỹ đến nay - Toàn Cầu Vis](https://toancauvisa.com/cac-doi-tong-thong-my-den-nay-tong-thong-dau-tien-la-ai/)
+2026-08-28 09:02:57,905 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=1989, total_chars=8824
+2026-08-28 09:02:57,905 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-28 09:02:57,906 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-28 09:02:57,906 | INFO | my_bot | Ollama message[2] role=assistant chars=704 preview=Dữ liệu không cung cấp thông tin về top repo GitHub hôm qua. Bạn có thể xem thông tin cập nhật hàng ngày trên trang [GitHub Trending](https://topgit.dev/trending) để có cái nhìn tổng quan.  📎 *Nguồn tham khảo:* [1] [GitH
+2026-08-28 09:02:57,906 | INFO | my_bot | Ollama message[3] role=user chars=22 preview=top trending github nơ
+2026-08-28 09:02:57,906 | INFO | my_bot | Ollama message[4] role=assistant chars=885 preview=Dữ liệu không cung cấp thông tin về top trending trên GitHub. Bạn có thể xem trực tiếp trên trang GitHub Trends để cập nhật thông tin mới nhất.  📎 *Nguồn tham khảo:* [1] [Trending repositories on GitHub this week · GitHu
+2026-08-28 09:02:57,906 | INFO | my_bot | Ollama message[5] role=user chars=23 preview=top trending github now
+2026-08-28 09:02:57,906 | INFO | my_bot | Ollama message[6] role=assistant chars=720 preview=Top trending GitHub repositories today bao gồm:  - freestylefly / awesome-gpt-image-2 - mukul975 / Anthropic-Cybersecurity-Skills  Bạn có thể xem thêm thông tin trực tiếp trên trang [GitHub Trending](https://github.com/t
+2026-08-28 09:02:57,907 | INFO | my_bot | Ollama message[7] role=user chars=8 preview=giá vàng
+2026-08-28 09:02:57,907 | INFO | my_bot | Ollama message[8] role=assistant chars=723 preview=Giá vàng hôm nay 28/08/2026: - SJC: 146,700 - 149,700 nghìn đồng/lượng - DOJI: 146,700 - 150,000 nghìn đồng/lượng  Giá vàng thế giới: 4.608 USD/ounce.  📎 *Nguồn tham khảo:* [1] [Giá vàng hôm nay các thương hiệu Sjc, 9999
+2026-08-28 09:02:57,907 | INFO | my_bot | Ollama message[9] role=user chars=2883 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Tổng thống Hoa Kỳ - Wikipedia tiếng Việt URL: https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ Nội dung: Tổng thống Hoa Kỳ là nguyên thủ quốc gia và người đứng đ
+2026-08-28 09:04:08,595 | INFO | my_bot | 🔎 Search query: 'tỉ lệ già hóa và dân số của việt nam'
+2026-08-28 09:04:09,669 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Dân số Việt Nam tiếp tục già hóa - Báo VnExpress Sức khỏe](https://vnexpress.net/dan-so-viet-nam-tiep-tuc-gia-hoa-4837035.html) | [UNFPA Việt Nam | Già hóa dân số](https://vietnam.unfpa.org/vi/topics/già-hóa-dân-số) | [Xu hướng già hóa dân số nhanh ở Việt Nam, thực trạng và giải](https://www.nso.gov.vn/du-lieu-va-so-lieu-thong-ke/2025/01/xu-huong-gia-hoa-dan-so-nhanh-o-viet-nam-thuc-trang-va-giai-phap/) | [Việt Nam sắp bước vào giai đoạn dân số già - vnpamohgov](https://vnpa.moh.gov.vn/viet-nam-sap-buoc-vao-giai-doan-dan-so-gia/) | [Dân số già hóa và những thách thức chăm sóc y tế](https://vnpa.moh.gov.vn/dan-so-gia-hoa-va-nhung-thach-thuc-cham-soc-y-te/)
+2026-08-28 09:04:12,012 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=7244, total_chars=14160
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[2] role=assistant chars=885 preview=Dữ liệu không cung cấp thông tin về top trending trên GitHub. Bạn có thể xem trực tiếp trên trang GitHub Trends để cập nhật thông tin mới nhất.  📎 *Nguồn tham khảo:* [1] [Trending repositories on GitHub this week · GitHu
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[3] role=user chars=23 preview=top trending github now
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[4] role=assistant chars=720 preview=Top trending GitHub repositories today bao gồm:  - freestylefly / awesome-gpt-image-2 - mukul975 / Anthropic-Cybersecurity-Skills  Bạn có thể xem thêm thông tin trực tiếp trên trang [GitHub Trending](https://github.com/t
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[5] role=user chars=8 preview=giá vàng
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[6] role=assistant chars=723 preview=Giá vàng hôm nay 28/08/2026: - SJC: 146,700 - 149,700 nghìn đồng/lượng - DOJI: 146,700 - 150,000 nghìn đồng/lượng  Giá vàng thế giới: 4.608 USD/ounce.  📎 *Nguồn tham khảo:* [1] [Giá vàng hôm nay các thương hiệu Sjc, 9999
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[7] role=user chars=28 preview=tổng thống mỹ hiện tại là ai
+2026-08-28 09:04:12,013 | INFO | my_bot | Ollama message[8] role=assistant chars=771 preview=Hiện tại, Tổng thống Hoa Kỳ là Donald Trump. Ông nhậm chức vào ngày 20 tháng 1 năm 2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sác
+2026-08-28 09:04:12,014 | INFO | my_bot | Ollama message[9] role=user chars=8146 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Dân số Việt Nam tiếp tục già hóa - Báo VnExpress Sức khỏe URL: https://vnexpress.net/dan-so-viet-nam-tiep-tuc-gia-hoa-4837035.html Nội dung: Dân số Việt Nam tiế
+2026-08-28 09:05:31,240 | INFO | my_bot | 🔎 Search query: 'tỉ số trận đấu chung kết vừa diễn ra dữa vn và thái lan'
+2026-08-28 09:05:33,045 | INFO | my_bot | 🔎 Không có kết quả tiếng Việt, thử bản dịch tiếng Anh: 'tỉ số trận đấu chung kết vừa diễn ra dữa vn và thái lan' → 'The score of the final match that just took place in Vietnam and Thailand'
+2026-08-28 09:05:33,218 | WARNING | my_bot | 🔎 Search 'tỉ số trận đấu chung kết vừa diễn ra dữa vn và thái lan' KHÔNG có kết quả nào (đã thử cả ddgs + fallback vi/en).
+2026-08-28 09:05:33,647 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=0, total_chars=6060
+2026-08-28 09:05:33,647 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-28 09:05:33,647 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-28 09:05:33,647 | INFO | my_bot | Ollama message[2] role=assistant chars=720 preview=Top trending GitHub repositories today bao gồm:  - freestylefly / awesome-gpt-image-2 - mukul975 / Anthropic-Cybersecurity-Skills  Bạn có thể xem thêm thông tin trực tiếp trên trang [GitHub Trending](https://github.com/t
+2026-08-28 09:05:33,647 | INFO | my_bot | Ollama message[3] role=user chars=8 preview=giá vàng
+2026-08-28 09:05:33,647 | INFO | my_bot | Ollama message[4] role=assistant chars=723 preview=Giá vàng hôm nay 28/08/2026: - SJC: 146,700 - 149,700 nghìn đồng/lượng - DOJI: 146,700 - 150,000 nghìn đồng/lượng  Giá vàng thế giới: 4.608 USD/ounce.  📎 *Nguồn tham khảo:* [1] [Giá vàng hôm nay các thương hiệu Sjc, 9999
+2026-08-28 09:05:33,648 | INFO | my_bot | Ollama message[5] role=user chars=28 preview=tổng thống mỹ hiện tại là ai
+2026-08-28 09:05:33,648 | INFO | my_bot | Ollama message[6] role=assistant chars=771 preview=Hiện tại, Tổng thống Hoa Kỳ là Donald Trump. Ông nhậm chức vào ngày 20 tháng 1 năm 2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sác
+2026-08-28 09:05:33,648 | INFO | my_bot | Ollama message[7] role=user chars=36 preview=tỉ lệ già hóa và dân số của việt nam
+2026-08-28 09:05:33,648 | INFO | my_bot | Ollama message[8] role=assistant chars=863 preview=Dân số Việt Nam hiện có khoảng 14,2 triệu người từ 60 tuổi trở lên, chiếm 11,9% tổng dân số. Dự báo đến năm 2030, con số này sẽ tăng lên xấp xỉ 18 triệu người.  📎 *Nguồn tham khảo:* [1] [Dân số Việt Nam tiếp tục già hóa 
+2026-08-28 09:05:33,648 | INFO | my_bot | Ollama message[9] role=user chars=55 preview=tỉ số trận đấu chung kết vừa diễn ra dữa vn và thái lan
+2026-08-28 09:06:29,235 | INFO | my_bot | 🔎 Search query: 'cổ phiếu sjc'
+2026-08-28 09:06:30,407 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả): [Giá Cổ Phiếu SJC Hôm Nay + Biểu Đồ & Lịch Trả Cổ Tức](https://simplize.vn/co-phieu/SJC) | [Công ty TNHH MTV Vàng bạc Đá quý Sài Gòn - SJC](https://finance.vietstock.vn/SJCG-cong-ty-tnhh-mtv-vang-bac-da-quy-sai-gon-sjc.htm) | [SJCG: Công ty TNHH MTV Vàng bạc Đá quý Sài Gòn - SJC - - Tài](https://finance.vietstock.vn/SJCG/financials.htm) | [SJC: Công ty Cổ phần Sông Đà 1.01 (UPCOM) - CafeF](https://cafef.vn/du-lieu/upcom/sjc-cong-ty-co-phan-song-da-101.chn) | [SJC:Công ty Cổ phần Sông Đà 1.01 (UPCOM) - CafeF](https://cafef.vn/du-lieu/sjc/thong-tin-chung.chn)
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=7225, total_chars=13893
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[0] role=system chars=2751 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[2] role=assistant chars=723 preview=Giá vàng hôm nay 28/08/2026: - SJC: 146,700 - 149,700 nghìn đồng/lượng - DOJI: 146,700 - 150,000 nghìn đồng/lượng  Giá vàng thế giới: 4.608 USD/ounce.  📎 *Nguồn tham khảo:* [1] [Giá vàng hôm nay các thương hiệu Sjc, 9999
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[3] role=user chars=28 preview=tổng thống mỹ hiện tại là ai
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[4] role=assistant chars=771 preview=Hiện tại, Tổng thống Hoa Kỳ là Donald Trump. Ông nhậm chức vào ngày 20 tháng 1 năm 2025.  📎 *Nguồn tham khảo:* [1] [Tổng thống Hoa Kỳ - Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Tổng_thống_Hoa_Kỳ) [2] [Danh sác
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[5] role=user chars=36 preview=tỉ lệ già hóa và dân số của việt nam
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[6] role=assistant chars=863 preview=Dân số Việt Nam hiện có khoảng 14,2 triệu người từ 60 tuổi trở lên, chiếm 11,9% tổng dân số. Dự báo đến năm 2030, con số này sẽ tăng lên xấp xỉ 18 triệu người.  📎 *Nguồn tham khảo:* [1] [Dân số Việt Nam tiếp tục già hóa 
+2026-08-28 09:06:38,446 | INFO | my_bot | Ollama message[7] role=user chars=55 preview=tỉ số trận đấu chung kết vừa diễn ra dữa vn và thái lan
+2026-08-28 09:06:38,447 | INFO | my_bot | Ollama message[8] role=assistant chars=458 preview=Xin lỗi, bạn có thể cung cấp thêm thông tin về trận đấu chung kết mà bạn đang hỏi không? Bạn có thể nói rõ hơn về giải đấu hay năm diễn ra trận đấu đó không? Vì tôi không có thông tin cụ thể về trận đấu chung kết giữa Vi
+2026-08-28 09:06:38,447 | INFO | my_bot | Ollama message[9] role=user chars=8103 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC --- Nguồn [1]: Tiêu đề: Giá Cổ Phiếu SJC Hôm Nay + Biểu Đồ & Lịch Trả Cổ Tức URL: https://simplize.vn/co-phieu/SJC Nội dung: CTCP Sông Đà 1.01 Công ty Cổ phần Sông Đà 1.01 tiền thân là

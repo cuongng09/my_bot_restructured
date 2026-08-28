@@ -22,6 +22,7 @@ from __future__ import annotations
 from urllib.parse import urlparse
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 import database as db
@@ -35,6 +36,25 @@ from skills.voice import groq_client
 from skills.weather import skill_weather
 from skills.news import skill_news
 from utils import is_allowed, is_admin, safe_reply, get_auto_web_mode, get_user_model
+
+
+async def _safe_edit_message_text(query, *args, **kwargs):
+    """Wrapper an toàn quanh query.edit_message_text().
+
+    Telegram trả lỗi `BadRequest: Message is not modified` khi nội dung + reply_markup
+    mới gửi lên giống HỆT nội dung đang hiển thị (vd người dùng bấm lại nút vừa bấm,
+    hoặc 2 lần bấm rất nhanh vào cùng 1 nút toggle trước khi tin nhắn kịp cập nhật).
+    Đây không phải lỗi thật — tin nhắn đã đúng nội dung mong muốn rồi — nên chỉ cần bỏ
+    qua thay vì để exception văng lên global_error_handler và làm callback bị coi là lỗi.
+    Mọi lỗi BadRequest khác (network, entity quá dài, markup sai...) vẫn được raise lại
+    bình thường để không che giấu lỗi thật.
+    """
+    try:
+        return await query.edit_message_text(*args, **kwargs)
+    except BadRequest as e:
+        if "message is not modified" in str(e).lower():
+            return None
+        raise
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -138,7 +158,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     # ── Trạm chính ────────────────────────────────────────────────────────────
     if data == "menu_main":
         text, markup = await _render_main(uid)
-        await query.edit_message_text(text, parse_mode="Markdown", reply_markup=markup)
+        await _safe_edit_message_text(query, text, parse_mode="Markdown", reply_markup=markup)
 
     elif data == "menu_help":
         from handlers.commands import cmd_help
@@ -154,7 +174,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
              InlineKeyboardButton("🎙️ Cài đặt giọng nói", callback_data="menu_voice")],
             [_back()],
         ]
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"💬 *TRÒ CHUYỆN*\n"
             f"Mô hình: `{settings['model'] or '(mặc định)'}` • "
             f"Tính cách: {reasoning.PERSONAS.get(settings['persona'], {}).get('label', '—')}",
@@ -177,7 +197,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             )] for key, p in reasoning.PERSONAS.items()
         ]
         kb.append([_back("menu_chat", "Trò chuyện")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🎭 *CHỌN TÍNH CÁCH*\n_Ảnh hưởng đến văn phong bot trả lời — đổi được bất cứ lúc nào._",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -195,7 +215,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             )] for k, p in reasoning.PERSONAS.items()
         ]
         kb.append([_back("menu_chat", "Trò chuyện")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"🎭 *CHỌN TÍNH CÁCH*\n✅ Đang dùng: {reasoning.PERSONAS[key]['label']}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -216,7 +236,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             )],
             [_back("menu_chat", "Trò chuyện")],
         ]
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"🎙️ *CÀI ĐẶT GIỌNG NÓI*\nGroq Whisper (engine dự phòng): {groq_note}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -230,7 +250,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if key == current else ''}{label}", callback_data=f"set_stt_{key}"
         )] for key, label in options]
         kb.append([_back("menu_voice", "Giọng nói")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🎧 *ENGINE NGHE GIỌNG NÓI*\n_Nếu engine chính lỗi, bot tự chuyển sang engine còn lại._",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -246,7 +266,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if key == choice else ''}{label}", callback_data=f"set_stt_{key}"
         )] for key, label in options]
         kb.append([_back("menu_voice", "Giọng nói")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"🎧 *ENGINE NGHE GIỌNG NÓI*\n✅ Đang dùng: {choice}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -262,7 +282,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if key == current else ''}{label}", callback_data=f"set_tts_{key}"
         )] for key, label in options]
         kb.append([_back("menu_voice", "Giọng nói")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🔊 *CHẾ ĐỘ TRẢ LỜI BẰNG VOICE*", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
 
@@ -279,7 +299,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if key == choice else ''}{label}", callback_data=f"set_tts_{key}"
         )] for key, label in options]
         kb.append([_back("menu_voice", "Giọng nói")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"🔊 *CHẾ ĐỘ TRẢ LỜI BẰNG VOICE*\n✅ Đang dùng: {choice}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -287,7 +307,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     elif data == "menu_voice_pick":
         voices = local_voice.list_available_voices()
         if not voices:
-            await query.edit_message_text(
+            await _safe_edit_message_text(query, 
                 "🗣️ *GIỌNG ĐỌC*\n⚠️ Chưa cấu hình giọng Piper nào (xem `PIPER_VOICE_PATHS` trong `.env`).",
                 parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[_back("menu_voice", "Giọng nói")]]),
             )
@@ -297,7 +317,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if v == current else ''}{v}", callback_data=f"set_voice_{v}"
         )] for v in voices]
         kb.append([_back("menu_voice", "Giọng nói")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🗣️ *CHỌN GIỌNG ĐỌC*", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
 
@@ -313,7 +333,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if v == name else ''}{v}", callback_data=f"set_voice_{v}"
         )] for v in voices]
         kb.append([_back("menu_voice", "Giọng nói")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"🗣️ *CHỌN GIỌNG ĐỌC*\n✅ Đang dùng: {name}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -323,7 +343,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         models = await get_ollama_models()
         current_model = await get_user_model(uid)
         if not models:
-            await query.edit_message_text(
+            await _safe_edit_message_text(query, 
                 "🦙 *MÔ HÌNH (OLLAMA)*\n⚫ Không kết nối được Ollama — kiểm tra `ollama serve` đã chạy chưa.",
                 parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[_back("menu_chat", "Trò chuyện")]]),
             )
@@ -332,7 +352,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"{'✅ ' if m == current_model else ''}{m}", callback_data=f"set_model_{m}"
         )] for m in models]
         kb.append([_back("menu_chat", "Trò chuyện")])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🦙 *CHỌN MÔ HÌNH (OLLAMA)*\n_Đổi mô hình sẽ reset lịch sử hội thoại hiện tại._",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -342,7 +362,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await db.set_setting(uid, model=new_model)
         await db.clear_history(uid)
         text, markup = await _render_main(uid)
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"✅ Đã đổi sang mô hình `{new_model}`. Lịch sử hội thoại đã được làm mới.\n\n{text}",
             parse_mode="Markdown", reply_markup=markup,
         )
@@ -364,7 +384,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton(auto_web_label,      callback_data="ui_toggle_auto_web")],
             [_back()],
         ]
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🧰 *TIỆN ÍCH*", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
 
@@ -385,7 +405,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
              InlineKeyboardButton("🇻🇳 Việt ➡️ 🇬🇧 Anh",  callback_data="text_trans_vi_en")],
             [_back("menu_skills", "Tiện ích")],
         ]
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🔤 *DỊCH VĂN BẢN (GOOGLE)*\n_Chọn hướng dịch rồi gửi đoạn văn bản cần dịch:_\n\n"
             "💡 _Mẹo: gửi thẳng ẢNH hoặc PDF — mình tự OCR + dịch, không cần chọn hướng._",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
@@ -423,7 +443,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             InlineKeyboardButton("🛑 Tắt server",    callback_data="sys_shutdown"),
         ])
         kb.append([_back()])
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             "🖥️ *HỆ THỐNG* _(Admin)_", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
 
@@ -445,7 +465,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         action = "reboot" if data == "sys_reboot" else "shutdown"
         from handlers.commands import _sysaction_confirm_kb
         verb = "KHỞI ĐỘNG LẠI" if action == "reboot" else "TẮT NGUỒN hoàn toàn"
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"⚠️ *XÁC NHẬN*\nServer sẽ *{verb}*. Chắc chắn chứ?",
             parse_mode="Markdown", reply_markup=_sysaction_confirm_kb(action),
         )
@@ -453,7 +473,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     # ── Xác nhận tắt/khởi động lại ────────────────────────────────────────────
     elif data in ("confirm_shutdown", "confirm_reboot"):
         if not is_admin(uid):
-            await query.edit_message_text("⛔ Bạn không có quyền thực hiện thao tác này.")
+            await _safe_edit_message_text(query, "⛔ Bạn không có quyền thực hiện thao tác này.")
             return
         action = "shutdown" if data == "confirm_shutdown" else "reboot"
         actor = update.effective_user
@@ -461,10 +481,10 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             f"🛑 SYSTEM ACTION '{action}' được xác nhận bởi uid={uid} "
             f"(@{actor.username if actor and actor.username else 'N/A'})"
         )
-        await query.edit_message_text(
+        await _safe_edit_message_text(query, 
             f"⏳ Đang thực thi lệnh {'tắt' if action == 'shutdown' else 'khởi động lại'} server..."
         )
         await safe_reply(update, await run_sysaction(action))
 
     elif data == "cancel_sysaction":
-        await query.edit_message_text("↩️ Đã hủy thao tác.")
+        await _safe_edit_message_text(query, "↩️ Đã hủy thao tác.")

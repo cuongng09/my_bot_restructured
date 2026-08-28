@@ -14,7 +14,7 @@ from typing import Optional
 import reasoning
 from bot_logger import logger
 from config import (
-    OLLAMA_BASE_URL, OLLAMA_TIMEOUT_SEC, OLLAMA_RETRY_ATTEMPTS,
+    OLLAMA_BASE_URL, OLLAMA_TIMEOUT_SEC, OLLAMA_RETRY_ATTEMPTS, OLLAMA_CONTEXT_SIZE,
     COMPARISON_TRIGGER_KEYWORDS, should_trigger_web_search,
 )
 
@@ -112,6 +112,49 @@ async def decide_web_search(text: str, model: str) -> dict:
 
 
 # ── Grounded message builder ───────────────────────────────────────────────────
+def _trim_history_for_context(messages: list[dict], *, max_recent_turns: int = 8) -> list[dict]:
+    """Giữ chỉ các turn gần nhất để nhường chỗ cho dữ liệu web mới và tránh kéo dài context."""
+    if not messages:
+        return []
+    if len(messages) <= max_recent_turns:
+        return messages
+    recent = messages[-max_recent_turns:]
+    recent.insert(
+        0,
+        {
+            "role": "user",
+            "content": "[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]",
+        },
+    )
+    return recent
+
+
+def _truncate_for_context(text: str, limit: int = 12000) -> str:
+    if not text:
+        return text
+    if len(text) <= limit:
+        return text
+    return text[:limit].rstrip() + "\n...[cắt ngắn tự động để vừa context]"
+
+
+def _log_payload_debug(formatted: list[dict], web_context: str) -> None:
+    total_chars = sum(len(str(msg.get("content", "") or "")) for msg in formatted)
+    logger.info(
+        "Ollama payload summary: messages=%d, web_context_chars=%d, total_chars=%d",
+        len(formatted), len(web_context or ""), total_chars,
+    )
+    for idx, msg in enumerate(formatted):
+        content = str(msg.get("content", "") or "")
+        preview = content.replace("\n", " ")[:220]
+        logger.info(
+            "Ollama message[%d] role=%s chars=%d preview=%s",
+            idx,
+            msg.get("role", "unknown"),
+            len(content),
+            preview,
+        )
+
+
 def build_grounded_messages(
     messages: list[dict],
     web_context: str = "",
@@ -124,6 +167,8 @@ def build_grounded_messages(
     Xây dựng danh sách messages chuẩn bị gửi cho Ollama.
     Tách biệt: Lịch sử hội thoại / Ngữ cảnh Web thời gian thực / Câu hỏi hiện tại.
     """
+    messages = _trim_history_for_context(messages)
+    web_context = _truncate_for_context(web_context)
     system_prompt = reasoning.get_persona_prompt(persona) + (
         "\n2. Với dữ liệu nhiều ý, số liệu, hoặc so sánh: dùng Bảng hoặc gạch đầu dòng cho dễ đọc.\n"
         "3. Danh sách link đầy đủ sẽ được hệ thống tự động thêm vào cuối câu trả lời.\n"
@@ -187,15 +232,16 @@ def build_grounded_messages(
     else:
         formatted.append(last_msg)
 
+    _log_payload_debug(formatted, web_context)
     return formatted
 
 
 # ── LLM calls ─────────────────────────────────────────────────────────────────
 def _gen_options(has_web: bool) -> dict:
     return (
-        {"temperature": 0.15, "top_p": 0.8, "num_ctx": 4096}
+        {"temperature": 0.15, "top_p": 0.8, "num_ctx": OLLAMA_CONTEXT_SIZE}
         if has_web else
-        {"temperature": 0.6,  "top_p": 0.9, "num_ctx": 4096}
+        {"temperature": 0.6,  "top_p": 0.9, "num_ctx": OLLAMA_CONTEXT_SIZE}
     )
 
 

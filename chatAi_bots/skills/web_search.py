@@ -180,7 +180,13 @@ async def _raw_search_fallback(query: str, max_results: int = 5) -> list[dict]:
 
 
 async def raw_search_data(query: str) -> list[dict]:
+    original_query = query
     query = clean_search_query(query)
+    if query != original_query:
+        logger.info(f"🔎 Search query: gốc='{original_query}' → đã làm sạch='{query}'")
+    else:
+        logger.info(f"🔎 Search query: '{query}'")
+
     loop = asyncio.get_event_loop()
 
     def _ddg(q: str):
@@ -192,20 +198,31 @@ async def raw_search_data(query: str) -> list[dict]:
             ]
 
     results = []
+    method = "ddgs"
     try:
         results = await asyncio.wait_for(
             loop.run_in_executor(_SEARCH_EXECUTOR, _ddg, query), timeout=4.0
         )
-    except Exception:
+    except Exception as e:
+        logger.warning(f"⚠️ DDGS primary search lỗi/timeout cho '{query}': {e} — chuyển sang fallback HTML.")
         results = []
 
     if not results:
+        method = "fallback_vi"
         results = await _raw_search_fallback(query)
 
     if not results:
         en_query = await _to_english(query)
         if en_query and en_query.lower() != query.lower():
+            method = "fallback_en"
+            logger.info(f"🔎 Không có kết quả tiếng Việt, thử bản dịch tiếng Anh: '{query}' → '{en_query}'")
             results = await _raw_search_fallback(en_query)
+
+    if results:
+        titles = " | ".join(f"[{r.get('title','')[:60]}]({r.get('href','')})" for r in results[:5])
+        logger.info(f"🔎 Kết quả search (method={method}, {len(results)} kết quả): {titles}")
+    else:
+        logger.warning(f"🔎 Search '{query}' KHÔNG có kết quả nào (đã thử cả ddgs + fallback vi/en).")
 
     return await enrich_with_page_content(results, max_pages=3)
 

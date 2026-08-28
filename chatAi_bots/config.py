@@ -32,6 +32,7 @@ OLLAMA_BASE_URL  = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_MODEL    = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
 OLLAMA_TIMEOUT_SEC    = int(os.getenv("OLLAMA_TIMEOUT_SEC", "120"))
 OLLAMA_RETRY_ATTEMPTS = int(os.getenv("OLLAMA_RETRY_ATTEMPTS", "2"))
+OLLAMA_CONTEXT_SIZE   = int(os.getenv("OLLAMA_CONTEXT_SIZE", "8192"))
 
 # ── Access control ────────────────────────────────────────────────────────────
 ALLOWED_USERS  = os.getenv("ALLOWED_USERS", "")
