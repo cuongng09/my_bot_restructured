@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import asyncio
 import tempfile
+import time
 from typing import Optional
 
 from telegram import Update
@@ -87,53 +88,66 @@ async def _process_voice_reply(
 
 async def handle_voice(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
-    if not is_allowed(uid) or not is_addressed_in_group(update):
-        return
-    if await is_rate_limited(uid):
-        return await notify_rate_limited(update)
-
-    voice = update.message.voice or update.message.audio
-    file  = await ctx.bot.get_file(voice.file_id)
-
-    with tempfile.NamedTemporaryFile(suffix=".ogg", delete=False) as tmp:
-        ogg_path = tmp.name
-    await file.download_to_drive(ogg_path)
-
-    transcribed = await transcribe_for_user(uid, ogg_path)
-    if not transcribed or transcribed.startswith("["):
-        return await safe_reply(update, transcribed)
-
-    await safe_reply(update, f"🎙️ *Nghe được:* `{transcribed}`")
-
-    model    = await get_user_model(uid)
-    settings = await db.get_settings(uid)
-    nickname        = settings["nickname"]
-    persona         = settings["persona"]
-    profile_summary = settings["profile_summary"]
-
-    await add_to_history(uid, "user", transcribed)
-
-    async with get_user_lock(uid):
-        task = asyncio.create_task(_process_voice_reply(
-            update, uid, transcribed, model, nickname, persona, profile_summary,
-        ))
-        ACTIVE_GEN_TASKS[uid] = task
-        try:
-            reply = await task
-        except asyncio.CancelledError:
-            await safe_reply(update, "⏹️ *Đã dừng theo yêu cầu /stop*")
+    chat_id = update.effective_chat.id
+    module = "voice_handler"
+    error_code = "OK"
+    started = time.perf_counter()
+    try:
+        if not is_allowed(uid) or not is_addressed_in_group(update):
             return
-        finally:
-            ACTIVE_GEN_TASKS.pop(uid, None)
+        if await is_rate_limited(uid):
+            return await notify_rate_limited(update)
 
-    await add_to_history(uid, "assistant", reply)
+        voice = update.message.voice or update.message.audio
+        file  = await ctx.bot.get_file(voice.file_id)
 
-    should_summarize = await db.bump_turn_and_should_summarize(
-        uid, every_n_turns=LONG_TERM_MEMORY_EVERY_N_TURNS
-    )
-    if should_summarize:
-        asyncio.create_task(_update_long_term_memory(uid, model))
+        with tempfile.NamedTemporaryFile(suffix=".ogg", delete=False) as tmp:
+            ogg_path = tmp.name
+        await file.download_to_drive(ogg_path)
 
-    await update.effective_chat.send_action(ChatAction.TYPING)
-    await safe_reply(update, reply)
-    await maybe_send_voice_reply(update, uid, reply)
+        transcribed = await transcribe_for_user(uid, ogg_path)
+        if not transcribed or transcribed.startswith("["):
+            return await safe_reply(update, transcribed)
+
+        await safe_reply(update, f"🎙️ *Nghe được:* `{transcribed}`")
+
+        model    = await get_user_model(uid)
+        settings = await db.get_settings(uid)
+        nickname        = settings["nickname"]
+        persona         = settings["persona"]
+        profile_summary = settings["profile_summary"]
+
+        await add_to_history(uid, "user", transcribed)
+
+        async with get_user_lock(uid):
+            task = asyncio.create_task(_process_voice_reply(
+                update, uid, transcribed, model, nickname, persona, profile_summary,
+            ))
+            ACTIVE_GEN_TASKS[uid] = task
+            try:
+                reply = await task
+            except asyncio.CancelledError:
+                await safe_reply(update, "⏹️ *Đã dừng theo yêu cầu /stop*")
+                return
+            finally:
+                ACTIVE_GEN_TASKS.pop(uid, None)
+
+        await add_to_history(uid, "assistant", reply)
+
+        should_summarize = await db.bump_turn_and_should_summarize(
+            uid, every_n_turns=LONG_TERM_MEMORY_EVERY_N_TURNS
+        )
+        if should_summarize:
+            asyncio.create_task(_update_long_term_memory(uid, model))
+
+        await update.effective_chat.send_action(ChatAction.TYPING)
+        await safe_reply(update, reply)
+        await maybe_send_voice_reply(update, uid, reply)
+    except Exception as exc:
+        error_code = "VOICE_HANDLER_ERROR"
+        logger.exception(f"⚠️ Lỗi xử lý voice_handler cho user {uid}: {exc}")
+        raise
+    finally:
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        from bot_logger import record_status_event
+        record_status_event(uid, chat_id, module, duration_ms, error_code)

@@ -190,18 +190,61 @@ function renderUsers(data) {
     .join("");
 }
 
+function formatDurationMs(value) {
+  const num = Number(value ?? 0);
+  if (!Number.isFinite(num)) return "0ms";
+  return `${Math.round(num)}ms`;
+}
+
+function renderOperationStatus(data) {
+  const summary = $("status-summary");
+  const tbody = $("status-tbody");
+
+  if (!data.summary || data.summary.length === 0) {
+    summary.innerHTML = '<div class="log-empty">Chưa có sự kiện hoạt động nào.</div>';
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Không có dữ liệu trạng thái xử lý.</td></tr>';
+    return;
+  }
+
+  summary.innerHTML = data.summary
+    .map((item) => {
+      const code = escapeHtml(item.error_code || "OK");
+      const label = item.error_code && item.error_code !== "OK" ? "warning" : "ok";
+      return `<div class="status-pill status-pill--${label}"><span>${code}</span><strong>${item.count}</strong><small>${formatDurationMs(item.avg_duration)}</small></div>`;
+    })
+    .join("");
+
+  tbody.innerHTML = (data.recent || [])
+    .map((row) => {
+      const errorCode = escapeHtml(row.error_code || "OK");
+      const codeClass = row.error_code && row.error_code !== "OK" ? "badge badge--red" : "badge badge--jade";
+      const ts = row.created_at ? new Date(row.created_at).toLocaleString("vi-VN") : "—";
+      return `<tr>
+        <td class="mono">${escapeHtml(row.user_id ?? "")}</td>
+        <td class="mono">${escapeHtml(row.chat_id ?? "")}</td>
+        <td>${escapeHtml(row.module || "unknown")}</td>
+        <td class="mono">${formatDurationMs(row.duration)}</td>
+        <td><span class="${codeClass}">${errorCode}</span></td>
+        <td>${escapeHtml(ts)}</td>
+      </tr>`;
+    })
+    .join("");
+}
+
 // ── Vòng lặp làm mới ─────────────────────────────────────────────────────
 async function refreshAll() {
-  const [status, stats, users, logs] = await Promise.all([
+  const [status, stats, users, logs, operationStatus] = await Promise.all([
     apiFetch("/api/status"),
     apiFetch("/api/stats"),
     apiFetch("/api/users?limit=100"),
     apiFetch("/api/logs?limit=80"),
+    apiFetch("/api/operation-status?limit=50"),
   ]);
   renderStatus(status);
   renderStats(stats);
   renderUsers(users);
   renderLogs(logs);
+  renderOperationStatus(operationStatus);
 }
 
 async function boot() {

@@ -171,6 +171,59 @@ async def api_users(limit: int = 100, x_admin_token: Optional[str] = Header(None
         await conn.close()
 
 
+@app.get("/api/operation-status")
+async def api_operation_status(limit: int = 50, x_admin_token: Optional[str] = Header(None)):
+    _check_token(x_admin_token)
+    conn = await _open_db()
+    if conn is None:
+        return JSONResponse({"summary": [], "recent": []})
+
+    try:
+        async with conn.execute(
+            """
+            SELECT error_code, COUNT(*) AS count, AVG(duration) AS avg_duration, MAX(created_at) AS last_seen
+            FROM user_chat_status_logs
+            GROUP BY error_code
+            ORDER BY count DESC, last_seen DESC
+            LIMIT 20
+            """
+        ) as cur:
+            summary = [
+                {
+                   "error_code": row[0],
+                   "count": row[1],
+                   "avg_duration": round(float(row[2] or 0), 2),
+                   "last_seen": row[3],
+                }
+                for row in await cur.fetchall()
+            ]
+
+        async with conn.execute(
+            """
+            SELECT user_id, chat_id, module, duration, error_code, created_at
+            FROM user_chat_status_logs
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ) as cur:
+            recent = [
+                {
+                   "user_id": row[0],
+                   "chat_id": row[1],
+                   "module": row[2],
+                   "duration": row[3],
+                   "error_code": row[4],
+                   "created_at": row[5],
+                }
+                for row in await cur.fetchall()
+            ]
+
+        return JSONResponse({"summary": summary, "recent": recent})
+    finally:
+        await conn.close()
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 📝 Nhật ký gần đây (tail log file)
 # ─────────────────────────────────────────────────────────────────────────────

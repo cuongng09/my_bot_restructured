@@ -6,6 +6,7 @@ handlers/text_handler.py — Xử lý tin nhắn văn bản: streaming, web sear
 from __future__ import annotations
 
 import asyncio
+import time
 from typing import Optional
 
 from telegram import Update
@@ -113,77 +114,85 @@ async def _stream_reply(
 
 async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
-    if not is_allowed(uid) or not is_addressed_in_group(update):
-        return
-    if await is_rate_limited(uid):
-        return await notify_rate_limited(update)
-
-    text = strip_mention(update.message.text.strip())
-    if not text:
-        return
-
-    # Chế độ dịch văn bản (kích hoạt từ dashboard)
-    mode = await get_media_mode(uid)
-    if mode in ["text_trans_en_vi", "text_trans_vi_en"]:
-        await update.effective_chat.send_action(ChatAction.TYPING)
-        reply = perform_translation(text, mode.replace("text_", "vision_"))
-        await db.set_setting(uid, media_mode=None)
-        return await safe_reply(update, f"🔤 **Bản dịch Google:**\n\n{reply}")
-
-    await update.effective_chat.send_action(ChatAction.TYPING)
-
-    settings = await db.get_settings(uid)
-    nickname = settings["nickname"]
-    persona, profile_summary = settings["persona"], settings["profile_summary"]
-    model = await get_user_model(uid)
-
-    web_context, force_concise, sources_footer = "", False, ""
+    chat_id = update.effective_chat.id
+    module = "text_handler"
+    error_code = "OK"
+    started = time.perf_counter()
     try:
-        auto_web = await get_auto_web_mode(uid)
-        if auto_web:
-            need_search, search_query = True, text
-        else:
-            # Để chính LLM đọc câu hỏi và quyết định có cần tra web hay không, thay vì
-            # match từ khóa cứng — bắt được cả những câu hỏi thời sự không chứa đúng
-            # từ khóa định sẵn, đồng thời không trigger nhầm khi từ khóa xuất hiện
-            # nhưng ngữ cảnh không thực sự cần tra cứu.
-            decision = await decide_web_search(text, model)
-            need_search = decision["need_search"]
-            search_query = decision["query"]
+        if not is_allowed(uid) or not is_addressed_in_group(update):
+            return
+        if await is_rate_limited(uid):
+            return await notify_rate_limited(update)
 
-        if need_search:
-            raw_data = await raw_search_data(search_query)
-            if raw_data:
-                web_context = format_web_context(raw_data)
-                sources_footer = format_sources_footer(raw_data)
-                force_concise = True
-    except Exception as e:
-        logger.warning(f"⚠️ Lỗi tìm kiếm web: {e}")
+        text = strip_mention(update.message.text.strip())
+        if not text:
+            return
 
-    await add_to_history(uid, "user", text)
-    history = await db.get_history(uid)
+        # Chế độ dịch văn bản (kích hoạt từ dashboard)
+        mode = await get_media_mode(uid)
+        if mode in ["text_trans_en_vi", "text_trans_vi_en"]:
+            await update.effective_chat.send_action(ChatAction.TYPING)
+            reply = perform_translation(text, mode.replace("text_", "vision_"))
+            await db.set_setting(uid, media_mode=None)
+            return await safe_reply(update, f"🔤 **Bản dịch Google:**\n\n{reply}")
 
-    # Hidden reasoning cho câu hỏi phức tạp
-    complexity = reasoning.classify_complexity(text)
-    if complexity == "complex":
-        history = history.copy()
-        last = dict(history[-1])
-        last["content"] = reasoning.wrap_with_hidden_reasoning(last["content"])
-        history[-1] = last
+        await update.effective_chat.send_action(ChatAction.TYPING)
 
-    async with get_user_lock(uid):
-        task = asyncio.create_task(_stream_reply(
-            update, history, model, web_context, force_concise, nickname,
-            sources_footer, persona=persona, profile_summary=profile_summary,
-        ))
-        ACTIVE_GEN_TASKS[uid] = task
+        settings = await db.get_settings(uid)
+        nickname = settings["nickname"]
+        persona, profile_summary = settings["persona"], settings["profile_summary"]
+        model = await get_user_model(uid)
+
+        web_context, force_concise, sources_footer = "", False, ""
         try:
-            reply = await task
-        finally:
-            ACTIVE_GEN_TASKS.pop(uid, None)
+            auto_web = await get_auto_web_mode(uid)
+            if auto_web:
+                need_search, search_query = True, text
+            else:
+                decision = await decide_web_search(text, model)
+                need_search = decision["need_search"]
+                search_query = decision["query"]
 
-    await add_to_history(uid, "assistant", reply)
+            if need_search:
+                raw_data = await raw_search_data(search_query)
+                if raw_data:
+                    web_context = format_web_context(raw_data)
+                    sources_footer = format_sources_footer(raw_data)
+                    force_concise = True
+        except Exception as e:
+            logger.warning(f"⚠️ Lỗi tìm kiếm web: {e}")
 
-    should_summarize = await db.bump_turn_and_should_summarize(uid, every_n_turns=LONG_TERM_MEMORY_EVERY_N_TURNS)
-    if should_summarize:
-        asyncio.create_task(_update_long_term_memory(uid, model))
+        await add_to_history(uid, "user", text)
+        history = await db.get_history(uid)
+
+        complexity = reasoning.classify_complexity(text)
+        if complexity == "complex":
+            history = history.copy()
+            last = dict(history[-1])
+            last["content"] = reasoning.wrap_with_hidden_reasoning(last["content"])
+            history[-1] = last
+
+        async with get_user_lock(uid):
+            task = asyncio.create_task(_stream_reply(
+                update, history, model, web_context, force_concise, nickname,
+                sources_footer, persona=persona, profile_summary=profile_summary,
+            ))
+            ACTIVE_GEN_TASKS[uid] = task
+            try:
+                reply = await task
+            finally:
+                ACTIVE_GEN_TASKS.pop(uid, None)
+
+        await add_to_history(uid, "assistant", reply)
+
+        should_summarize = await db.bump_turn_and_should_summarize(uid, every_n_turns=LONG_TERM_MEMORY_EVERY_N_TURNS)
+        if should_summarize:
+            asyncio.create_task(_update_long_term_memory(uid, model))
+    except Exception as exc:
+        error_code = "TEXT_HANDLER_ERROR"
+        logger.exception(f"⚠️ Lỗi xử lý text_handler cho user {uid}: {exc}")
+        raise
+    finally:
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        from bot_logger import record_status_event
+        record_status_event(uid, chat_id, module, duration_ms, error_code)

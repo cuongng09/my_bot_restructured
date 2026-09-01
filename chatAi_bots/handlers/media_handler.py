@@ -5,6 +5,7 @@ handlers/media_handler.py — Xử lý ảnh & tài liệu: OCR trích chữ, t�
 from __future__ import annotations
 
 import tempfile
+import time
 from pathlib import Path
 
 from telegram import Update
@@ -24,16 +25,20 @@ from utils import (
 async def handle_media(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     """Xử lý ảnh & tài liệu: OCR + dịch tự động."""
     uid = update.effective_user.id
-    if not is_allowed(uid) or not is_addressed_in_group(update):
-        return
-    if await is_rate_limited(uid):
-        return await notify_rate_limited(update)
-
-    msg = update.message
-    await update.effective_chat.send_action(ChatAction.TYPING)
-
+    chat_id = update.effective_chat.id
+    module = "media_handler"
+    error_code = "OK"
+    started = time.perf_counter()
     tmp_path, is_pdf = None, False
     try:
+        if not is_allowed(uid) or not is_addressed_in_group(update):
+            return
+        if await is_rate_limited(uid):
+            return await notify_rate_limited(update)
+
+        msg = update.message
+        await update.effective_chat.send_action(ChatAction.TYPING)
+
         if msg.photo:
             tg_file = await ctx.bot.get_file(msg.photo[-1].file_id)
             with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
@@ -79,8 +84,12 @@ async def handle_media(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await safe_reply(update, result)
 
     except Exception as e:
+        error_code = "MEDIA_HANDLER_ERROR"
         logger.error(f"⚠️ Lỗi xử lý media: {e}", exc_info=e)
         await safe_reply(update, f"❌ Lỗi xử lý ảnh/tài liệu: {e}")
     finally:
+        duration_ms = int((time.perf_counter() - started) * 1000)
+        from bot_logger import record_status_event
+        record_status_event(uid, chat_id, module, duration_ms, error_code)
         if tmp_path:
             Path(tmp_path).unlink(missing_ok=True)

@@ -359,6 +359,48 @@ table.users td.mono { font-family: var(--font-mono); color: var(--ivory); }
   font-style: italic;
 }
 
+.status-panel {
+  margin-top: var(--space-6);
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.status-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 7px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hairline-strong);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--panel-2);
+}
+
+.status-pill--ok { color: var(--jade); }
+.status-pill--warning { color: var(--red); }
+.status-pill strong {
+  color: var(--ivory);
+  font-weight: 600;
+}
+.status-pill small {
+  opacity: 0.8;
+}
+
 /* ── Chân trang ──────────────────────────────────────────────────────────── */
 .footer {
   margin-top: var(--space-6);

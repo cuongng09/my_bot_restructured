@@ -101,6 +101,26 @@
       </div>
     </section>
 
+    <section class="panel status-panel">
+      <div class="status-header">
+        <h2 class="section-title">📊 Trạng thái xử lý</h2>
+        <span class="badge badge--gold">user_id · chat_id · module · duration · error_code</span>
+      </div>
+      <div class="status-summary" id="status-summary"></div>
+      <div class="table-wrap">
+        <table class="users" id="status-table">
+          <thead>
+            <tr>
+              <th>User ID</th><th>Chat ID</th><th>Module</th><th>Duration</th><th>Error code</th><th>Thời gian</th>
+            </tr>
+          </thead>
+          <tbody id="status-tbody">
+            <tr><td colspan="6" class="empty-state">Đang tải…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <footer class="footer">
       <span>Trạm Điều Khiển tự làm mới mỗi 10 giây · dữ liệu đọc trực tiếp từ bot, không chỉnh sửa.</span>
       <span id="server-time-footer">—</span>
