@@ -46,6 +46,31 @@ CREATE TABLE IF NOT EXISTS rate_limit (
     uid       INTEGER PRIMARY KEY,
     last_ts   TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS user_chat_status_logs (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    TEXT,
+    chat_id    TEXT,
+    module     TEXT NOT NULL,
+    duration   INTEGER NOT NULL DEFAULT 0,
+    error_code TEXT NOT NULL DEFAULT 'OK',
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_user_chat_status_logs_created_at
+    ON user_chat_status_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_user_chat_status_logs_module
+    ON user_chat_status_logs(module);
+
+-- 🆕 Cache kết quả web search (SearXNG/DDGS + nội dung đã cào) để giảm số lần
+-- gọi search engine / cào trang lặp lại cho cùng 1 câu hỏi trong khoảng TTL.
+CREATE TABLE IF NOT EXISTS search_cache (
+    query_hash TEXT PRIMARY KEY,
+    query      TEXT NOT NULL,
+    results    TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_search_cache_created_at
+    ON search_cache(created_at DESC);
 """
 
 # 🆕 Danh sách cột có thể thiếu ở DB cũ + định nghĩa ALTER TABLE tương ứng.
@@ -193,6 +218,86 @@ async def set_setting(uid: int, **fields) -> None:
 
 
 # ─────────────────────────────────────────────
+# 📊 User / chat / module status logs
+# ─────────────────────────────────────────────
+async def log_user_chat_status(
+    user_id: object,
+    chat_id: object,
+    module: str,
+    duration_ms: int | float,
+    error_code: str = "OK",
+) -> None:
+    """Ghi sự kiện theo mẫu: user_id, chat_id, module, duration, error_code."""
+    conn = _require_conn()
+    async with _lock:
+        await conn.execute(
+            """
+            INSERT INTO user_chat_status_logs (user_id, chat_id, module, duration, error_code, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                str(user_id) if user_id is not None else "",
+                str(chat_id) if chat_id is not None else "",
+                module or "unknown",
+                int(duration_ms),
+                error_code or "OK",
+                datetime.now(timezone.utc).isoformat(),
+            ),
+        )
+        await conn.commit()
+
+
+async def get_recent_status_logs(limit: int = 100) -> list[dict]:
+    conn = _require_conn()
+    async with conn.execute(
+        """
+        SELECT user_id, chat_id, module, duration, error_code, created_at
+        FROM user_chat_status_logs
+        ORDER BY id DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ) as cur:
+        rows = await cur.fetchall()
+    return [
+        {
+            "user_id": row[0],
+            "chat_id": row[1],
+            "module": row[2],
+            "duration": row[3],
+            "error_code": row[4],
+            "created_at": row[5],
+        }
+        for row in rows
+    ]
+
+
+async def get_status_summary(limit: int = 20) -> list[dict]:
+    conn = _require_conn()
+    async with conn.execute(
+        """
+        SELECT error_code, COUNT(*) AS count, AVG(duration) AS avg_duration,
+               MAX(created_at) AS last_seen
+        FROM user_chat_status_logs
+        GROUP BY error_code
+        ORDER BY count DESC, last_seen DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ) as cur:
+        rows = await cur.fetchall()
+    return [
+        {
+            "error_code": row[0],
+            "count": row[1],
+            "avg_duration": round(float(row[2] or 0), 2),
+            "last_seen": row[3],
+        }
+        for row in rows
+    ]
+
+
+# ─────────────────────────────────────────────
 # 🧠 Trí nhớ dài hạn / Persona  (🆕)
 # ─────────────────────────────────────────────
 async def bump_turn_and_should_summarize(uid: int, every_n_turns: int = 10) -> bool:
@@ -250,3 +355,61 @@ async def check_and_set_rate_limit(uid: int, limit_sec: int) -> bool:
         )
         await conn.commit()
         return False
+
+
+# ─────────────────────────────────────────────
+# 🔎 Search cache  (🆕)
+# ─────────────────────────────────────────────
+async def get_cached_search(query_hash: str, ttl_sec: int) -> Optional[list[dict]]:
+    """Trả về kết quả search đã cache nếu còn trong TTL, ngược lại trả về None
+    (bao gồm cả trường hợp cache hết hạn hoặc chưa từng có)."""
+    conn = _require_conn()
+    async with conn.execute(
+        "SELECT results, created_at FROM search_cache WHERE query_hash = ?", (query_hash,)
+    ) as cur:
+        row = await cur.fetchone()
+    if row is None:
+        return None
+    results_json, created_at = row
+    try:
+        created = datetime.fromisoformat(created_at)
+        age_sec = (datetime.now(timezone.utc) - created).total_seconds()
+    except Exception:
+        return None
+    if age_sec > ttl_sec:
+        return None
+    try:
+        return json.loads(results_json)
+    except Exception:
+        return None
+
+
+async def set_cached_search(query_hash: str, query: str, results: list[dict]) -> None:
+    """Lưu/ghi đè kết quả search vào cache, kèm timestamp hiện tại."""
+    conn = _require_conn()
+    async with _lock:
+        await conn.execute(
+            """
+            INSERT INTO search_cache (query_hash, query, results, created_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(query_hash) DO UPDATE SET
+                query = excluded.query,
+                results = excluded.results,
+                created_at = excluded.created_at
+            """,
+            (query_hash, query, json.dumps(results, ensure_ascii=False), datetime.now(timezone.utc).isoformat()),
+        )
+        await conn.commit()
+
+
+async def purge_old_search_cache(max_age_sec: int = 86400) -> int:
+    """Dọn các bản ghi cache cũ hơn max_age_sec (mặc định 24h) — nên gọi định kỳ
+    từ một background task để bảng search_cache không phình to vô hạn.
+    Trả về số dòng đã xóa."""
+    conn = _require_conn()
+    cutoff_iso = (datetime.now(timezone.utc).timestamp() - max_age_sec)
+    cutoff_iso = datetime.fromtimestamp(cutoff_iso, tz=timezone.utc).isoformat()
+    async with _lock:
+        cur = await conn.execute("DELETE FROM search_cache WHERE created_at < ?", (cutoff_iso,))
+        await conn.commit()
+        return cur.rowcount if cur.rowcount is not None else 0
