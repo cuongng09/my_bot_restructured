@@ -50,7 +50,7 @@ from handlers.voice_handler import handle_voice
 from handlers.media_handler import handle_media
 from handlers.dashboard_handler import cmd_ui, handle_callback_query
 from handlers.commands import (
-    cmd_start, cmd_help, cmd_reset, cmd_stop, cmd_export,
+    cmd_start, cmd_help, cmd_reset, cmd_resetmemory, cmd_stop, cmd_export,
     cmd_nickname, cmd_persona, cmd_voice, cmd_stt, cmd_ttsmode,
     cmd_ping, cmd_weather, cmd_news, cmd_autoweb, cmd_shutdown, cmd_reboot,
 )
@@ -101,7 +101,7 @@ async def post_init(application: Application):
 
     # Danh sách gợi ý khi gõ "/" trong Telegram. Đây chỉ là GỢI Ý HIỂN THỊ — mọi lệnh
     # (kể cả không nằm trong danh sách, vd /weather, /news, /stt...) vẫn hoạt động bình
-    # thường khi gõ tay. Rút gọn còn 6 lệnh cốt lõi vì /ui giờ đã có nút bấm cho hầu hết
+    # thường khi gõ tay. Rút gọn còn các lệnh cốt lõi vì /ui giờ đã có nút bấm cho hầu hết
     # thao tác (mô hình, tính cách, giọng nói, thời tiết, tin tức, dịch...) — liệt kê
     # thêm ở đây chỉ gây rối, không thêm chức năng.
     default_commands = [
@@ -111,6 +111,7 @@ async def post_init(application: Application):
         BotCommand("nickname", "👤 Đặt tên gọi riêng"),
         BotCommand("stop",     "🚫 Dừng phản hồi đang tạo"),
         BotCommand("reset",    "♻ Xóa lịch sử hội thoại"),
+        BotCommand("resetmemory", "🧠 Xóa hồ sơ trí nhớ dài hạn"),
     ]
     await application.bot.set_my_commands(default_commands, scope=BotCommandScopeDefault())
 
@@ -181,6 +182,7 @@ def main():
     app.add_handler(CommandHandler("help", cmd_help))
     app.add_handler(CommandHandler("ui", cmd_ui))
     app.add_handler(CommandHandler("reset", cmd_reset))
+    app.add_handler(CommandHandler("resetmemory", cmd_resetmemory))
     app.add_handler(CommandHandler("stop", cmd_stop))
     app.add_handler(CommandHandler("export", cmd_export))
     app.add_handler(CommandHandler("nickname", cmd_nickname))

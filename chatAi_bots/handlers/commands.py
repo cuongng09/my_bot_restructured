@@ -53,6 +53,7 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         "`/export` — xuất lịch sử hội thoại ra file .txt\n"
         "`/stop` — dừng phản hồi AI đang tạo dở\n"
         "`/reset` — xóa lịch sử hội thoại\n"
+        "`/resetmemory` — xóa hồ sơ trí nhớ dài hạn (những gì bot đã tóm tắt/nhớ về bạn)\n"
         + ("`/ping`, `/shutdown`, `/reboot` — [Admin] quản trị server\n"
            if is_admin(update.effective_user.id) else "")
         + "\n💡 _Tính cách, giọng nói, tự động tìm web... đều đổi được trong `/ui`._"
@@ -64,7 +65,27 @@ async def cmd_help(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 async def cmd_reset(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if is_allowed(update.effective_user.id):
         await db.clear_history(update.effective_user.id)
-        await update.message.reply_text("♻ Đã xóa sạch lịch sử hội thoại.")
+        await update.message.reply_text(
+            "♻ Đã xóa sạch lịch sử hội thoại.\n"
+            "ℹ️ Hồ sơ trí nhớ dài hạn (những gì mình đã tóm tắt/nhớ về bạn) vẫn còn nguyên — "
+            "dùng `/resetmemory` nếu muốn xóa luôn phần đó."
+        )
+
+
+# ── /resetmemory ──────────────────────────────────────────────────────────────
+async def cmd_resetmemory(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Xóa hồ sơ trí nhớ dài hạn (profile_summary + turns_since_summary), TÁCH BIỆT
+    với /reset (chỉ xóa lịch sử chat gần đây). Dùng khi bot đã tóm tắt/nhớ nhầm hoặc
+    người dùng muốn bot 'quên sạch' những gì đã học được về họ qua thời gian."""
+    uid = update.effective_user.id
+    if not is_allowed(uid):
+        return
+    await db.clear_profile(uid)
+    await update.message.reply_text(
+        "🧠 Đã xóa sạch hồ sơ trí nhớ dài hạn — mình sẽ không còn nhớ những gì đã "
+        "tóm tắt về bạn trước đây.\n"
+        "ℹ️ Lịch sử hội thoại gần đây thì dùng `/reset` để xóa riêng."
+    )
 
 
 # ── /stop ─────────────────────────────────────────────────────────────────────

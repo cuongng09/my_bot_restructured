@@ -30,6 +30,67 @@ _SEARCH_EXECUTOR = ThreadPoolExecutor(max_workers=4, thread_name_prefix="ddg-sea
 SEARXNG_URL = os.getenv("SEARXNG_URL", "http://localhost:8081").rstrip("/")
 SEARCH_CACHE_TTL_SEC = int(os.getenv("SEARCH_CACHE_TTL_SEC", "900"))  # mặc định 15 phút
 
+# ── Nguồn ưu tín (trusted domains) ────────────────────────────────────────────
+# Danh sách domain được coi là đáng tin cậy hơn (báo chí chính thống VN, trang
+# chính phủ, tổ chức quốc tế, wiki...). Có thể ghi đè/bổ sung qua biến môi
+# trường TRUSTED_DOMAINS (phân tách bằng dấu phẩy), sẽ được CỘNG thêm vào
+# danh sách mặc định bên dưới chứ không thay thế.
+_DEFAULT_TRUSTED_DOMAINS = {
+    # Báo chí chính thống Việt Nam
+    "vnexpress.net", "tuoitre.vn", "thanhnien.vn", "vietnamnet.vn",
+    "vtv.vn", "vov.vn", "nhandan.vn", "laodong.vn", "zingnews.vn",
+    "baochinhphu.vn", "qdnd.vn", "sggp.org.vn", "cand.com.vn",
+    # Cơ quan nhà nước / tổ chức quốc tế
+    "gov.vn", "who.int", "un.org", "reuters.com", "apnews.com", "bbc.com",
+    # Tham khảo tổng quát
+    "wikipedia.org",
+}
+_env_trusted = os.getenv("TRUSTED_DOMAINS", "")
+TRUSTED_DOMAINS = _DEFAULT_TRUSTED_DOMAINS | {
+    d.strip().lower() for d in _env_trusted.split(",") if d.strip()
+}
+# Nếu bật "1"/"true", raw_search_data() sẽ CHỈ giữ lại kết quả từ nguồn ưu tín
+# (khi có ít nhất 1 kết quả trùng khớp); mặc định chỉ ưu tiên sắp xếp lên đầu.
+TRUSTED_DOMAINS_ONLY = os.getenv("TRUSTED_DOMAINS_ONLY", "0").lower() in ("1", "true", "yes")
+
+
+def _registrable_domain(hostname: str) -> str:
+    """Rút gọn hostname về dạng domain gốc để so khớp trusted list, vd
+    'www.baochinhphu.vn' hoặc 'thoisu.vnexpress.net' -> vẫn khớp 'vnexpress.net'."""
+    parts = hostname.lower().lstrip(".").split(".")
+    if len(parts) <= 2:
+        return ".".join(parts)
+    return ".".join(parts[-2:])
+
+
+def is_trusted_source(url: str) -> bool:
+    """Kiểm tra URL có thuộc danh sách nguồn ưu tín hay không (so khớp theo
+    domain gốc, chấp nhận subdomain)."""
+    try:
+        hostname = (urlparse(url).hostname or "").lower()
+    except Exception:
+        return False
+    if not hostname:
+        return False
+    if hostname in TRUSTED_DOMAINS:
+        return True
+    return _registrable_domain(hostname) in TRUSTED_DOMAINS
+
+
+def rank_by_trust(results: list[dict]) -> list[dict]:
+    """Sắp xếp lại kết quả search: nguồn ưu tín lên đầu, giữ nguyên thứ tự
+    tương đối trong từng nhóm (sort ổn định). Đồng thời gắn cờ 'trusted' vào
+    mỗi kết quả để tầng format có thể hiển thị (vd icon ✅) nếu muốn.
+    Nếu TRUSTED_DOMAINS_ONLY=1 và có ít nhất 1 nguồn ưu tín trong kết quả,
+    sẽ lọc bỏ hẳn các nguồn không ưu tín."""
+    for r in results:
+        r["trusted"] = is_trusted_source(r.get("href", ""))
+    trusted = [r for r in results if r["trusted"]]
+    untrusted = [r for r in results if not r["trusted"]]
+    if TRUSTED_DOMAINS_ONLY and trusted:
+        return trusted
+    return trusted + untrusted
+
 
 # ── SSRF guard ─────────────────────────────────────────────────────────────
 def _is_ip_blocked(ip_str: str) -> bool:
@@ -124,8 +185,85 @@ async def _to_english(text: str) -> str:
         return ""
 
 
+# ── Nguồn dạng bảng xếp hạng/chart — không nên cào full-text theo kiểu chung ──
+# Các trang này (trends24.in...) hiển thị dữ liệu dạng bảng/thẻ chứ không phải
+# bài viết văn xuôi, get_text() thường chỉ nhặt được số/chỉ báo thay đổi thứ
+# hạng, làm mất tên thật. Riêng kworb.net có cấu trúc bảng ổn định nên có
+# parser riêng bên dưới (_extract_kworb_table) thay vì bỏ qua hẳn.
+_env_low_value = os.getenv("LOW_VALUE_SCRAPE_DOMAINS", "")
+LOW_VALUE_SCRAPE_DOMAINS = {"trends24.in"} | {
+    d.strip().lower() for d in _env_low_value.split(",") if d.strip()
+}
+
+
+def _looks_like_low_quality_extract(text: str) -> bool:
+    """Phát hiện nội dung cào được có vẻ là 'rác' — ví dụ bảng xếp hạng chỉ
+    còn lại các chỉ báo tăng/giảm thứ hạng ('+10', '-3', 'NEW') sau khi mất
+    hết tên bài/video thật (thường do trang nguồn render dạng bảng/JS thay vì
+    văn bản thường). Nếu true, caller nên GIỮ NGUYÊN snippet gốc từ search
+    engine thay vì ghi đè bằng nội dung này, để tránh model bịa câu trả lời
+    từ dữ liệu vô nghĩa."""
+    stripped = text.strip()
+    if len(stripped) < 30:
+        return False  # quá ngắn — để ngưỡng độ dài khác (enrich_with_page_content) xử lý
+    letters = sum(1 for ch in stripped if ch.isalpha())
+    if letters / len(stripped) < 0.25:
+        return True
+    tokens = stripped.split()
+    if not tokens:
+        return True
+    junky = sum(1 for t in tokens if re.fullmatch(r'[+\-−–]?\d+%?|NEW|new|Mới|MỚI', t))
+    return junky / len(tokens) > 0.35
+
+
+# ── Parser riêng cho kworb.net (bảng xếp hạng video/nhạc trending) ───────────
+# Cấu trúc trang: 1 bảng <table>, mỗi hàng <tr> gồm [thứ hạng] [chỉ báo tăng/
+# giảm ("NEW"/"="/"+N"/"-N")] [tên video dạng link <a>]. get_text() thông
+# thường sẽ nhặt lẫn lộn cả 2 cột đầu (toàn số/ký hiệu) và làm loãng/mất cột
+# tên — nên đọc trực tiếp theo từng ô <td> để lấy đúng tên + thứ hạng.
+def _extract_kworb_table(html: str, max_rows: int = 15) -> str:
+    try:
+        soup = BeautifulSoup(html, "html.parser")
+        table = soup.find("table")
+        if not table:
+            return ""
+        lines = []
+        for tr in table.find_all("tr"):
+            cells = tr.find_all("td")
+            if len(cells) < 2:
+                continue  # dòng header hoặc không đúng định dạng — bỏ qua
+            rank = cells[0].get_text(strip=True)
+            if not rank.isdigit():
+                continue
+            change = cells[1].get_text(strip=True) if len(cells) > 1 else ""
+            title_cell = cells[-1]
+            link = title_cell.find("a")
+            title = (link.get_text(strip=True) if link else title_cell.get_text(strip=True))
+            if not title:
+                continue
+            suffix = f" ({change})" if change and change != "=" else ""
+            lines.append(f"{rank}. {title}{suffix}")
+            if len(lines) >= max_rows:
+                break
+        return "\n".join(lines)
+    except Exception as e:
+        logger.warning(f"⚠️ Lỗi parse bảng kworb.net: {e}")
+        return ""
+
+
 # ── Page content fetching ─────────────────────────────────────────────────────
 async def _fetch_page_snippet(url: str, max_chars: int = 2000) -> str:
+    try:
+        hostname = (urlparse(url).hostname or "").lower()
+    except Exception:
+        hostname = ""
+    is_kworb = hostname and _registrable_domain(hostname) == "kworb.net"
+    if hostname and not is_kworb and (
+        hostname in LOW_VALUE_SCRAPE_DOMAINS or _registrable_domain(hostname) in LOW_VALUE_SCRAPE_DOMAINS
+    ):
+        logger.info(f"⏭️ Bỏ qua cào full-text (domain dạng bảng/chart, giữ snippet gốc): {url}")
+        return ""
+
     headers = {
         "User-Agent": "MyTelegramBot/1.0 (https://t.me/my_bot; contact: admin@example.com)",
         "Accept-Language": "vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7",
@@ -137,6 +275,23 @@ async def _fetch_page_snippet(url: str, max_chars: int = 2000) -> str:
     if not await _is_safe_url(url):
         logger.warning(f"🛡️ Chặn fetch URL không an toàn (SSRF guard): {url}")
         return ""
+
+    if is_kworb:
+        try:
+            resp = await _http_client.get(url, headers=headers, timeout=9.0, follow_redirects=True)
+            resp.raise_for_status()
+            final_url = str(resp.url)
+            if final_url != url and not await _is_safe_url(final_url):
+                logger.warning(f"🛡️ Chặn nội dung sau redirect không an toàn: {url} → {final_url}")
+                return ""
+            parsed = _extract_kworb_table(resp.text)
+            if parsed:
+                return parsed[:max_chars]
+            logger.warning(f"⚠️ Không parse được bảng kworb.net (có thể đổi cấu trúc HTML): {url}")
+            return ""
+        except Exception as e:
+            logger.warning(f"⚠️ Lỗi tải trang kworb.net {url}: {e}")
+            return ""
 
     if "wikipedia.org/wiki/" in url:
         try:
@@ -202,7 +357,8 @@ async def enrich_with_page_content(results: list[dict], max_pages: int = 3) -> l
     fetched = await asyncio.gather(*[_fetch_page_snippet(r["href"]) for r in targets],
                                    return_exceptions=True)
     for r, content in zip(targets, fetched):
-        if isinstance(content, str) and len(content) > 50:
+        if (isinstance(content, str) and len(content) > 50
+                and not _looks_like_low_quality_extract(content)):
             r["body"] = content
     return results
 
@@ -352,8 +508,15 @@ async def raw_search_data(query: str) -> list[dict]:
             results = await _raw_search_fallback(en_query)
 
     if results:
+        # 🆕 Ưu tiên nguồn tin cậy: đưa lên đầu (và lọc bỏ nguồn không ưu tín
+        # nếu TRUSTED_DOMAINS_ONLY=1), trước khi cào nội dung trang.
+        results = rank_by_trust(results)
+        n_trusted = sum(1 for r in results if r.get("trusted"))
         titles = " | ".join(f"[{r.get('title','')[:60]}]({r.get('href','')})" for r in results[:5])
-        logger.info(f"🔎 Kết quả search (method={method}, {len(results)} kết quả): {titles}")
+        logger.info(
+            f"🔎 Kết quả search (method={method}, {len(results)} kết quả, "
+            f"{n_trusted} nguồn ưu tín): {titles}"
+        )
     else:
         logger.warning(f"🔎 Search '{query}' KHÔNG có kết quả nào (đã thử searxng + ddgs + fallback vi/en).")
         return results
@@ -388,5 +551,6 @@ def format_sources_footer(raw_data: list[dict]) -> str:
         href  = r.get("href", "")
         if not href:
             continue
-        lines.append(f"[{i}] [{title}]({href})")
+        badge = "✅ " if r.get("trusted") else ""
+        lines.append(f"[{i}] {badge}[{title}]({href})")
     return "\n".join(lines) if len(lines) > 1 else ""
