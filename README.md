@@ -1,24 +1,49 @@
-# 🤖 Ollama Telegram Bot v5.2
+# 🤖 Ollama Telegram Bot v6.2
 
 <p align="center">
   <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Windows-lightgrey" alt="Platform" />
   <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python version" />
-  <img src="https://img.shields.io/github/issues/USERNAME/REPO?color=orange&label=issues" alt="Issues" />
   <img src="https://img.shields.io/badge/status-active-brightgreen" alt="Status" />
-  <img src="https://img.shields.io/github/license/USERNAME/REPO?color=blue" alt="License" />
-</p>
-
-<p align="center">
-  <a href="https://github.com/USERNAME/REPO">
-    <img src="https://img.shields.io/github/stars/USERNAME/REPO?style=social" alt="Follow" />
-  </a>
+  <img src="https://img.shields.io/badge/architecture-modular-orange" alt="Architecture" />
+  <img src="https://img.shields.io/badge/license-MIT-blue" alt="License" />
 </p>
 
 <p align="center">
   <img src="bia_repo.png" alt="Telegram AI Bot Banner" width="100%" />
 </p>
 
-> **Trợ lý AI Telegram siêu tốc & đa năng:** Tích hợp Ollama (LLM Streaming + suy luận ẩn cho câu hỏi phức tạp), Vision OCR & Dịch thuật Ảnh/PDF, Voice hai chiều 100% local (faster-whisper + Piper TTS), trí nhớ dài hạn tự tóm tắt, 4 persona chọn được, Web Search thời gian thực có trích dẫn nguồn kèm link, SQLite Storage & UI Dashboard tương tác đa cấp.
+> **Trợ lý AI Telegram Tự Do & Mạnh Mẽ:** Tích hợp Ollama (LLM Streaming + Suy luận ẩn chuyên sâu), Hệ thống Tra cứu Web Thông minh Đa tầng (SearXNG/DuckDuckGo + Nhặt từ khóa cốt lõi + Định vị Thời gian thực), Voice 2 chiều 100% Local (faster-whisper + Piper TTS), Vision OCR & Dịch thuật Ảnh/PDF, Trí nhớ Dài hạn tự tóm tắt, Giao diện kép (Dashboard Telegram & Web App phong cách Sơn mài truyền thống).
+
+---
+
+## 🌟 Tính Năng Nổi Bật
+
+### 1. 🧠 Trí Tuệ Nhân Tạo & Suy Luận Chuyên Sâu
+- **Phản hồi siêu tốc dạng dòng (Streaming):** Trả lời từng từ mượt mà theo thời gian thực, hỗ trợ hủy tác vụ đang tạo dở với `/stop`.
+- **Suy luận ẩn (Hidden Chain-of-Thought):** Tự động phân loại câu hỏi phức tạp (toán học, lập trình, phân tích đa chiều) để ép mô hình "suy nghĩ ngầm" trong thẻ `<suy_nghi>` trước khi xuất kết quả chính thức; lọc sạch phần suy nghĩ bằng `ThinkingStreamFilter`.
+- **4 Persona linh hoạt:** Chuyển đổi giọng điệu nhanh chóng giữa `ban_than` (Bạn thân), `chuyen_gia` (Chuyên gia), `hai_huoc` (Hài hước) và `co_van` (Cố vấn chiến lược).
+- **Hồ sơ & Trí nhớ dài hạn:** Tự động đúc kết thói quen, sở thích của người dùng sau mỗi 10 lượt trò chuyện để cá nhân hóa câu trả lời mà không làm phình ngữ cảnh (hỗ trợ xóa riêng với `/resetmemory`).
+
+### 2. 🌐 Hệ Thống Tìm Kiếm Thông Minh Đa Tầng & Thời Gian Thực (Smart Web RAG)
+- **Nguồn tìm kiếm linh hoạt:** Ưu tiên instance **SearXNG** tự host (bảo mật, không bị rate-limit) kết hợp dự phòng **DuckDuckGo API (DDGS)** và cào HTML trực tiếp.
+- **Tiền lọc ý định siêu tốc (Fast Heuristic Intent Filter):** Nhận diện lập tức các câu chào hỏi, viết code, giải toán, sáng tác, tâm sự để phản hồi ngay bằng kho tri thức bách khoa của AI, không gọi tìm kiếm web vô ích.
+- **Tối ưu hóa câu truy vấn (Query Reformulation):** Tự động bóc tách ngôn ngữ tự nhiên thành từ khóa tìm kiếm Google/DuckDuckGo chuẩn mực.
+- **Cơ chế "Nhặt từ khóa cốt lõi" (Adaptive Keyword Extraction & Retry):** Khi câu hỏi công nghệ dài hoặc phức tạp không ra kết quả ban đầu, hệ thống tự động loại bỏ từ bổ nghĩa, bảo toàn số phiên bản phần mềm (như `3.7`, `3.14`, `5090`) để tìm lại, hỗ trợ truy vấn công nghệ quốc tế theo thời gian thực (`<core_query> latest update`).
+- **Định vị Thời Gian Thực (Real-time Clock Anchor - GMT+7):** Cung cấp mốc ngày, giờ thực tế cho mô hình; đối chiếu dữ liệu tìm được với tri thức AI để phân tích các lĩnh vực biến đổi từng giờ (AI, phần mềm, công nghệ mới), **chấm dứt hoàn toàn phản hồi cộc lốc "không có dữ liệu"**.
+- **Bảo mật & Ưu tiên nguồn tin cậy:** Sắp xếp nguồn ưu tín lên đầu (VnExpress, Tuổi Trẻ, Báo Chính Phủ, WHO, Wikipedia...) và trang bị **SSRF Guard** ngăn chặn bot truy cập các địa chỉ IP nội bộ độc hại.
+
+### 3. 🎙️ Đàm Thoại Giọng Nói 100% Local (Không Cần API Ngoài)
+- **Nghe (STT):** Sử dụng `faster-whisper` chạy trực tiếp trên máy chủ (CPU/GPU), hỗ trợ nhận diện tiếng Việt chính xác cao và tự động dự phòng sang Groq Whisper API nếu có cấu hình.
+- **Nói (TTS):** Chuyển văn bản thành giọng nói tiếng Việt mượt mà qua `Piper TTS` với các model ONNX gọn nhẹ.
+- **3 Chế độ Voice Reply (`/ttsmode`):** `off` (chỉ gửi text), `smart` (tự động phát âm thanh với câu trả lời ngắn/vừa), `always` (luôn trả lời bằng voice).
+
+### 4. 🖼️ Thị Giác OCR & Dịch Thuật Đa Định Dạng
+- **Hỗ trợ Ảnh & PDF:** Trích xuất chữ tự động từ file ảnh (JPG, PNG, WebP) và tài liệu PDF (cả PDF dạng scan và PDF có lớp text).
+- **Tự động nhận diện ngôn ngữ:** Tự động phát hiện tiếng Việt hoặc tiếng Anh và dịch hai chiều chuẩn xác.
+
+### 5. 🏮 Giao Diện Kép: Telegram Dashboard & Web App Sơn Mài
+- **Trạm Điều Khiển Telegram (`/ui`):** Menu Inline Keyboard đa cấp chia 3 nhánh: 💬 Trò chuyện · 🧰 Tiện ích · 🖥️ Hệ thống. Đổi model Ollama, đổi giọng đọc, đổi persona trực quan bằng nút bấm.
+- **Trạm Điều Khiển Web (`webapp/`):** Dashboard quản trị trình duyệt viết bằng FastAPI + Vanilla JS, thiết kế theo ngôn ngữ **Sơn mài truyền thống** (đen lacquer, son đỏ, khảm vàng). Theo dõi trạng thái Ollama theo thời gian thực (con dấu nhấp nháy), thống kê phần cứng CPU/RAM/Disk, người dùng hoạt động và nhật ký terminal trực tiếp.
 
 ---
 
@@ -126,7 +151,7 @@ WEBAPP_PORT=8080
 WEBAPP_TOKEN=           # để trống = không xác thực; điền 1 chuỗi bất kỳ để bật đăng nhập token
 ```
 
-2. Chạy thử — **luôn chạy từ thư mục gốc `bot/`** (nơi có `config.py`), độc lập với `my_bot.py`:
+2. Chạy thử — **luôn chạy từ thư mục gốc `chatAi_bots/`** (nơi có `config.py`), độc lập với `my_bot.py`:
 
 ```bash
 # Linux/macOS (đã kích hoạt venv)
@@ -265,73 +290,73 @@ Get-Content .\logs\bot.log -Wait -Tail 30      # xem log trực tiếp
 
 ---
 
-## 🎮 Lệnh & Hướng Dẫn Sử Dụng
+## 🎮 Danh Sách Lệnh & Thao Tác (`/commands`)
 
-### 📜 Danh Sách Lệnh (`/commands`)
-
-| Lệnh | Mô tả |
-|---|---|
-| `/start` | Khởi động bot và hiển thị lời chào |
-| `/help` | Xem hướng dẫn sử dụng đầy đủ |
-| `/ui` | Mở Dashboard UI đa cấp (chọn model, tiện ích, quản trị) |
-| `/weather <thành phố>` | Tra cứu thời tiết hiện tại + chất lượng không khí (PM2.5) |
-| `/news [nguồn]` | Điểm tin nhanh — `vnexpress` (mặc định), `tuoitre`, `thanhnien`, `dantri`, `bbcvietnamese` |
-| `/nickname <tên>` | Đặt tên gọi riêng để bot xưng hô gần gũi hơn |
-| `/persona <tên>` | Đổi tính cách/giọng văn bot — `ban_than`, `chuyen_gia`, `hai_huoc`, `co_van` |
-| `/voice <tên>` | Đổi giọng đọc Piper khi bot trả lời bằng voice (xem danh sách qua `PIPER_VOICE_PATHS`) |
-| `/export` | Xuất toàn bộ lịch sử hội thoại ra file `.txt` |
-| `/stop` | Dừng phản hồi AI đang tạo dở giữa chừng |
-| `/reset` | Xóa sạch lịch sử hội thoại cá nhân trong CSDL |
-| `/autoweb` | Bật/tắt tự động tra cứu web thời gian thực cho **mọi** tin nhắn (chữ + thoại) |
-| `/ping` | Kiểm tra tình trạng kết nối tới Ollama |
-| `/shutdown` | *[Admin]* Tắt nguồn server — cần xác nhận 2 bước |
-| `/reboot` | *[Admin]* Khởi động lại server — cần xác nhận 2 bước |
-
-> 💡 Nếu không bật `/autoweb`, bot vẫn tự động tra web khi câu hỏi chứa các từ khóa như "giá vàng", "tỷ giá", "mới nhất", "bây giờ", "hôm nay".
+| Lệnh | Phân Quyền | Mô Tả Chức Năng |
+|---|---|---|
+| `/start` | Mọi người | Khởi động bot và hiển thị lời chào |
+| `/help` | Mọi người | Xem hướng dẫn sử dụng chi tiết |
+| `/ui` | Mọi người | Mở Trạm Điều Khiển Telegram đa cấp dạng nút bấm |
+| `/weather <thành phố>` | Mọi người | Tra cứu thời tiết hiện tại & chất lượng không khí (PM2.5) |
+| `/news [nguồn]` | Mọi người | Điểm tin nhanh từ `vnexpress`, `tuoitre`, `thanhnien`, `dantri`, `bbcvietnamese` |
+| `/nickname <tên>` | Mọi người | Đặt tên gọi riêng để bot xưng hô thân mật |
+| `/persona [tên]` | Mọi người | Đổi tính cách bot: `ban_than`, `chuyen_gia`, `hai_huoc`, `co_van` |
+| `/autoweb` | Mọi người | Bật/tắt chế độ **Tự động tìm kiếm thông minh** (tự phân loại câu hỏi & nhặt từ khóa) |
+| `/voice <tên>` | Mọi người | Đổi giọng đọc Piper TTS |
+| `/stt <local\|groq>` | Mọi người | Đổi engine nghe giọng nói giữa `faster-whisper` và `Groq Whisper` |
+| `/ttsmode <off\|smart\|always>` | Mọi người | Cấu hình chế độ trả lời bằng giọng nói |
+| `/export` | Mọi người | Xuất toàn bộ lịch sử hội thoại thành file `.txt` |
+| `/stop` | Mọi người | Dừng quá trình AI đang tạo câu trả lời dở dang |
+| `/reset` | Mọi người | Xóa sạch ngữ cảnh trò chuyện gần đây |
+| `/resetmemory` | Mọi người | Xóa sạch hồ sơ trí nhớ dài hạn (những gì bot đã nhớ về bạn) |
+| `/ping` | Admin | Kiểm tra độ trễ và tình trạng kết nối tới Ollama |
+| `/shutdown` | Admin | Tắt nguồn server từ xa (yêu cầu xác nhận 2 bước) |
+| `/reboot` | Admin | Khởi động lại server từ xa (yêu cầu xác nhận 2 bước) |
 
 ---
 
-## 🏗️ Cấu Trúc Dự Án
+## 🏗️ Cấu Trúc Mã Nguồn
 
 ```text
-.
-bot/
-├── my_bot.py            # Entrypoint — chạy: python my_bot.py
-├── config.py             # Toàn bộ hằng số + biến môi trường (.env)
-├── bot_logger.py          # Logging tập trung (console + file xoay vòng)
-├── utils.py                # Helper dùng chung: quyền, rate-limit, safe_reply, lock...
-├── llm_engine.py            # Giao tiếp Ollama: build prompt, chat, streaming
-├── database.py               # SQLite (giữ nguyên)
-├── reasoning.py                # Suy luận ẩn, persona, trí nhớ dài hạn (giữ nguyên)
-├── local_voice.py               # STT/TTS local — faster-whisper + Piper (giữ nguyên)
+chatAi_bots/
+├── my_bot.py                 # 🚀 Entrypoint — Khởi tạo Application & liên kết handler
+├── config.py                  # ⚙️ Nạp biến môi trường (.env) & hằng số hệ thống
+├── bot_logger.py               # 📝 Quản lý logging xoay vòng tập trung
+├── utils.py                     # 🧰 Các tiện ích phụ trợ: phân quyền, rate limit, locks...
+├── llm_engine.py                 # 🧠 Xử lý LLM: Streaming, Grounded RAG, Realtime Clock
+├── database.py                    # 🗄️ Quản trị CSDL SQLite (lịch sử, cài đặt, profile)
+├── reasoning.py                     # 💡 Phân loại câu hỏi, suy luận ẩn, tóm tắt trí nhớ dài hạn
+├── local_voice.py                    # 🎙️ Quản lý engine faster-whisper và Piper TTS local
 │
-├── skills/                       # Tính năng độc lập, KHÔNG import telegram
-│   ├── weather.py                  # Thời tiết + AQI (open-meteo)
-│   ├── news.py                      # Tin tức RSS
-│   ├── ocr.py                        # OCR ảnh/PDF + dịch 2 chiều
-│   ├── web_search.py                  # DuckDuckGo search + cào nội dung (RAG)
-│   ├── voice.py                        # STT (local/Groq) + TTS reply
-│   └── dashboard.py                     # Sysadmin: CPU/RAM, ping, shutdown/reboot
+├── skills/                            # 🔧 Các module nghiệp vụ độc lập (Không phụ thuộc Telegram)
+│   ├── web_search.py                  #    🔍 Tìm kiếm đa tầng, làm sạch query, nhặt từ khóa cốt lõi
+│   ├── ocr.py                         #    🖼️ OCR trích xuất chữ và dịch thuật ảnh/PDF
+│   ├── voice.py                       #    🗣️ Điều phối STT (Local/Groq) và tạo voice reply
+│   ├── weather.py                     #    🌤️ Tra cứu thời tiết & AQI (Open-Meteo API)
+│   ├── news.py                        #    📰 Đọc RSS các báo điện tử hàng đầu
+│   ├── pdf_report.py                  #    📄 Tạo báo cáo nghiên cứu dạng PDF chuyên nghiệp
+│   └── dashboard.py                   #    🖥️ Giám sát tài nguyên phần cứng (CPU/RAM/Disk)
 │
-├── handlers/                       # Cầu nối Telegram Update ↔ skills/
-│   ├── commands.py                   # Toàn bộ /command (trừ /ui, callback)
-│   ├── text_handler.py                # handle_text — chat streaming chính
-│   ├── voice_handler.py                # handle_voice — nhận voice note
-│   ├── media_handler.py                 # handle_media — ảnh/PDF
-│   └── dashboard_handler.py              # Inline keyboard UI + callback_query
+├── handlers/                          # 📨 Bộ tiếp nhận & điều phối sự kiện Telegram Update
+│   ├── text_handler.py                #    Xử lý chat văn bản, kích hoạt Smart Auto-Web
+│   ├── voice_handler.py               #    Xử lý tin nhắn thoại đầu vào
+│   ├── media_handler.py               #    Xử lý hình ảnh và tài liệu PDF
+│   ├── commands.py                    #    Xử lý toàn bộ lệnh /command
+│   └── dashboard_handler.py           #    Xử lý giao diện Inline Keyboard (/ui)
 │
-├── data/       # bot_data.db (SQLite) — gitignored
-├── voices/      # File giọng Piper (.onnx) — gitignored
-├── models/       # Model faster-whisper tải sẵn (tùy chọn)
-├── logs/          # bot.log xoay vòng — gitignored
+├── webapp/                            # 🏮 Trạm Điều Khiển Web (Dashboard trình duyệt)
+│   ├── main.py                        #    FastAPI App — Cung cấp API giám sát read-only
+│   └── static/                        #    Giao diện phong cách Sơn mài (HTML, CSS, JS thuần)
 │
-├── .env.example    # Mẫu biến môi trường
-├── .gitignore
-└── requirements.txt
+├── data/                              # Nơi lưu bot_data.db (tự động tạo)
+├── voices/                            # Nơi chứa các model giọng đọc Piper (.onnx)
+├── logs/                              # Nơi lưu trữ file log xoay vòng
+├── requirements.txt                   # Danh sách thư viện phụ thuộc
+└── .env.example                       # Mẫu cấu hình môi trường
 ```
 
 ---
 
-## 📝 Giấy Phép
+## 📄 Giấy Phép (License)
 
-Dự án phát triển dưới giấy phép **MIT License**. Mọi đóng góp và Pull Request đều được hoan nghênh!
+Dự án được phân phối dưới giấy phép **MIT License**. Bạn có toàn quyền sử dụng, sửa đổi và đóng góp mã nguồn vì mục đích học tập cũng như thương mại.
