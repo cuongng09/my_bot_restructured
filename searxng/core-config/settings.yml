@@ -11,3 +11,19 @@ search:
   formats:
     - html
     - json
+
+engines:
+  - name: brave
+    engine: brave
+    weight: 1.5
+    shortcut: br
+  - name: duckduckgo
+    engine: duckduckgo
+    weight: 1.2
+    shortcut: ddg
+  - name: google
+    engine: google
+    weight: 1.5
+    use_mobile_ui: false
+  - name: wikidata
+    disabled: true   # Tắt nếu bị lỗi 403 liên tục

@@ -549,3 +549,250 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2026-09-06 15:44:32,763 | INFO | my_bot | Ollama message[7] role=user chars=62 preview=so sánh với Việt Nam một nước phát triển mạnh trong đông nam á
 2026-09-06 15:44:32,763 | INFO | my_bot | Ollama message[8] role=assistant chars=1122 preview= Đây là so sánh giữa Việt Nam và một nước Đông Nam Á phát triển mạnh như Thái Lan:  | Tiêu chí          | Việt Nam | Thái Lan | |-------------------|---------|---------| | GDP PPP (2026)     | 2.025 tỉ USD | 1.525 tỉ USD
 2026-09-06 15:44:32,764 | INFO | my_bot | Ollama message[9] role=user chars=7302 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 15:44 (GMT+7)) --- Nguồn [1]: Tiêu đề: Xây dựng nền công nghiệp bán dẫn Việt Nam theo bốn tư tưởng cốt lõi URL: https://mst.gov.vn/xay-dung-ne
+2026-09-06 16:08:28,226 | INFO | my_bot | 🔎 Search query: 'công ty công nghệ lớn trung quốc phát triển'
+2026-09-06 16:08:28,228 | WARNING | my_bot | ⚠️ SearXNG search lỗi/timeout cho 'công ty công nghệ lớn trung quốc phát triển': All connection attempts failed
+2026-09-06 16:08:29,397 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả, 1 nguồn ưu tín): [Các đại gia công nghệ Trung Quốc: Dịch chuyển trọng tâm sang](https://cuoituan.tuoitre.vn/cac-dai-gia-cong-nghe-trung-quoc-dich-chuyen-trong-tam-sang-dong-nam-a-20250815103711822.htm) | [Top 5 Công Ty Công Nghệ Lớn Nhất Trung Quốc | 2025](https://vantaitrungviet.net/top-5-cong-ty-cong-nghe-lon-nhat-trung-quoc-2025.html/) | [Top 5 Công Ty Công Nghệ Lớn Nhất Trung Quốc - sfexpress.vn](https://sfexpress.vn/top-5-cong-ty-cong-nghe-lon-nhat-trung-quoc-nhung-ga-khong-lo-dinh-hinh-the-gioi-so/) | [Top 5 Công Ty Công Nghệ Lớn Nhất Trung Quốc - HAI DUONG LOGI](https://haiduonglogistics.com/top-5-cong-ty-cong-nghe-lon-nhat-trung-quoc/) | [Top 5 Công Ty Sản Xuất Chip Lớn Nhất Trung Quốc | 2025](https://vantaitrungviet.net/top-5-cong-ty-san-xuat-chip-lon-nhat-trung-quoc-2025.html/)
+2026-09-06 16:08:33,192 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=7432, total_chars=15833
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[0] role=system chars=2272 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[2] role=assistant chars=870 preview=Top trending repositories on GitHub today include: 1. Nim 2. JavaScript 3. HTML·Image Tools 4. Python·AI Tools  🔗 [1] [Trending repositories on GitHub today · GitHub](https://github.com/trending) 🔗 [2] [Top 10 Trending G
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[3] role=user chars=52 preview=công nghệ bán dẫn và sự vươn mình mạnh mẽ trung quốc
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[4] role=assistant chars=1150 preview=Trung Quốc đang nỗ lực tự chủ trong ngành bán dẫn, đặt mục tiêu 80% nội địa hóa vào năm 2030. Năm 2025, SMIC, xưởng đúc lớn nhất Trung Quốc, đạt doanh thu kỷ lục 9,327 tỷ USD. Mỹ siết chặt chuỗi cung ứng bán dẫn, nhưng T
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[5] role=user chars=62 preview=so sánh với Việt Nam một nước phát triển mạnh trong đông nam á
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[6] role=assistant chars=1122 preview= Đây là so sánh giữa Việt Nam và một nước Đông Nam Á phát triển mạnh như Thái Lan:  | Tiêu chí          | Việt Nam | Thái Lan | |-------------------|---------|---------| | GDP PPP (2026)     | 2.025 tỉ USD | 1.525 tỉ USD
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[7] role=user chars=48 preview=công nghệ chip bán dẫn phát triển như nào tại VN
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[8] role=assistant chars=1316 preview=Việt Nam đang nỗ lực phát triển ngành công nghiệp bán dẫn với nhiều lợi thế và quyết tâm chính trị mạnh mẽ. Số lượng doanh nghiệp thiết kế chip tăng gấp đôi trong ba năm, và Viettel đã khởi công xây dựng nhà máy chế tạo 
+2026-09-06 16:08:33,193 | INFO | my_bot | Ollama message[9] role=user chars=8836 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 16:08 (GMT+7)) --- Nguồn [1]: Tiêu đề: Các đại gia công nghệ Trung Quốc: Dịch chuyển trọng tâm sang Đông Nam Á URL: https://cuoituan.tuoitre.v
+2026-09-06 16:08:59,239 | INFO | my_bot | Ollama payload summary: messages=3, web_context_chars=0, total_chars=14049
+2026-09-06 16:08:59,240 | INFO | my_bot | Ollama message[0] role=system chars=1458 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 16:08:59,240 | INFO | my_bot | Ollama message[1] role=system chars=519 preview=Bạn là bộ máy tóm tắt hồ sơ người dùng. Dựa trên đoạn hội thoại được cung cấp và hồ sơ cũ (nếu có), hãy viết lại một đoạn HỒ SƠ NGẮN GỌN (tối đa 5-6 gạch đầu dòng) về người dùng: sở thích, thói quen, công việc/lĩnh vực q
+2026-09-06 16:08:59,240 | INFO | my_bot | Ollama message[2] role=user chars=12072 preview=ĐOẠN HỘI THOẠI GẦN ĐÂY: Người dùng: mà nguồn github học điện điện tử nhúng iot Trợ lý: GitHub cung cấp nhiều tài liệu và công cụ hữu ích cho lập trình nhúng IoT. Trang GitHub Docs có hướng dẫn chi tiết về cách sử dụng Gi
+2026-09-06 18:13:42,667 | INFO | my_bot | 🔎 Search query: 'trending youtube vn'
+2026-09-06 18:13:42,669 | WARNING | my_bot | ⚠️ SearXNG search lỗi/timeout cho 'trending youtube vn': All connection attempts failed
+2026-09-06 18:13:43,927 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả, 0 nguồn ưu tín): [Music Videos Trending in Vietnam - Kworb.net](https://kworb.net/youtube/trending/vn.html) | [YouTube Vietnam - YouTube](https://www.youtube.com/@youtubevietnams/featured) | [Vietnam Youtube Trends - Today's youtube trending videos in ](https://yt-trends.iamrohit.in/Vietnam) | [Trending 20 Vietnam - YouTube](https://www.youtube.com/playlist?list=OLAK5uy_lEos0zuYBvGC9C0FSGG3pZ6gO4a82P6zg) | [Top 10 Trending YouTube Videos in Vietnam Today | TrendTube](https://trendtube.world/trending/vietnam)
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=4283, total_chars=13358
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[0] role=system chars=2680 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[2] role=assistant chars=1150 preview=Trung Quốc đang nỗ lực tự chủ trong ngành bán dẫn, đặt mục tiêu 80% nội địa hóa vào năm 2030. Năm 2025, SMIC, xưởng đúc lớn nhất Trung Quốc, đạt doanh thu kỷ lục 9,327 tỷ USD. Mỹ siết chặt chuỗi cung ứng bán dẫn, nhưng T
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[3] role=user chars=62 preview=so sánh với Việt Nam một nước phát triển mạnh trong đông nam á
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[4] role=assistant chars=1122 preview= Đây là so sánh giữa Việt Nam và một nước Đông Nam Á phát triển mạnh như Thái Lan:  | Tiêu chí          | Việt Nam | Thái Lan | |-------------------|---------|---------| | GDP PPP (2026)     | 2.025 tỉ USD | 1.525 tỉ USD
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[5] role=user chars=48 preview=công nghệ chip bán dẫn phát triển như nào tại VN
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[6] role=assistant chars=1316 preview=Việt Nam đang nỗ lực phát triển ngành công nghiệp bán dẫn với nhiều lợi thế và quyết tâm chính trị mạnh mẽ. Số lượng doanh nghiệp thiết kế chip tăng gấp đôi trong ba năm, và Viettel đã khởi công xây dựng nhà máy chế tạo 
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[7] role=user chars=74 preview=các công ty công nghệ lớn của trung quốc đã phát triển mạnh mẽ như thế nào
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[8] role=assistant chars=1165 preview=Các công ty công nghệ lớn của Trung Quốc như Tencent và Alibaba đang phát triển mạnh mẽ. Tencent, với WeChat và hàng loạt trò chơi di động, có giá trị vốn hóa khoảng 400 tỷ USD. Alibaba, trung tâm thương mại điện tử hàng
+2026-09-06 18:13:46,169 | INFO | my_bot | Ollama message[9] role=user chars=5636 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 18:13 (GMT+7)) --- Nguồn [1]: Tiêu đề: Music Videos Trending in Vietnam - Kworb.net URL: https://kworb.net/youtube/trending/vn.html Nội dung: 
+2026-09-06 18:16:54,251 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-06 18:16:58,671 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-06 18:16:58,887 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-06 18:16:58,890 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-06 18:18:05,864 | INFO | my_bot | 🔎 Search query: 'trending youtube vn'
+2026-09-06 18:18:05,864 | INFO | my_bot | 🔎 Cache HIT cho 'trending youtube vn' (5 kết quả, ttl=900s).
+2026-09-06 18:18:06,731 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=4283, total_chars=13079
+2026-09-06 18:18:06,731 | INFO | my_bot | Ollama message[0] role=system chars=2680 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[2] role=assistant chars=1122 preview= Đây là so sánh giữa Việt Nam và một nước Đông Nam Á phát triển mạnh như Thái Lan:  | Tiêu chí          | Việt Nam | Thái Lan | |-------------------|---------|---------| | GDP PPP (2026)     | 2.025 tỉ USD | 1.525 tỉ USD
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[3] role=user chars=48 preview=công nghệ chip bán dẫn phát triển như nào tại VN
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[4] role=assistant chars=1316 preview=Việt Nam đang nỗ lực phát triển ngành công nghiệp bán dẫn với nhiều lợi thế và quyết tâm chính trị mạnh mẽ. Số lượng doanh nghiệp thiết kế chip tăng gấp đôi trong ba năm, và Viettel đã khởi công xây dựng nhà máy chế tạo 
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[5] role=user chars=74 preview=các công ty công nghệ lớn của trung quốc đã phát triển mạnh mẽ như thế nào
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[6] role=assistant chars=1165 preview=Các công ty công nghệ lớn của Trung Quốc như Tencent và Alibaba đang phát triển mạnh mẽ. Tencent, với WeChat và hàng loạt trò chơi di động, có giá trị vốn hóa khoảng 400 tỷ USD. Alibaba, trung tâm thương mại điện tử hàng
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[7] role=user chars=23 preview=top trending youtobe vn
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[8] role=assistant chars=910 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaDiKa** - 109.6M view
+2026-09-06 18:18:06,732 | INFO | my_bot | Ollama message[9] role=user chars=5636 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 18:18 (GMT+7)) --- Nguồn [1]: Tiêu đề: Music Videos Trending in Vietnam - Kworb.net URL: https://kworb.net/youtube/trending/vn.html Nội dung: 
+2026-09-06 18:18:59,240 | WARNING | my_bot | ⚠️ Lỗi khi hỏi LLM có cần search web không () — fallback sang match từ khóa cũ.
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=0, total_chars=7232
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama message[0] role=system chars=2680 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama message[2] role=assistant chars=1316 preview=Việt Nam đang nỗ lực phát triển ngành công nghiệp bán dẫn với nhiều lợi thế và quyết tâm chính trị mạnh mẽ. Số lượng doanh nghiệp thiết kế chip tăng gấp đôi trong ba năm, và Viettel đã khởi công xây dựng nhà máy chế tạo 
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama message[3] role=user chars=74 preview=các công ty công nghệ lớn của trung quốc đã phát triển mạnh mẽ như thế nào
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama message[4] role=assistant chars=1165 preview=Các công ty công nghệ lớn của Trung Quốc như Tencent và Alibaba đang phát triển mạnh mẽ. Tencent, với WeChat và hàng loạt trò chơi di động, có giá trị vốn hóa khoảng 400 tỷ USD. Alibaba, trung tâm thương mại điện tử hàng
+2026-09-06 18:19:00,100 | INFO | my_bot | Ollama message[5] role=user chars=23 preview=top trending youtobe vn
+2026-09-06 18:19:00,101 | INFO | my_bot | Ollama message[6] role=assistant chars=910 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaDiKa** - 109.6M view
+2026-09-06 18:19:00,101 | INFO | my_bot | Ollama message[7] role=user chars=23 preview=top trending youtobe vn
+2026-09-06 18:19:00,101 | INFO | my_bot | Ollama message[8] role=assistant chars=929 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **OFFICIAL TRAILER - ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaD
+2026-09-06 18:19:00,101 | INFO | my_bot | Ollama message[9] role=user chars=7 preview=vf5 giá
+2026-09-06 18:20:27,321 | INFO | my_bot | 🔎 Search query: 'limor greend price'
+2026-09-06 18:20:29,944 | INFO | my_bot | 🔎 Kết quả search (method=fallback_vi, 5 kết quả, 1 nguồn ưu tín): [VinFast Limo Green: giá lăn bánh 9/2026, TSKT, đánh giá chi ](https://vnexpress.net/oto-xe-may/v-car/dong-xe/vinfast-limo-green-304) | [Limo Green - Giá bán, Thông số, Ưu đãi mới nhất](https://vinfastauto.com/vn_vi/limo-green) | [Rina Limor Green 14K.80 Ct. Tw. Gemstone Ring - Lyst](https://www.lyst.com/jewelry/rina-limor-14k80-ct-tw-gemstone-ring/) | [Rina Limor Metallic 14k 2.32 Ct. Tw. Green Amethyst Ring](https://www.lyst.com/jewelry/rina-limor-14k-232-ct-tw-green-amethyst-ring-1/) | [Limor Touchstone Green Quartz & Diamond Engagement Ring 3/4 ](https://www.kay.com/limor-touchstone-green-quartz-diamond-engagement-ring-34-ct-tw-14k-yellow-gold/p/V-101789004)
+2026-09-06 18:20:30,103 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://vinfastauto.com/vn_vi/limo-green: Client error '403 Forbidden' for url 'https://vinfastauto.com/vn_vi/limo-green'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-09-06 18:20:30,116 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://www.lyst.com/jewelry/rina-limor-14k80-ct-tw-gemstone-ring/: Client error '403 Forbidden' for url 'https://www.lyst.com/jewelry/rina-limor-14k80-ct-tw-gemstone-ring/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-09-06 18:20:31,983 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=3494, total_chars=11160
+2026-09-06 18:20:31,983 | INFO | my_bot | Ollama message[0] role=system chars=2680 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 18:20:31,983 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 18:20:31,983 | INFO | my_bot | Ollama message[2] role=assistant chars=1165 preview=Các công ty công nghệ lớn của Trung Quốc như Tencent và Alibaba đang phát triển mạnh mẽ. Tencent, với WeChat và hàng loạt trò chơi di động, có giá trị vốn hóa khoảng 400 tỷ USD. Alibaba, trung tâm thương mại điện tử hàng
+2026-09-06 18:20:31,983 | INFO | my_bot | Ollama message[3] role=user chars=23 preview=top trending youtobe vn
+2026-09-06 18:20:31,984 | INFO | my_bot | Ollama message[4] role=assistant chars=910 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaDiKa** - 109.6M view
+2026-09-06 18:20:31,984 | INFO | my_bot | Ollama message[5] role=user chars=23 preview=top trending youtobe vn
+2026-09-06 18:20:31,984 | INFO | my_bot | Ollama message[6] role=assistant chars=929 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **OFFICIAL TRAILER - ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaD
+2026-09-06 18:20:31,984 | INFO | my_bot | Ollama message[7] role=user chars=7 preview=vf5 giá
+2026-09-06 18:20:31,984 | INFO | my_bot | Ollama message[8] role=assistant chars=478 preview=Giá xe VF5 của VinFast thường thay đổi theo thời gian và tùy thuộc vào các chương trình khuyến mãi. Tuy nhiên, theo thông tin cập nhật gần đây, VF5 có giá bán dao động khoảng từ 669 triệu đến 769 triệu Việt Nam Đồng.  📎 
+2026-09-06 18:20:31,984 | INFO | my_bot | Ollama message[9] role=user chars=4840 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 18:20 (GMT+7)) --- Nguồn [1]: Tiêu đề: VinFast Limo Green: giá lăn bánh 9/2026, TSKT, đánh giá chi tiết URL: https://vnexpress.net/oto-xe-may/
+2026-09-06 19:55:57,626 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ReadError: 
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ReadError: 
+2026-09-06 20:19:09,255 | INFO | my_bot | 🔎 Search query: 'giá limo greed'
+2026-09-06 20:19:10,377 | INFO | my_bot | 🔎 Kết quả search (method=searxng, 5 kết quả, 1 nguồn ưu tín): [VinFast Limo Green: giá lăn bánh 8/2026, TSKT, đánh giá chi ](https://vnexpress.net/oto-xe-may/v-car/dong-xe/vinfast-limo-green-304) | [VinFast Limo Green 2026: Giá xe Limo Green cập nhật mới nhất](https://oto.com.vn/bang-gia-xe-o-to-vinfast-limo-green-moi-nhat) | [Vinfast Limo Green 2026 - Bảng Giá Xe, Chương Trình Ưu Đãi L](https://vinfastgiare.vn/Vinfast-Limo-Green/) | [Limo Green - Giá bán, Thông số, Ưu đãi mới nhất](https://shop.vinfastauto.com/vn_vi/limo-green.html) | [Giá Xe VinFast Limo Green - Mua Xe VinFast Trả Góp Đến 80%](https://vinfastangiang.com.vn/limo-green)
+2026-09-06 20:19:13,656 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=7130, total_chars=14515
+2026-09-06 20:19:13,656 | INFO | my_bot | Ollama message[0] role=system chars=2680 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 20:19:13,656 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 20:19:13,656 | INFO | my_bot | Ollama message[2] role=assistant chars=910 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaDiKa** - 109.6M view
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[3] role=user chars=23 preview=top trending youtobe vn
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[4] role=assistant chars=929 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **OFFICIAL TRAILER - ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaD
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[5] role=user chars=7 preview=vf5 giá
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[6] role=assistant chars=478 preview=Giá xe VF5 của VinFast thường thay đổi theo thời gian và tùy thuộc vào các chương trình khuyến mãi. Tuy nhiên, theo thông tin cập nhật gần đây, VF5 có giá bán dao động khoảng từ 669 triệu đến 769 triệu Việt Nam Đồng.  📎 
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[7] role=user chars=16 preview=limor greend giá
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[8] role=assistant chars=893 preview=VinFast Limo Green có giá lăn bánh khoảng 900 triệu Việt Nam Đồng. Xe có kích thước lớn, trang bị động cơ điện mạnh mẽ và có thể di chuyển khoảng 450 km sau mỗi lần sạc.  📎 *Nguồn tham khảo:* [1] ✅ [VinFast Limo Green: g
+2026-09-06 20:19:13,657 | INFO | my_bot | Ollama message[9] role=user chars=8474 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 20:19 (GMT+7)) --- Nguồn [1]: Tiêu đề: VinFast Limo Green: giá lăn bánh 8/2026, TSKT, đánh giá chi tiết - Báo VnExpress URL: https://vnexpress
+2026-09-06 20:50:25,216 | INFO | my_bot | 🔎 Search query: 'tổng thống nga hiện tại'
+2026-09-06 20:50:26,191 | INFO | my_bot | 🔎 Kết quả search (method=searxng, 5 kết quả, 5 nguồn ưu tín): [Vladimir Vladimirovich Putin – Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/Vladimir_Vladimirovich_Putin) | [Tổng thống Nga – Wikipedia tiếng Việt](https://vi.wikipedia.org/wiki/T%E1%BB%95ng_th%E1%BB%91ng_Nga) | [Vladimir Putin - Tin tức, hình ảnh mới nhất về Putin - VietN](https://vietnamnet.vn/putin-tag15415580591601883766.html) | [Sự nghiệp chính trị của Vladimir Putin - Wikipedia](https://vi.wikipedia.org/wiki/S%E1%BB%B1_nghi%E1%BB%87p_ch%C3%ADnh_tr%E1%BB%8B_c%E1%BB%A7a_Vladimir_Putin) | [Tin tức Tổng thống Nga Vladimir Putin mới nhất trên VnExpres](https://vnexpress.net/chu-de/vladimir-putin-1614)
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=3698, total_chars=10964
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[0] role=system chars=2680 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[2] role=assistant chars=929 preview=Top trending YouTube videos tại Việt Nam:  1. **JACK - J97 | LƯU NIÊN** - 5.6M views 2. **OFFICIAL TRAILER - ANH TRAI VƯỢT NGÀN CHÔNG GAI 2026 [TẬP 10]** - 122.7K views 3. **BI HUỲNH KHỞI** - 1.7M views 4. **LISA - SaWaD
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[3] role=user chars=7 preview=vf5 giá
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[4] role=assistant chars=478 preview=Giá xe VF5 của VinFast thường thay đổi theo thời gian và tùy thuộc vào các chương trình khuyến mãi. Tuy nhiên, theo thông tin cập nhật gần đây, VF5 có giá bán dao động khoảng từ 669 triệu đến 769 triệu Việt Nam Đồng.  📎 
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[5] role=user chars=16 preview=limor greend giá
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[6] role=assistant chars=893 preview=VinFast Limo Green có giá lăn bánh khoảng 900 triệu Việt Nam Đồng. Xe có kích thước lớn, trang bị động cơ điện mạnh mẽ và có thể di chuyển khoảng 450 km sau mỗi lần sạc.  📎 *Nguồn tham khảo:* [1] ✅ [VinFast Limo Green: g
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[7] role=user chars=14 preview=giá limo greed
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[8] role=assistant chars=800 preview=Giá xe VinFast Limo Green là 699 triệu Việt Nam Đồng. Xe có phạm vi hoạt động khoảng 470 km sau mỗi lần sạc và trang bị động cơ điện mạnh mẽ.  📎 *Nguồn tham khảo:* [1] ✅ [VinFast Limo Green: giá lăn bánh 8/2026, TSKT, đá
+2026-09-06 20:50:27,559 | INFO | my_bot | Ollama message[9] role=user chars=5042 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Chủ Nhật, ngày 06/09/2026, 20:50 (GMT+7)) --- Nguồn [1]: Tiêu đề: Vladimir Vladimirovich Putin – Wikipedia tiếng Việt URL: https://vi.wikipedia.org/wiki/Vladimir_Vladimi
