@@ -15,10 +15,10 @@ from telegram.ext import ContextTypes
 import database as db
 import reasoning
 from bot_logger import logger
-from config import LONG_TERM_MEMORY_EVERY_N_TURNS
+from config import LONG_TERM_MEMORY_EVERY_N_TURNS, should_trigger_web_search
 from llm_engine import chat_with_llm, decide_web_search
 from skills.voice import transcribe_for_user, maybe_send_voice_reply
-from skills.web_search import raw_search_data, format_web_context, format_sources_footer
+from skills.web_search import raw_search_data, format_web_context, format_sources_footer, clean_search_query
 from handlers.text_handler import _update_long_term_memory
 from utils import (
     is_allowed, is_addressed_in_group, is_rate_limited, notify_rate_limited,
@@ -41,18 +41,21 @@ async def _process_voice_reply(
     auto_web = await get_auto_web_mode(uid)
     try:
         if auto_web:
-            need_search, search_query = True, transcribed_text
-        else:
             decision = await decide_web_search(transcribed_text, model)
-            need_search = decision["need_search"]
-            search_query = decision["query"]
+            need_search = decision.get("need_search", False)
+            search_query = decision.get("query", "").strip()
+        else:
+            need_search = should_trigger_web_search(transcribed_text)
+            search_query = clean_search_query(transcribed_text) if need_search else ""
 
-        if need_search:
+        if need_search and search_query:
             await update.effective_chat.send_action(ChatAction.TYPING)
             raw_data = await raw_search_data(search_query)
             if raw_data:
                 web_context = format_web_context(raw_data)
                 sources_footer = format_sources_footer(raw_data)
+            else:
+                logger.info(f"🌐 Không tìm thấy kết quả web cho '{search_query}' (voice), fallback sang LLM.")
     except Exception as e:
         logger.warning(f"⚠️ Lỗi tìm kiếm web (voice): {e}")
 

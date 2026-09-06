@@ -159,20 +159,65 @@ def shutdown_executor():
 
 # ── Query cleaning ────────────────────────────────────────────────────────────
 _SEARCH_FILLER_PATTERNS = [
-    r'^(ơi|này|à|ê|nè)\s+', r'\b(bạn ơi|ê bạn|này bạn)\b',
-    r'^(cho\s+(tôi|mình|em|anh|chị)\s+(hỏi|biết)\s*)', r'^(làm ơn\s+)', r'^(hãy\s+)',
-    r'\b(giúp\s+(tôi|mình|em|anh|chị)\s*(với)?)\b', r'\b(là gì vậy|đúng không|nhỉ|nha|nhé|ạ|vậy đó|thế nhỉ)\b',
-    r'^(cho\s+(tôi|mình)\s+)', r'\b(vậy|thế)\s*$',
+    r'\b(ơi|này|à|ê|nè|alo|bạn ơi|ê bạn|này bạn|bot ơi|ai ơi|ad ơi|admin ơi|cậu ơi|mày ơi)\b',
+    r'\b(cho\s+(tôi|mình|em|anh|chị|tao)\s+(hỏi|biết|xin))\b',
+    r'\b(làm ơn\s+(cho\s+biết|cho\s+hỏi|tìm)?)\b',
+    r'\b(xin\s+(cho\s+biết|hỏi|vui\s+lòng))\b',
+    r'\b(hãy\s+(cho\s+biết|tìm\s+kiếm|tra\s+cứu|tìm|nói\s+về)?)\b',
+    r'\b(bạn\s+có\s+biết)\b',
+    r'\b(tìm\s+kiếm\s+(thông\s+tin\s+về|về|giúp)?)\b',
+    r'\b(tra\s+cứu\s+(thông\s+tin\s+về|về|giúp)?)\b',
+    r'\b(thông\s+tin\s+(về|chi\s+tiết\s+về)?)\b',
+    r'\b(giúp\s+(tôi|mình|em|anh|chị|tao)\s*(với)?)\b',
+    r'\b(là gì vậy|là ai vậy|ở đâu vậy|như thế nào vậy|bao nhiêu vậy|đúng không|nhỉ|nha|nhé|ạ|vậy đó|thế nhỉ|vậy ta|vậy cà|hả bạn|sao bạn)\b',
+    r'\b(cho\s+(tôi|mình))\b',
+    r'\b(vậy|thế|không|hả|sao|với|đi)\s*$',
 ]
 
 
 def clean_search_query(text: str) -> str:
+    """Làm sạch câu hỏi tự nhiên của người dùng thành từ khóa tìm kiếm (search keywords) tối ưu."""
     q = text.strip()
+    # Loại bỏ dấu ngoặc kép bọc ngoài nếu có
+    if (q.startswith('"') and q.endswith('"')) or (q.startswith("'") and q.endswith("'")):
+        q = q[1:-1].strip()
+
+    # Xóa dấu câu ở cuối trước để các pattern kết thúc ($) nhận diện được
+    q = re.sub(r'[\?？\!！\.\,\:\;\"\'\~]+$', '', q).strip()
+
     for pat in _SEARCH_FILLER_PATTERNS:
         q = re.sub(pat, ' ', q, flags=re.IGNORECASE)
-    q = re.sub(r'[?？!！]+$', '', q).strip()
+
+    # Loại bỏ các từ đuôi còn sót lại và dấu câu cuối
+    q = re.sub(r'\b(vậy|thế|không|hả|sao|với|đi|cà|ta|nhé|nha|nhỉ)\s*$', '', q, flags=re.IGNORECASE).strip()
+    q = re.sub(r'[\?？\!！\.\,\:\;\"\'\~]+$', '', q).strip()
     q = re.sub(r'\s+', ' ', q).strip()
     return q if len(q) >= 3 else text.strip()
+
+
+# ── Core keywords extraction (nhặt từ khóa cốt lõi khi tìm kiếm ban đầu không ra) ─
+_CORE_EXTRACTION_MODIFIERS = [
+    r'\b(thông\s+tin|chi\s+tiết|tình\s+hình|tổng\s+quan|tổng\s+hợp|báo\s+cáo|đánh\s+giá|review)\b',
+    r'\b(cập\s+nhật|update|release|phiên\s+bản|version|mới\s+nhất|latest|newest|gần\s+đây|recent)\b',
+    r'\b(hôm\s+nay|hiện\s+tại|hiện\s+nay|bây\s+giờ|năm\s+nay|tuần\s+này|tháng\s+này)\b',
+    r'\b(có\s+gì(\s+mới|\s+hot|\s+hay|\s+đặc\s+biệt)?|tính\s+năng|đặc\s+điểm|ưu\s+nhược\s+điểm|so\s+sánh)\b',
+    r'\b(hướng\s+dẫn|cách\s+dùng|làm\s+sao|như\s+thế\s+nào|ra\s+sao|tại\s+sao)\b',
+    r'\b(công\s+nghệ|sản\s+phẩm|dự\s+án|mô\s+hình|nền\s+tảng|hệ\s+thống|tin\s+tức)\b',
+    r'\b(của|và|với|về|ở|tại|cho|trong|các|những|một\s+số|được|bị|đã|đang|sẽ)\b',
+]
+
+
+def extract_core_keywords(query: str) -> str:
+    """Nhặt các từ khóa thực thể cốt lõi nhất (Entities/Core terms) từ câu truy vấn dài
+    khi tìm kiếm ban đầu không ra kết quả (đặc biệt hữu ích cho công nghệ/sản phẩm mới)."""
+    q = query.strip()
+    for mod in _CORE_EXTRACTION_MODIFIERS:
+        q = re.sub(mod, ' ', q, flags=re.IGNORECASE)
+    # Loại bỏ dấu câu nhưng giữ lại dấu chấm giữa 2 chữ số (ví dụ: 3.7, 3.14, 4.0)
+    q = re.sub(r'[\?？\!！\,\:\;\"\'\~]+', ' ', q)
+    q = re.sub(r'(?<!\d)\.|\.(?!\d)', ' ', q)
+    q = re.sub(r'\s+', ' ', q).strip()
+    return q
 
 
 async def _to_english(text: str) -> str:
@@ -507,6 +552,41 @@ async def raw_search_data(query: str) -> list[dict]:
             logger.info(f"🔎 Không có kết quả tiếng Việt, thử bản dịch tiếng Anh: '{query}' → '{en_query}'")
             results = await _raw_search_fallback(en_query)
 
+    # 5) 🆕 Nếu vẫn không có kết quả: NHẶT TỪ KHÓA CỐT LÕI (Core Keyword Extraction & Realtime Tech Retry)
+    if not results:
+        core_query = extract_core_keywords(query)
+        if core_query and len(core_query) >= 2 and core_query.lower() != query.lower():
+            logger.info(f"🔎 Không có kết quả ban đầu, nhặt từ khóa cốt lõi để tìm lại: '{query}' → '{core_query}'")
+            # 5a) Thử SearXNG với core_query
+            results = await _searxng_search(core_query)
+            if results:
+                method = "core_searxng"
+            # 5b) Thử DDGS với core_query
+            if not results:
+                try:
+                    results = await asyncio.wait_for(
+                        loop.run_in_executor(_SEARCH_EXECUTOR, _ddg, core_query), timeout=4.0
+                    )
+                    if results:
+                        method = "core_ddgs"
+                except Exception:
+                    results = []
+            # 5c) Thử fallback HTML tiếng Việt với core_query
+            if not results:
+                results = await _raw_search_fallback(core_query)
+                if results:
+                    method = "core_fallback_vi"
+            # 5d) Thử tìm kiếm cập nhật công nghệ thời gian thực bằng tiếng Anh (cho công nghệ cập nhật từng giờ)
+            if not results:
+                tech_queries = [f"{core_query} latest update", f"{core_query} release"]
+                for tq in tech_queries:
+                    en_tq = await _to_english(tq) or tq
+                    results = await _raw_search_fallback(en_tq)
+                    if results:
+                        method = f"core_tech_en: {en_tq}"
+                        logger.info(f"🔎 Nhặt từ khóa công nghệ tìm thấy dữ liệu quốc tế: '{en_tq}'")
+                        break
+
     if results:
         # 🆕 Ưu tiên nguồn tin cậy: đưa lên đầu (và lọc bỏ nguồn không ưu tín
         # nếu TRUSTED_DOMAINS_ONLY=1), trước khi cào nội dung trang.
@@ -518,7 +598,7 @@ async def raw_search_data(query: str) -> list[dict]:
             f"{n_trusted} nguồn ưu tín): {titles}"
         )
     else:
-        logger.warning(f"🔎 Search '{query}' KHÔNG có kết quả nào (đã thử searxng + ddgs + fallback vi/en).")
+        logger.warning(f"🔎 Search '{query}' KHÔNG có kết quả nào (đã thử searxng + ddgs + fallback vi/en + core keywords).")
         return results
 
     enriched = await enrich_with_page_content(results, max_pages=3)

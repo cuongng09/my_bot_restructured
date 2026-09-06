@@ -392,9 +392,9 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         new_state = not await get_auto_web_mode(uid)
         await db.set_setting(uid, auto_web=new_state)
         msg = (
-            "✅ Đã *bật* Tự động tìm web — mọi tin nhắn đều tự tra cứu dữ liệu thời gian thực."
+            "✅ Đã *bật* Tự động tìm web thông minh — bot sẽ tự phân tích câu hỏi để tra cứu khi cần với từ khóa tối ưu."
             if new_state else
-            "⛔ Đã *tắt* Tự động tìm web — bot quay lại chỉ tìm web khi có từ khóa gợi ý."
+            "⛔ Đã *tắt* Tự động tìm web — bot chỉ tìm web khi có từ khóa gợi ý."
         )
         await query.answer("Đã đổi chế độ tự động tìm web")
         await safe_reply(update, msg)

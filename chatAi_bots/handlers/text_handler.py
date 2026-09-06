@@ -15,9 +15,9 @@ from telegram.ext import ContextTypes
 import database as db
 import reasoning
 from bot_logger import logger
-from config import LONG_TERM_MEMORY_EVERY_N_TURNS, STREAM_EDIT_INTERVAL
+from config import LONG_TERM_MEMORY_EVERY_N_TURNS, STREAM_EDIT_INTERVAL, should_trigger_web_search
 from llm_engine import chat_with_llm, chat_with_llm_stream, decide_web_search
-from skills.web_search import raw_search_data, format_web_context, format_sources_footer
+from skills.web_search import raw_search_data, format_web_context, format_sources_footer, clean_search_query
 from utils import (
     is_allowed, is_addressed_in_group, is_rate_limited,
     notify_rate_limited, strip_mention, safe_reply, split_message,
@@ -141,22 +141,26 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     try:
         auto_web = await get_auto_web_mode(uid)
         if auto_web:
-            need_search, search_query = True, text
-        else:
-            # Để chính LLM đọc câu hỏi và quyết định có cần tra web hay không, thay vì
-            # match từ khóa cứng — bắt được cả những câu hỏi thời sự không chứa đúng
-            # từ khóa định sẵn, đồng thời không trigger nhầm khi từ khóa xuất hiện
-            # nhưng ngữ cảnh không thực sự cần tra cứu.
+            # Chế độ Tự động tìm kiếm thông minh:
+            # Sử dụng bộ phân tích input (Heuristic + LLM) để phân loại:
+            # - Nếu là tri thức bách khoa, sáng tạo, code, toán, tâm sự: need_search=False
+            # - Nếu là thời sự, giá cả, thực tế: need_search=True và trích xuất search_query tối ưu
             decision = await decide_web_search(text, model)
-            need_search = decision["need_search"]
-            search_query = decision["query"]
+            need_search = decision.get("need_search", False)
+            search_query = decision.get("query", "").strip()
+        else:
+            # Khi TẮT auto_web: chỉ tra cứu khi câu hỏi có từ khóa thời sự rõ ràng
+            need_search = should_trigger_web_search(text)
+            search_query = clean_search_query(text) if need_search else ""
 
-        if need_search:
+        if need_search and search_query:
             raw_data = await raw_search_data(search_query)
             if raw_data:
                 web_context = format_web_context(raw_data)
                 sources_footer = format_sources_footer(raw_data)
                 force_concise = True
+            else:
+                logger.info(f"🌐 Không tìm thấy kết quả web cho '{search_query}', fallback sang tri thức bách khoa của AI.")
     except Exception as e:
         logger.warning(f"⚠️ Lỗi tìm kiếm web: {e}")
 

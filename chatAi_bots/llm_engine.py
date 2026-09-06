@@ -9,6 +9,7 @@ import asyncio
 import json
 import re
 import time
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 
 import reasoning
@@ -17,6 +18,14 @@ from config import (
     OLLAMA_BASE_URL, OLLAMA_TIMEOUT_SEC, OLLAMA_RETRY_ATTEMPTS, OLLAMA_CONTEXT_SIZE,
     COMPARISON_TRIGGER_KEYWORDS, should_trigger_web_search,
 )
+
+
+def get_vietnam_time_str() -> str:
+    """Trả về chuỗi thời gian thực hiện tại theo múi giờ Việt Nam (GMT+7)."""
+    tz_vn = timezone(timedelta(hours=7))
+    now = datetime.now(tz_vn)
+    weekday_vn = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"][now.weekday()]
+    return now.strftime(f"{weekday_vn}, ngày %d/%m/%Y, %H:%M (GMT+7)")
 
 # HTTP client được inject từ my_bot.post_init (tránh tạo nhiều client)
 _http_client = None
@@ -46,41 +55,89 @@ async def get_ollama_models(force: bool = False) -> list[str]:
         return _MODEL_CACHE["models"]
 
 
+# ── Tiền lọc ý định tìm kiếm nhanh (Fast Heuristic Intent Filter) ────────────────
+_NON_SEARCH_KEYWORDS = [
+    # Chào hỏi, xã giao, cảm ơn ngắn
+    r'^(chào|xin chào|hello|hi|alo|hế lô|hé lô|ê|ơi|cảm ơn|thanks|tks|tạm biệt|bye|good morning|ngủ ngon)\b',
+    # Lập trình & kỹ thuật
+    r'\b(viết code|viết hàm|viết script|sửa code|debug|tối ưu code|giải thuật|thuật toán|python|javascript|typescript|c\+\+|java|c\#|golang|html|css|sql|dockerfile|regex)\b',
+    # Toán học, logic
+    r'\b(giải phương trình|tính tích phân|tính đạo hàm|chứng minh rằng|bài toán này|đố vui|câu đố logic|phép tính)\b',
+    # Sáng tác văn học, thơ ca, dịch thuật
+    r'\b(làm\s+(một\s+)?(bài\s+)?thơ|viết\s+(một\s+)?(bài\s+)?thơ|sáng tác thơ|thơ lục bát|viết\s+(một\s+)?(đoạn\s+|bài\s+)?văn|viết\s+(một\s+)?(bài\s+)?báo|viết\s+(một\s+)?(bức\s+)?(thư|email)|kể\s+(một\s+)?câu chuyện|kể chuyện)\b',
+    # Tâm sự cảm xúc, triết lý, thông tin về bot
+    r'\b(tâm sự|buồn quá|vui quá|bạn nghĩ gì về|ý nghĩa cuộc sống|bạn là ai|bạn tên gì|bạn được tạo ra khi nào)\b',
+]
+_NON_SEARCH_RE = re.compile("|".join(_NON_SEARCH_KEYWORDS), re.IGNORECASE)
+
+
+def fast_search_intent_check(text: str) -> Optional[dict]:
+    """Kiểm tra nhanh bằng regex các câu hỏi chắc chắn KHÔNG cần search web.
+    Giúp phản hồi siêu tốc bằng kiến thức bách khoa AI, không tốn tài nguyên gọi phân loại.
+    """
+    stripped = text.strip()
+    # Các câu chat quá ngắn mang tính chào hỏi, cảm thán
+    if len(stripped) <= 15 and re.search(r'^(chào|hi|hello|alo|ok|oke|cảm ơn|thanks|bye|tuyệt|đúng|sai|ừ|uh|vâng)\b', stripped, re.I):
+        return {"need_search": False, "query": ""}
+
+    # Nếu khớp các mẫu sáng tạo, code, toán, tâm sự rõ rệt mà không chứa từ khóa thời sự
+    from config import WEB_SEARCH_TRIGGER_KEYWORDS_STRONG
+    has_strong_trigger = any(kw in stripped.lower() for kw in WEB_SEARCH_TRIGGER_KEYWORDS_STRONG)
+    if not has_strong_trigger and _NON_SEARCH_RE.search(stripped):
+        return {"need_search": False, "query": ""}
+
+    return None
+
+
 # ── Web-search decision (LLM tự quyết định, thay cho match từ khóa) ────────────
-_SEARCH_DECISION_SYSTEM = (
-    "Bạn là bộ phân loại nội bộ, KHÔNG trò chuyện với người dùng. Nhiệm vụ DUY NHẤT: "
-    "xác định tin nhắn dưới đây có cần TRA CỨU INTERNET THỜI GIAN THỰC để trả lời chính xác hay không.\n\n"
-    "CẦN search nếu liên quan tới: giá cả/tỷ giá/lãi suất hiện tại, tin tức/sự kiện gần đây, "
-    "kết quả thể thao/bầu cử, ai đang giữ chức vụ/vai trò gì ở thời điểm hiện tại, thời tiết, "
-    "thông tin về sản phẩm/công nghệ/phiên bản mới, hoặc bất kỳ điều gì có thể đã thay đổi so với "
-    "kiến thức huấn luyện (đã lỗi thời).\n\n"
-    "KHÔNG cần search nếu là: chào hỏi/tâm sự/trò chuyện phiếm, kiến thức phổ thông cố định "
-    "(lịch sử, khoa học, toán, định nghĩa), yêu cầu sáng tạo (viết văn/thơ/code/dịch thuật), "
-    "câu hỏi về chính người dùng, bot, hoặc cuộc trò chuyện đang diễn ra.\n\n"
-    "CHỈ trả lời bằng đúng 1 dòng JSON thuần túy, KHÔNG kèm giải thích, KHÔNG dùng markdown/code "
-    "fence, đúng format sau:\n"
-    '{"need_search": true hoặc false, "query": "câu truy vấn tìm kiếm ngắn gọn súc tích nếu need_search=true, ngược lại để rỗng"}'
-)
+def _build_search_decision_system() -> str:
+    current_time = get_vietnam_time_str()
+    return (
+        f"Bạn là bộ phân tích truy vấn nội bộ của hệ thống AI. Thời gian thực tế hiện tại: {current_time}.\n"
+        "Nhiệm vụ DUY NHẤT:\n"
+        "1. Phân tích tin nhắn của người dùng và xác định xem có CẦN và CÓ THỂ tra cứu Internet thời gian thực để trả lời hay không.\n"
+        "2. Nếu CẦN, hãy chuyển đổi (reformulate) câu hỏi thành từ khóa tìm kiếm (search query) Google/DuckDuckGo ngắn gọn, tối ưu nhất.\n\n"
+        "QUY TẮC PHÂN LOẠI:\n"
+        "- KHÔNG CẦN SEARCH (need_search=false):\n"
+        "  + Kiến thức bách khoa phổ thông, lý thuyết khoa học cố định (toán, lý, hóa, sinh, lịch sử kinh điển, định nghĩa từ ngữ, ngữ pháp).\n"
+        "  + Lập trình, thuật toán, viết code, sửa lỗi, giải thích công nghệ/ngôn ngữ lập trình nói chung.\n"
+        "  + Yêu cầu sáng tạo: viết văn, làm thơ, soạn email, dịch thuật, tóm tắt nội dung.\n"
+        "  + Chào hỏi, cảm ơn, trò chuyện phiếm, tâm sự cảm xúc, triết lý sống, hỏi về bot/người dùng.\n"
+        "  + Lập luận, suy luận logic, giải bài toán, phân tích ý tưởng.\n\n"
+        "- CẦN SEARCH (need_search=true):\n"
+        "  + Công nghệ cập nhật từng ngày/giờ: mô hình AI mới ra mắt, phần mềm, framework, card đồ họa/chip, tin tức công nghệ mới nhất.\n"
+        "  + Dữ liệu biến động theo thời gian: giá cả, giá vàng, tỷ giá ngoại tệ, giá xăng dầu, lãi suất ngân hàng, chứng khoán, tiền số.\n"
+        "  + Tin tức, sự kiện thời sự, tình hình xã hội, giải đấu thể thao, kết quả bầu cử gần đây.\n"
+        "  + Thông tin về người đang giữ chức vụ/vai trò hiện tại (tổng thống, thủ tướng, chủ tịch, CEO, HLV...).\n"
+        "  + Thời tiết hôm nay, dự báo thời tiết.\n"
+        "  + Sự kiện, lịch trình diễn ra trong năm nay hoặc tương lai gần.\n\n"
+        "QUY TẮC TẠO QUERY (nếu need_search=true):\n"
+        "- Chỉ trích xuất 2-6 từ khóa nòng cốt (keywords), tập trung vào tên thực thể công nghệ, sản phẩm, nhân vật hoặc sự kiện chính.\n"
+        "- LOẠI BỎ HẾT đại từ, từ xưng hô, câu hỏi tự nhiên (ví dụ: 'bạn ơi', 'cho mình hỏi', 'là gì vậy', 'ai đang làm', 'nhỉ', 'nha', 'thế').\n"
+        "- Giữ lại thực thể chính và thời gian nếu có (Ví dụ: 'deepseek v3 mới nhất có gì hot' -> 'deepseek v3 latest update').\n\n"
+        "CHỈ trả lời bằng đúng 1 dòng JSON thuần túy, KHÔNG kèm giải thích, KHÔNG dùng markdown/code fence:\n"
+        '{"need_search": true hoặc false, "query": "từ khóa tìm kiếm ngắn gọn nếu need_search=true, ngược lại để rỗng"}'
+    )
 
 
 async def decide_web_search(text: str, model: str) -> dict:
-    """Hỏi LLM xem tin nhắn `text` có cần tra cứu web thời gian thực hay không.
+    """Hỏi LLM xem tin nhắn `text` có cần tra cứu web thời gian thực hay không và trích xuất query tối ưu.
 
-    Trả về {"need_search": bool, "query": str}. Đây là một lệnh gọi Ollama RIÊNG,
-    tách biệt khỏi câu trả lời chính — nhanh, temperature=0, không mang theo lịch sử
-    hội thoại (không cần ngữ cảnh dài để phân loại) và giới hạn output ngắn.
-
-    Nếu lệnh gọi LLM lỗi (Ollama down, model chưa pull, JSON không parse được...),
-    fallback về match từ khóa cũ trong config.should_trigger_web_search để bot vẫn
-    hoạt động được thay vì crash hoặc luôn tắt search.
+    Trả về {"need_search": bool, "query": str}.
     """
+    # 1. Kiểm tra nhanh bằng bộ lọc Heuristic Intent
+    fast_result = fast_search_intent_check(text)
+    if fast_result is not None:
+        return fast_result
+
+    # 2. Phân loại thông minh bằng LLM
     try:
         r = await _http_client.post(
             f"{OLLAMA_BASE_URL}/api/chat",
             json={
                 "model": model,
                 "messages": [
-                    {"role": "system", "content": _SEARCH_DECISION_SYSTEM},
+                    {"role": "system", "content": _build_search_decision_system()},
                     {"role": "user", "content": text},
                 ],
                 "stream": False,
@@ -101,14 +158,17 @@ async def decide_web_search(text: str, model: str) -> dict:
 
         data = json.loads(raw)
         need_search = bool(data.get("need_search", False))
-        query = (data.get("query") or "").strip() or text
+        from skills.web_search import clean_search_query
+        query = clean_search_query((data.get("query") or "").strip() or text) if need_search else ""
         return {"need_search": need_search, "query": query}
 
     except Exception as e:
         logger.warning(
             f"⚠️ Lỗi khi hỏi LLM có cần search web không ({e}) — fallback sang match từ khóa cũ."
         )
-        return {"need_search": should_trigger_web_search(text), "query": text}
+        from skills.web_search import clean_search_query
+        need = should_trigger_web_search(text)
+        return {"need_search": need, "query": clean_search_query(text) if need else ""}
 
 
 # ── Grounded message builder ───────────────────────────────────────────────────
@@ -169,13 +229,16 @@ def build_grounded_messages(
     """
     messages = _trim_history_for_context(messages)
     web_context = _truncate_for_context(web_context)
+    current_time_str = get_vietnam_time_str()
     system_prompt = reasoning.get_persona_prompt(persona) + (
-        "\n2. Với dữ liệu nhiều ý, số liệu, hoặc so sánh: dùng Bảng hoặc gạch đầu dòng cho dễ đọc.\n"
+        f"\n\n🕒 MỐC THỜI GIAN THỰC HIỆN TẠI CỦA HỆ THỐNG: {current_time_str}.\n"
+        "2. Với dữ liệu nhiều ý, số liệu, hoặc so sánh: dùng Bảng hoặc gạch đầu dòng cho dễ đọc.\n"
         "3. Danh sách link đầy đủ sẽ được hệ thống tự động thêm vào cuối câu trả lời.\n"
-        "4. QUAN TRỌNG: Khi tin nhắn có kèm khối 'DỮ LIỆU INTERNET THỜI GIAN THỰC', vai trò của bạn CHỈ LÀ "
-        "TỔNG HỢP lại thông tin đó, TUYỆT ĐỐI KHÔNG được dùng kiến thức đã học sẵn (nội tại) của bạn để trả lời "
-        "hay bổ sung — kiến thức đó có thể đã lỗi thời. Nếu không có khối dữ liệu này, bạn mới được dùng kiến "
-        "thức chung của mình để trò chuyện bình thường."
+        "4. KẾT HỢP DỮ LIỆU INTERNET & KIẾN THỨC BÁCH KHOA THEO THỜI GIAN THỰC:\n"
+        "   - Một số lĩnh vực (như CÔNG NGHỆ, MÔ HÌNH AI, PHẦN MỀM, PHẦN CỨNG) cập nhật liên tục từng ngày, từng giờ.\n"
+        "   - Khi có khối 'DỮ LIỆU INTERNET THỜI GIAN THỰC', hãy ưu tiên cập nhật số liệu và sự kiện mới nhất từ khối dữ liệu này, đối chiếu với tri thức nền tảng của bạn để tổng hợp bức tranh công nghệ hoàn chỉnh và cập nhật nhất tính đến hiện tại.\n"
+        "   - Nếu dữ liệu internet chưa đề cập hết hoặc còn thiếu (kể cả khi chỉ nhặt được từ khóa tóm tắt): bạn ĐƯỢC PHÉP linh hoạt kết hợp với kiến thức nền tảng (bách khoa toàn thư) của mình để giải thích cặn kẽ, đầy đủ cho bạn mình, nêu rõ phiên bản/mốc thông tin mới nhất bạn biết và gợi ý nguồn chính thức (GitHub/website). Tuyệt đối KHÔNG trả lời cộc lốc 'không có dữ liệu'.\n"
+        "   - Khi không có khối dữ liệu này, bạn tự do sử dụng toàn bộ tri thức bách khoa của mình để hỗ trợ và trò chuyện bình thường."
     )
     if profile_summary:
         system_prompt += (
@@ -211,18 +274,18 @@ def build_grounded_messages(
             if force_concise else ""
         )
         grounded_user_content = (
-            f"--- DỮ LIỆU INTERNET THỜI GIAN THỰC ---\n"
+            f"--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: {current_time_str}) ---\n"
             f"{web_context}\n"
             f"--- KẾT THÚC DỮ LIỆU ---\n\n"
-            f"Nhiệm vụ: Dựa vào DỮ LIỆU INTERNET ở trên, trả lời câu hỏi sau của bạn mình một cách tự nhiên:\n"
+            f"Nhiệm vụ: Dựa vào DỮ LIỆU INTERNET ở trên và câu hỏi của bạn mình, hãy phản hồi một cách tự nhiên, hữu ích và cập nhật theo thời gian thực:\n"
             f"👉 \"{user_query}\"\n\n"
-            f"QUY TẮC RAG BẮT BUỘC (ƯU TIÊN CAO NHẤT — GHI ĐÈ MỌI KIẾN THỨC NỘI TẠI CỦA BẠN):\n"
-            f"- Vai trò của bạn lúc này CHỈ LÀ TỔNG HỢP (summarizer). TUYỆT ĐỐI KHÔNG dùng kiến thức có sẵn của bạn.\n"
-            f"- Chỉ dùng thông tin có trong DỮ LIỆU INTERNET ở trên, không tự suy diễn, không bịa thêm số liệu.\n"
-            f"- Nếu DỮ LIỆU INTERNET không đủ, hãy nói thẳng là chưa tìm thấy đủ thông tin.\n"
-            f"- Nếu lịch sử trò chuyện trước đó có thông tin khác với DỮ LIỆU INTERNET, dùng DỮ LIỆU INTERNET.\n"
-            f"- Dùng gạch đầu dòng, bảng so sánh nếu cần, nhưng vẫn giữ văn phong tự nhiên.\n"
-            f"- Danh sách link đầy đủ sẽ được thêm tự động vào cuối tin nhắn.\n"
+            f"QUY TẮC PHẢN HỒI THÔNG MINH & CẬP NHẬT CÔNG NGHỆ THỜI GIAN THỰC:\n"
+            f"- ƯU TIÊN SỐ 1: Sử dụng số liệu, sự kiện và thông tin cập nhật từ DỮ LIỆU INTERNET ở trên.\n"
+            f"- ĐỐI CHIẾU & KẾT HỢP TRI THỨC BÁCH KHOA: Với các chủ đề công nghệ cập nhật từng giờ, hãy kết hợp thông tin vừa tìm thấy với tri thức nền tảng của bạn để phân tích tính năng, sự nâng cấp và phiên bản mới nhất tính đến thời điểm hiện tại ({current_time_str}).\n"
+            f"- Nếu DỮ LIỆU INTERNET chỉ có thông tin vắn tắt (nhặt từ từ khóa cốt lõi): Hãy chủ động dùng kiến thức nền tảng giải thích bản chất công nghệ, làm rõ các điểm cốt lõi cho bạn mình. TUYỆT ĐỐI TRÁNH trả lời cụt ngủn là 'không có dữ liệu'.\n"
+            f"- Nếu lịch sử trò chuyện trước đó có thông tin khác với DỮ LIỆU INTERNET, ưu tiên số liệu mới trong DỮ LIỆU INTERNET.\n"
+            f"- Trình bày gãy gọn (dùng gạch đầu dòng, bảng nếu cần) nhưng vẫn giữ văn phong thân thiện, tự nhiên.\n"
+            f"- Danh sách link tham khảo sẽ được thêm tự động vào cuối tin nhắn.\n"
             f"{concise_instruction}"
             f"{table_instruction}\n"
         )
