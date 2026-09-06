@@ -61,78 +61,33 @@
 
 ## 📦 Cài Đặt
 
+Repo đi kèm 2 script cài đặt tự động, thực hiện toàn bộ các bước cần thiết (dependency hệ
+thống, venv, `requirements.txt`, tạo `.env`, hỏi `TELEGRAM_TOKEN`, kiểm tra Ollama, và
+tùy chọn cài Docker + triển khai SearXNG):
+
 ### 1. Trên Linux (Ubuntu / Debian)
 
-1. Sao chép mã nguồn vào thư mục dự án.
-2. Cập nhật hệ thống và cài đặt các dependency:
-
 ```bash
-sudo apt update
-sudo apt install python3-full python3-pip ffmpeg -y
-sudo apt install tesseract-ocr tesseract-ocr-eng
-sudo apt-get install -y tesseract-ocr tesseract-ocr-vie
-```
-
-> 🎙️ Sau khi cài `requirements.txt` (bước dưới), tải model giọng Piper tiếng Việt (làm 1 lần) từ kho [`rhasspy/piper-voices`](https://huggingface.co/rhasspy/piper-voices) và đặt vào `./voices/` — xem chi tiết ở [`UPGRADE_GUIDE.md`](./UPGRADE_GUIDE.md#0-cài-thêm-thư-viện).
-
-3. Tạo và kích hoạt môi trường ảo, cài thư viện, kiểm thử:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
-4. Tạo file cấu hình `.env` từ mẫu và điền các biến bắt buộc (tối thiểu `TELEGRAM_TOKEN`):
-
-```bash
-cp .env.example .env
-nano .env   # điền TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS, v.v.
-```
-
-5. Chạy thử bot (Ctrl+C để dừng, xem [phần Khởi Chạy](#-khởi-chạy-bot) để chạy nền/tự khởi động):
-
-```bash
-python3 my_bot.py
-deactivate
+chmod +x install.sh
+./install.sh
 ```
 
 ### 2. Trên Windows
 
-1. Cài đặt các công cụ cần thiết:
-
 ```powershell
-# 1. Cài đặt Python
-winget install --id Python.Python.3.11 -e
-
-# 2. Cài đặt FFmpeg
-winget install --id Gyan.FFmpeg -e
-
-# 3. Cài đặt Tesseract OCR
-winget install --id UB-Mannheim.TesseractOCR -e
-```
-
-2. Tạo môi trường ảo:
-
-```powershell
-python -m venv venv
 Set-ExecutionPolicy Unrestricted -Scope Process
-.\venv\Scripts\Activate.ps1
-python.exe -m pip install --upgrade pip
-pip install -r requirements.txt
+.\install.ps1
 ```
 
-3. Tạo file cấu hình `.env` từ mẫu và điền các biến bắt buộc (tối thiểu `TELEGRAM_TOKEN`):
+Sau khi script chạy xong, khởi chạy bot bằng:
 
-```powershell
-Copy-Item .env.example .env
-notepad .env   # điền TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS, v.v.
+```bash
+# Linux/macOS
+source venv/bin/activate && python3 my_bot.py
 ```
-
-4. Khởi chạy bot:
-
 ```powershell
-python my_bot.py
+# Windows
+.\venv\Scripts\Activate.ps1 ; python my_bot.py
 ```
 
 ---
