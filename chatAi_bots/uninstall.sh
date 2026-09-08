@@ -30,7 +30,7 @@ echo -e "${RED}=====================================================${NC}"
 echo -e "${RED}             CẢNH BÁO: CẢNH BÁO GỠ CÀI ĐẶT             ${NC}"
 echo -e "${RED}=====================================================${NC}"
 echo "Thao tác này sẽ gỡ bỏ:"
-echo "  1. Dừng & Xóa SearXNG Docker container, volumes, file cấu hình"
+echo "  1. Dừng & Gỡ container SearXNG & WebApp Docker (giữ nguyên thư mục cấu hình)"
 echo "  2. Môi trường ảo Python (venv)"
 echo "  3. Các thư mục dữ liệu (data, logs, voices - tùy chọn)"
 echo "  4. File cấu hình .env (tùy chọn)"
@@ -44,16 +44,30 @@ fi
 
 # ---- 1. Gỡ bỏ SearXNG Docker Container ----
 log "1. Đang dừng và gỡ bỏ SearXNG Docker container..."
+SEARXNG_PATH=""
 if [ -d "$PROJECT_DIR/searxng" ]; then
-    cd "$PROJECT_DIR/searxng"
+    SEARXNG_PATH="$PROJECT_DIR/searxng"
+elif [ -d "$PROJECT_DIR/../searxng" ]; then
+    SEARXNG_PATH="$PROJECT_DIR/../searxng"
+fi
+
+if [ -n "$SEARXNG_PATH" ]; then
+    cd "$SEARXNG_PATH"
     if command -v docker >/dev/null 2>&1; then
-        sudo docker compose down -v || true
+        docker compose down -v 2>/dev/null || sudo docker compose down -v 2>/dev/null || true
     fi
     cd "$PROJECT_DIR"
-    rm -rf "$PROJECT_DIR/searxng"
-    log "Đã xóa thư mục và container SearXNG."
+    log "Đã dừng và gỡ container SearXNG (giữ nguyên thư mục cấu hình)."
 else
     warn "Không tìm thấy thư mục searxng/, bỏ qua."
+fi
+
+# ---- 1.1 Gỡ bỏ WebApp Docker Container ----
+log "1.1 Đang dừng và gỡ bỏ WebApp Docker container..."
+if command -v docker >/dev/null 2>&1; then
+    docker compose -f docker-compose.webapp.yml down -v 2>/dev/null || true
+    docker rm -f telegram-bot-webapp 2>/dev/null || true
+    log "Đã dọn dẹp WebApp Docker container."
 fi
 
 # ---- 2. Xóa môi trường ảo Python (venv) ----
@@ -65,11 +79,18 @@ else
     warn "Không tìm thấy thư mục venv/, bỏ qua."
 fi
 
-# ---- 3. Hỏi xóa các thư mục data, logs, voices ----
+# ---- 3. Hỏi xóa các thư mục data, logs, voices (giữ lại .gitkeep) ----
 read -rp "Bạn có muốn xóa dữ liệu bot (data, logs, voices)? (y/N): " REMOVE_DATA
 if [[ "$REMOVE_DATA" == "y" || "$REMOVE_DATA" == "Y" ]]; then
-    rm -rf data logs voices
-    log "Đã xóa các thư mục data, logs, voices."
+    for dir in data logs voices; do
+        if [ -d "$dir" ]; then
+            find "$dir" -type f ! -name ".gitkeep" -delete 2>/dev/null || true
+            find "$dir" -mindepth 1 -type d -empty -delete 2>/dev/null || true
+        fi
+    done
+    mkdir -p data/reports logs voices
+    touch data/.gitkeep data/reports/.gitkeep logs/.gitkeep voices/.gitkeep 2>/dev/null || true
+    log "Đã dọn dẹp dữ liệu trong data, logs, voices (giữ nguyên các file .gitkeep)."
 else
     warn "Giữ lại các thư mục dữ liệu data, logs, voices."
 fi

@@ -34,6 +34,9 @@ from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+import os
+os.environ.setdefault("RUNNING_WEBAPP", "1")
+
 from config import (
     DB_PATH, LOG_FILE, OLLAMA_BASE_URL, DEFAULT_MODEL,
     ALLOWED_IDS, ADMIN_IDS, WEBAPP_TOKEN, WEBAPP_HOST, WEBAPP_PORT,

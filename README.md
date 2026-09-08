@@ -98,31 +98,32 @@ Repo đi kèm một dashboard quản trị chạy trên trình duyệt (`webapp/
 Thư viện cần thiết (`fastapi`, `uvicorn`) **đã nằm sẵn trong `requirements.txt`** — không cần cài
 thêm gì nếu bạn đã làm bước `pip install -r requirements.txt` ở trên.
 
-1. Cấu hình (tùy chọn) trong `.env` — đã có sẵn giá trị mặc định hợp lý:
+1. **Cách 1: Chạy bằng Docker (Khuyến nghị cho Linux/Server):**
+```bash
+cd chatAi_bots
 
-```env
-WEBAPP_HOST=0.0.0.0     # địa chỉ SERVER lắng nghe (0.0.0.0 = mọi card mạng)
-WEBAPP_PORT=8080
-WEBAPP_TOKEN=           # để trống = không xác thực; điền 1 chuỗi bất kỳ để bật đăng nhập token
+# Khởi chạy WebApp ngầm bằng Docker Compose
+docker compose -f docker-compose.webapp.yml up -d
+
+# Xem nhật ký trực tiếp
+docker compose -f docker-compose.webapp.yml logs -f webapp
+
+# Dừng WebApp khi cần
+docker compose -f docker-compose.webapp.yml down
 ```
 
-2. Chạy thử — **luôn chạy từ thư mục gốc `chatAi_bots/`** (nơi có `config.py`), độc lập với `my_bot.py`:
-
+2. **Cách 2: Chạy trực tiếp bằng Python (độc lập với `my_bot.py`):**
 ```bash
-# Linux/macOS (đã kích hoạt venv)
+# Linux/macOS (đã kích hoạt venv từ thư mục chatAi_bots/)
 python -m webapp.main
 ```
 
 ```powershell
-# Windows (đã kích hoạt venv)
+# Windows (đã kích hoạt venv từ thư mục chatAi_bots/)
 python -m webapp.main
 ```
 
 3. Mở trình duyệt tại `http://localhost:8080` (không gõ `0.0.0.0:8080`, sẽ không kết nối được).
-
-Webapp chỉ đọc dữ liệu (SQLite ở chế độ read-only), không tranh chấp với tiến trình bot, nên có thể
-chạy song song với `my_bot.py` mà không lo xung đột. Xem cách chạy **tự động cùng hệ thống** ở phần
-[Khởi Chạy Bot](#-khởi-chạy-bot) bên dưới.
 
 ---
 

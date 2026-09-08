@@ -17,6 +17,9 @@ load_dotenv()
 def _require_env(name: str) -> str:
     val = os.getenv(name, "")
     if not val:
+        # Nếu đang chạy riêng WebApp dashboard, không bắt buộc phải có TELEGRAM_TOKEN
+        if name == "TELEGRAM_TOKEN" and os.getenv("RUNNING_WEBAPP", "").lower() in ("1", "true", "yes"):
+            return ""
         raise RuntimeError(
             f"❌ Thiếu biến môi trường bắt buộc: {name}. "
             f"Hãy tạo file .env (xem .env.example) và điền giá trị thật."
