@@ -1,198 +1,318 @@
-# My Bot — Cấu trúc thư mục (v6.0, đã chia nhỏ theo tính năng)
+# 🤖 Ollama Telegram Bot v6.2
 
-Toàn bộ chức năng của `my_bot.py` gốc (~2050 dòng, 1 file) được giữ **nguyên vẹn**,
-chỉ tách theo tính năng để dễ đọc/dễ bảo trì. `my_bot.py` giờ chỉ còn là **entrypoint**
-(khởi tạo Application, đăng ký handler, wiring các module) — không còn logic nghiệp vụ.
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Windows-lightgrey" alt="Platform" />
+  <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python version" />
+  <img src="https://img.shields.io/badge/status-active-brightgreen" alt="Status" />
+  <img src="https://img.shields.io/badge/architecture-modular-orange" alt="Architecture" />
+  <img src="https://img.shields.io/badge/license-MIT-blue" alt="License" />
+</p>
 
-## Cấu trúc thư mục
+<p align="center">
+  <img src="bia_repo.png" alt="Telegram AI Bot Banner" width="100%" />
+</p>
 
-```
-bot/
-├── my_bot.py            # 🚀 ENTRYPOINT — chạy: python my_bot.py
-├── config.py             # ⚙️ Toàn bộ hằng số + biến môi trường (.env)
-├── bot_logger.py          # 📝 Logging tập trung (console + file xoay vòng)
-├── utils.py                # 🧰 Helper dùng chung: quyền, rate-limit, safe_reply, lock...
-├── llm_engine.py            # 🌐 Giao tiếp Ollama: build prompt, chat, streaming
-├── database.py               # 🗄️ SQLite (giữ nguyên, không đổi)
-├── reasoning.py                # 🧠 Suy luận ẩn, persona, trí nhớ dài hạn (giữ nguyên)
-├── local_voice.py               # 🎙️ STT/TTS 100% local — faster-whisper + Piper (giữ nguyên)
-│
-├── skills/                       # 🔧 Từng tính năng độc lập, không phụ thuộc Telegram
-│   ├── weather.py                  #   🌤️ Thời tiết + AQI (open-meteo)
-│   ├── news.py                      #   📰 Tin tức RSS
-│   ├── ocr.py                        #   🖼️ OCR ảnh/PDF + dịch 2 chiều
-│   ├── web_search.py                  #   🔍 DuckDuckGo search + cào nội dung trang (RAG)
-│   ├── voice.py                        #   🎙️ STT engine chọn (local/Groq) + TTS reply
-│   └── dashboard.py                      #   🖥️ Sysadmin: CPU/RAM, ping, shutdown/reboot
-│
-├── handlers/                       # 📨 Cầu nối Telegram Update ↔ skills/
-│   ├── commands.py                   #   Toàn bộ /command (trừ /ui, callback)
-│   ├── text_handler.py                #   handle_text — chat streaming chính
-│   ├── voice_handler.py                #   handle_voice — nhận voice note
-│   ├── media_handler.py                 #   handle_media — ảnh/PDF
-│   └── dashboard_handler.py              #   🏮 Trạm Điều Khiển — inline keyboard UI
-│
-├── webapp/                         # 🏮 Trạm Điều Khiển (bản Web) — dashboard trình duyệt
-│   ├── main.py                       #   FastAPI — API đọc SQLite (read-only) + phục vụ trang tĩnh
-│   └── static/
-│       ├── index.html                  #   Khung trang
-│       ├── style.css                    #   Hệ thống thiết kế "sơn mài" (xem bên dưới)
-│       └── app.js                        #   Gọi API, tự làm mới mỗi 10s, không framework
-│
-├── data/                             # 🗄️ bot_data.db (SQLite) — gitignored
-├── voices/                            # 🗣️ File giọng Piper (.onnx) — gitignored
-├── models/                             # 🧠 Model faster-whisper tải sẵn (tùy chọn)
-├── logs/                                # 📝 bot.log xoay vòng — gitignored
-│
-├── .env.example                          # Mẫu biến môi trường
-├── .gitignore
-└── requirements.txt
-```
+> **Trợ lý AI Telegram Tự Do & Mạnh Mẽ:** Tích hợp Ollama (LLM Streaming + Suy luận ẩn chuyên sâu), Hệ thống Tra cứu Web Thông minh Đa tầng (SearXNG/DuckDuckGo + Nhặt từ khóa cốt lõi + Định vị Thời gian thực), Voice 2 chiều 100% Local (faster-whisper + Piper TTS), Vision OCR & Dịch thuật Ảnh/PDF, Trí nhớ Dài hạn tự tóm tắt, Giao diện kép (Dashboard Telegram & Web App phong cách Sơn mài truyền thống).
 
-## Giao diện — hai mặt của cùng một "Trạm Điều Khiển"
+---
 
-Cả hai giao diện dùng chung ngôn ngữ hình ảnh/từ vựng (🏮 con dấu trạng thái đỏ-vàng,
-"HOẠT ĐỘNG"/"MẤT KẾT NỐI", cùng cách gọi tên tính năng) để cảm giác như một sản phẩm,
-không phải hai thứ rời rạc:
+## 🌟 Tính Năng Nổi Bật
 
-**1. Dashboard Telegram** (`handlers/dashboard_handler.py`) — bấm `/ui`:
-- Kiến trúc 3 nhánh rõ ràng: 💬 Trò chuyện (mô hình/tính cách/tên gọi/giọng nói) ·
-  🧰 Tiện ích (thời tiết/tin tức/dịch/tự động tìm web) · 🖥️ Hệ thống (admin).
-- Cài đặt giọng nói (STT/TTS/giọng đọc) và tính cách giờ chọn bằng nút bấm thay vì
-  phải nhớ cú pháp lệnh — trạng thái hiện tại luôn có dấu ✅ ngay tại chỗ.
-- Mọi màn hình con đều có breadcrumb "⬅️ Quay lại <tên cha>" nhất quán.
-- Trạm chính hiển thị "con dấu" 🔴/⚫ báo Ollama còn sống hay không, cộng mô hình/tính
-  cách/tên gọi hiện tại — không cần đoán, không cần gõ lệnh dò trạng thái.
+### 1. 🧠 Trí Tuệ Nhân Tạo & Suy Luận Chuyên Sâu
+- **Phản hồi siêu tốc dạng dòng (Streaming):** Trả lời từng từ mượt mà theo thời gian thực, hỗ trợ hủy tác vụ đang tạo dở với `/stop`.
+- **Suy luận ẩn (Hidden Chain-of-Thought):** Tự động phân loại câu hỏi phức tạp (toán học, lập trình, phân tích đa chiều) để ép mô hình "suy nghĩ ngầm" trong thẻ `<suy_nghi>` trước khi xuất kết quả chính thức; lọc sạch phần suy nghĩ bằng `ThinkingStreamFilter`.
+- **4 Persona linh hoạt:** Chuyển đổi giọng điệu nhanh chóng giữa `ban_than` (Bạn thân), `chuyen_gia` (Chuyên gia), `hai_huoc` (Hài hước) và `co_van` (Cố vấn chiến lược).
+- **Hồ sơ & Trí nhớ dài hạn:** Tự động đúc kết thói quen, sở thích của người dùng sau mỗi 10 lượt trò chuyện để cá nhân hóa câu trả lời mà không làm phình ngữ cảnh (hỗ trợ xóa riêng với `/resetmemory`).
 
-**2. Trạm Điều Khiển Web** (`webapp/`) — trang quản trị mới, xem trong trình duyệt:
-- Thiết kế theo tinh thần **sơn mài truyền thống** (đen lacquer + son đỏ + vàng son +
-  khảm trứng ngà) — một bảng cứu hoả nhỏ để chủ bot liếc qua server nhà mình, không
-  phải giao diện SaaS chung chung. Dấu hiệu riêng: "con dấu" (triện) đỏ-vàng ở góc trên
-  cùng, tự nhấp nháy nhẹ khi Ollama đang hoạt động.
-- Hiển thị: trạng thái Ollama, CPU/RAM/ổ đĩa, số người dùng hoạt động hôm nay, bảng
-  người dùng (tên gọi/mô hình/tính cách/số tin nhắn/hoạt động cuối), nhật ký gần đây
-  dạng terminal.
-- **Chỉ đọc** — mở kết nối SQLite riêng ở chế độ `mode=ro`, không tranh chấp khóa ghi
-  với tiến trình bot, không sửa bất kỳ dữ liệu nào.
-- Tự làm mới mỗi 10 giây (vanilla JS, không cần build step) — hợp với triết lý "tối
-  giản, tự host" xuyên suốt cả dự án (Ollama local, STT/TTS local, OCR local...).
+### 2. 🌐 Hệ Thống Tìm Kiếm Thông Minh Đa Tầng & Thời Gian Thực (Smart Web RAG)
+- **Nguồn tìm kiếm linh hoạt:** Ưu tiên instance **SearXNG** tự host (bảo mật, không bị rate-limit) kết hợp dự phòng **DuckDuckGo API (DDGS)** và cào HTML trực tiếp.
+- **Tiền lọc ý định siêu tốc (Fast Heuristic Intent Filter):** Nhận diện lập tức các câu chào hỏi, viết code, giải toán, sáng tác, tâm sự để phản hồi ngay bằng kho tri thức bách khoa của AI, không gọi tìm kiếm web vô ích.
+- **Tối ưu hóa câu truy vấn (Query Reformulation):** Tự động bóc tách ngôn ngữ tự nhiên thành từ khóa tìm kiếm Google/DuckDuckGo chuẩn mực.
+- **Cơ chế "Nhặt từ khóa cốt lõi" (Adaptive Keyword Extraction & Retry):** Khi câu hỏi công nghệ dài hoặc phức tạp không ra kết quả ban đầu, hệ thống tự động loại bỏ từ bổ nghĩa, bảo toàn số phiên bản phần mềm (như `3.7`, `3.14`, `5090`) để tìm lại, hỗ trợ truy vấn công nghệ quốc tế theo thời gian thực (`<core_query> latest update`).
+- **Định vị Thời Gian Thực (Real-time Clock Anchor - GMT+7):** Cung cấp mốc ngày, giờ thực tế cho mô hình; đối chiếu dữ liệu tìm được với tri thức AI để phân tích các lĩnh vực biến đổi từng giờ (AI, phần mềm, công nghệ mới), **chấm dứt hoàn toàn phản hồi cộc lốc "không có dữ liệu"**.
+- **Bảo mật & Ưu tiên nguồn tin cậy:** Sắp xếp nguồn ưu tín lên đầu (VnExpress, Tuổi Trẻ, Báo Chính Phủ, WHO, Wikipedia...) và trang bị **SSRF Guard** ngăn chặn bot truy cập các địa chỉ IP nội bộ độc hại.
 
-### Chạy Trạm Điều Khiển Web
+### 3. 🎙️ Đàm Thoại Giọng Nói 100% Local (Không Cần API Ngoài)
+- **Nghe (STT):** Sử dụng `faster-whisper` chạy trực tiếp trên máy chủ (CPU/GPU), hỗ trợ nhận diện tiếng Việt chính xác cao và tự động dự phòng sang Groq Whisper API nếu có cấu hình.
+- **Nói (TTS):** Chuyển văn bản thành giọng nói tiếng Việt mượt mà qua `Piper TTS` với các model ONNX gọn nhẹ.
+- **3 Chế độ Voice Reply (`/ttsmode`):** `off` (chỉ gửi text), `smart` (tự động phát âm thanh với câu trả lời ngắn/vừa), `always` (luôn trả lời bằng voice).
 
-Đây là tiến trình **RIÊNG BIỆT**, không tự chạy cùng `python my_bot.py` — cần mở thêm
-một cửa sổ terminal khác:
+### 4. 🖼️ Thị Giác OCR & Dịch Thuật Đa Định Dạng
+- **Hỗ trợ Ảnh & PDF:** Trích xuất chữ tự động từ file ảnh (JPG, PNG, WebP) và tài liệu PDF (cả PDF dạng scan và PDF có lớp text).
+- **Tự động nhận diện ngôn ngữ:** Tự động phát hiện tiếng Việt hoặc tiếng Anh và dịch hai chiều chuẩn xác.
+
+### 5. 🏮 Giao Diện Kép: Telegram Dashboard & Web App Sơn Mài
+- **Trạm Điều Khiển Telegram (`/ui`):** Menu Inline Keyboard đa cấp chia 3 nhánh: 💬 Trò chuyện · 🧰 Tiện ích · 🖥️ Hệ thống. Đổi model Ollama, đổi giọng đọc, đổi persona trực quan bằng nút bấm.
+- **Trạm Điều Khiển Web (`webapp/`):** Dashboard quản trị trình duyệt viết bằng FastAPI + Vanilla JS, thiết kế theo ngôn ngữ **Sơn mài truyền thống** (đen lacquer, son đỏ, khảm vàng). Theo dõi trạng thái Ollama theo thời gian thực (con dấu nhấp nháy), thống kê phần cứng CPU/RAM/Disk, người dùng hoạt động và nhật ký terminal trực tiếp.
+
+---
+
+## 🛠️ Yêu Cầu Hệ Thống
+
+1. **Python:** 3.10+ (Khuyến nghị Python 3.11 hoặc 3.12)
+2. **Ollama:** Đã cài đặt và đang chạy local (`ollama serve`) với mô hình sẵn có (VD: `llama3.1`, `qwen2.5:7b`, v.v.)
+3. **Hệ thống Dependencies (Cài trên hệ điều hành):**
+   - **FFmpeg:** Xử lý & chuyển đổi file âm thanh (`.ogg`, `.wav`, `.mp3`) — dùng cho cả voice local (faster-whisper/Piper).
+   - **Tesseract OCR:** Trích chữ từ hình ảnh (cần package `tesseract-ocr` và ngôn ngữ `tesseract-ocr-eng` / `tesseract-ocr-vie`).
+4. **Model giọng nói Piper** *(bắt buộc nếu muốn TTS local)*: tải 2 file `.onnx` + `.onnx.json` của 1 giọng tiếng Việt bất kỳ từ kho [`rhasspy/piper-voices`](https://huggingface.co/rhasspy/piper-voices) (thư mục `vi/vi_VN/`), đặt vào `./voices/` rồi khai báo qua `PIPER_VOICE_PATHS` trong `.env`. faster-whisper thì **không cần tải tay** — tự tải model vào cache khi chạy lần đầu.
+5. **Groq API Key** *(tùy chọn, chỉ dùng làm fallback)*: kể từ v5.2, voice mặc định chạy local (faster-whisper); Groq Whisper chỉ còn là phương án dự phòng nếu bạn chủ động chuyển lại. Không có key vẫn chạy được mọi tính năng.
+
+---
+
+## 📦 Cài Đặt
+
+Repo đi kèm 2 script cài đặt tự động, thực hiện toàn bộ các bước cần thiết (dependency hệ
+thống, venv, `requirements.txt`, tạo `.env`, hỏi `TELEGRAM_TOKEN`, kiểm tra Ollama, và
+tùy chọn cài Docker + triển khai SearXNG):
+
+### 1. Trên Linux (Ubuntu / Debian)
 
 ```bash
-# Terminal 1 — bot Telegram (như bình thường)
-python my_bot.py
+chmod +x install.sh
+./install.sh
+```
 
-# Terminal 2 — Trạm Điều Khiển Web (chạy từ thư mục gốc bot/, nơi có config.py!)
-pip install -r requirements.txt         # đã gồm fastapi + uvicorn
+### 2. Trên Windows
+
+```powershell
+Set-ExecutionPolicy Unrestricted -Scope Process
+.\install.ps1
+```
+
+Sau khi script chạy xong, khởi chạy bot bằng:
+
+```bash
+# Linux/macOS
+source venv/bin/activate && python3 my_bot.py
+```
+```powershell
+# Windows
+.\venv\Scripts\Activate.ps1 ; python my_bot.py
+```
+
+---
+
+## 🏮 Trạm Điều Khiển Web (Dashboard)
+
+Repo đi kèm một dashboard quản trị chạy trên trình duyệt (`webapp/`), dùng FastAPI + Uvicorn.
+Thư viện cần thiết (`fastapi`, `uvicorn`) **đã nằm sẵn trong `requirements.txt`** — không cần cài
+thêm gì nếu bạn đã làm bước `pip install -r requirements.txt` ở trên.
+
+1. **Cách 1: Chạy bằng Docker (Khuyến nghị cho Linux/Server):**
+```bash
+cd chatAi_bots
+
+# Khởi chạy WebApp ngầm bằng Docker Compose
+docker compose -f docker-compose.webapp.yml up -d
+
+# Xem nhật ký trực tiếp
+docker compose -f docker-compose.webapp.yml logs -f webapp
+
+# Dừng WebApp khi cần
+docker compose -f docker-compose.webapp.yml down
+```
+
+2. **Cách 2: Chạy trực tiếp bằng Python (độc lập với `my_bot.py`):**
+```bash
+# Linux/macOS (đã kích hoạt venv từ thư mục chatAi_bots/)
 python -m webapp.main
 ```
 
-Sau đó mở trình duyệt tại **`http://localhost:8080`** (hoặc `http://127.0.0.1:8080`).
+```powershell
+# Windows (đã kích hoạt venv từ thư mục chatAi_bots/)
+python -m webapp.main
+```
 
-#### Nếu không truy cập được, kiểm tra theo thứ tự:
+3. Mở trình duyệt tại `http://localhost:8080` (không gõ `0.0.0.0:8080`, sẽ không kết nối được).
 
-1. **Terminal chạy `python -m webapp.main` còn mở và không báo lỗi** — nếu nó tự thoát
-   ngay hoặc báo `ModuleNotFoundError: No module named 'fastapi'` → chạy
-   `pip install -r requirements.txt` rồi thử lại.
-2. **Chạy đúng lệnh `python -m webapp.main` từ thư mục `bot/`** (thư mục chứa
-   `config.py`), KHÔNG `cd` vào trong `webapp/` rồi chạy `python main.py` — sẽ báo lỗi
-   `ModuleNotFoundError: No module named 'config'`.
-3. **Gõ đúng `http://localhost:8080`** trên trình duyệt — KHÔNG gõ `http://0.0.0.0:8080`.
-   `WEBAPP_HOST=0.0.0.0` trong `.env` là địa chỉ để server lắng nghe, không phải địa chỉ
-   để mở trên trình duyệt.
-4. **Windows Firewall** có thể hiện hộp thoại hỏi cho phép `python.exe` truy cập mạng
-   khi chạy lần đầu — nhớ bấm **Allow/Cho phép**, kể cả khi chỉ mở `localhost` (nếu bỏ
-   qua, đôi khi Windows vẫn chặn cổng).
-5. Nếu truy cập từ **máy/điện thoại khác trong cùng mạng LAN** (không phải máy đang
-   chạy bot) — dùng địa chỉ IP LAN thật của máy chạy bot thay vì `localhost`, ví dụ
-   `http://192.168.1.10:8080`, và đảm bảo Firewall cho phép kết nối đến từ mạng đó.
+---
 
-Mặc định chạy không xác thực. Nếu mở ra ngoài mạng nội bộ, **bắt buộc đặt
-`WEBAPP_TOKEN`** trong `.env` để bật màn hình đăng nhập token. Đặt thêm
-`WEBAPP_PUBLIC_URL` để nút "🌐 Mở Trạm Điều Khiển Web" xuất hiện trong menu Hệ thống
-của `/ui` trên Telegram.
+## 🚀 Khởi Chạy Bot
 
-
-
-- **`skills/`** — logic nghiệp vụ thuần túy (gọi API thời tiết, tìm web, OCR...),
-  **không import `telegram`**, không biết gì về Update/Context. Dễ test độc lập,
-  dễ tái sử dụng nếu sau này thêm giao diện khác (Discord, Web...).
-- **`handlers/`** — lớp mỏng nối Telegram Update → gọi hàm trong `skills/` → trả lời.
-- **`config.py`** — nơi DUY NHẤT đọc `os.getenv()`. Mọi module khác `from config import X`.
-- **HTTP client dùng chung**: khởi tạo 1 lần trong `my_bot.post_init()`, sau đó
-  `inject` (qua `set_http_client()`) vào từng module cần gọi mạng — tránh mở nhiều
-  connection pool lãng phí.
-
-## Thêm tính năng mới (vd: `dictionary.py` — tra từ điển)
-
-1. Tạo `skills/dictionary.py` — viết hàm `async def skill_dictionary(word: str) -> str`.
-2. Nếu cần lệnh riêng: thêm `cmd_dictionary()` vào `handlers/commands.py`, đăng ký
-   `CommandHandler("dict", cmd_dictionary)` trong `my_bot.py`.
-3. Nếu cần nút trong dashboard: thêm `InlineKeyboardButton` + xử lý `data == "..."`
-   trong `handlers/dashboard_handler.py`.
-
-Không cần đụng vào các file khác — đúng tinh thần "chia nhỏ theo tính năng".
-
-## Chạy bot
+### 1. Chạy Trực Tiếp
 
 ```bash
-pip install -r requirements.txt
-cp .env.example .env      # rồi điền TELEGRAM_TOKEN, ...
+# Kích hoạt venv nếu chưa kích hoạt
+source venv/bin/activate  # Trên Linux/macOS
+# Khởi chạy bot
 python my_bot.py
 ```
 
-## Chạy tự động 24/7 trên Windows (NSSM — Windows Service)
+### 2. Chạy dưới dạng Dịch Vụ Systemd (Linux - Khuyến nghị)
 
-Chạy bằng `python my_bot.py` trong 1 cửa sổ terminal chỉ tiện lúc test — máy tắt/ngủ,
-đóng cửa sổ, hay mất điện là bot dừng. Muốn bot **tự khởi động cùng Windows** và
-**tự hồi phục nếu crash**, dùng [NSSM](https://nssm.cc) để chạy như một Windows Service:
+Tạo file dịch vụ `/etc/systemd/system/telegram-bot.service`:
+
+```ini
+[Unit]
+Description=Telegram AI Bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots
+ExecStart=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/bin/python3 /home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/my_bot.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Kích hoạt và khởi động dịch vụ:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable telegram-bot.service
+sudo systemctl start telegram-bot.service
+sudo systemctl status telegram-bot.service
+sudo systemctl restart telegram-bot.service
+```
+
+Muốn Trạm Điều Khiển Web cũng tự khởi động cùng hệ thống, tạo thêm 1 service riêng
+`/etc/systemd/system/telegram-bot-webapp.service` (chạy độc lập, không tranh chấp gì với bot):
+
+```ini
+[Unit]
+Description=Telegram AI Bot - Web Dashboard
+After=network.target telegram-bot.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots
+ExecStart=/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/bin/python3 -m webapp.main
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable telegram-bot-webapp.service
+sudo systemctl start telegram-bot-webapp.service
+sudo systemctl status telegram-bot-webapp.service
+```
+
+> Nhớ sửa `WorkingDirectory` và đường dẫn `venv` trong cả 2 file `.service` cho khớp với thư mục
+> dự án thật trên máy bạn (mặc định ở trên chỉ là ví dụ).
+
+### 3. Chạy dưới dạng Windows Service (NSSM - script tự động, khuyến nghị)
+
+Repo đã có sẵn script PowerShell tự động hoá toàn bộ việc cài NSSM cho **cả bot lẫn webapp** —
+không cần điền tay qua giao diện NSSM nữa.
+
+1. Mở PowerShell với quyền **Administrator**, di chuyển vào thư mục gốc dự án (`chatAi_bots/`):
 
 ```powershell
-# 1. Tải NSSM tại https://nssm.cc/download → giải nén bản win64
-#    → copy nssm.exe vào thư mục .\scripts\ của dự án
+cd C:\Users\<tên-bạn>\...\my_bot_restructured\chatAi_bots
+```
 
-# 2. Mở PowerShell với quyền Administrator (chuột phải → Run as administrator),
-#    cd vào thư mục gốc dự án (nơi có my_bot.py), rồi chạy:
-.\scripts\install_nssm_service.ps1
+2. Đảm bảo đã có `venv\` (đã tạo ở bước Cài Đặt) và có `nssm.exe` — repo đã kèm sẵn `nssm.exe`
+   ở thư mục gốc, hoặc bạn có thể copy bản khác vào `.\scripts\nssm.exe`.
 
-# Muốn cài luôn Trạm Điều Khiển Web chạy nền cùng lúc:
+3. Chạy script cài đặt — thêm `-WithWebapp` để cài luôn service cho Trạm Điều Khiển Web:
+
+```powershell
 .\scripts\install_nssm_service.ps1 -WithWebapp
 ```
 
-Script tự động: tạo service `MyBotTelegram` (và `MyBotWebapp` nếu dùng `-WithWebapp`)
-chạy đúng `venv\Scripts\python.exe`, đặt `AppDirectory` về thư mục gốc (để `.env` và
-đường dẫn tương đối như `data/`, `logs/` hoạt động đúng), bật tự khởi động cùng Windows,
-tự restart nếu crash (chờ 5s giữa các lần), và ghi log stdout/stderr riêng vào
-`logs\MyBotTelegram.out.log` / `.err.log`.
+Script sẽ tự động:
+- Tạo service **MyBotTelegram** (`python my_bot.py`) và **MyBotWebapp** (`python -m webapp.main`).
+- Trỏ đúng `venv\Scripts\python.exe` và thư mục dự án làm `AppDirectory`.
+- Bật tự khởi động cùng Windows (`SERVICE_AUTO_START`) và tự restart nếu crash.
+- Ghi log riêng (có xoay vòng) vào `logs\MyBotTelegram.out.log` / `logs\MyBotWebapp.out.log`.
+- Tự khởi động cả 2 service ngay sau khi cài xong.
+
+> ⚠️ Sau khi cài service, **không chạy tay** `python my_bot.py` nữa — sẽ bị Telegram báo lỗi
+> Conflict vì 2 tiến trình cùng poll 1 token. Dùng lệnh NSSM để dừng trước nếu cần chạy tay.
+
+Các lệnh quản lý tiện lợi về sau (PowerShell Admin):
 
 ```powershell
-# Kiểm tra trạng thái
-Get-Service MyBotTelegram
+Get-Service MyBotTelegram, MyBotWebapp        # xem trạng thái
+nssm restart MyBotTelegram                    # khởi động lại bot
+nssm restart MyBotWebapp                      # khởi động lại webapp
+nssm stop MyBotTelegram                       # dừng bot (để chạy tay tạm thời)
+Get-Content .\logs\bot.log -Wait -Tail 30      # xem log trực tiếp
 
-# Xem log trực tiếp
-Get-Content .\logs\bot.log -Wait -Tail 30
-
-# Dừng / khởi động lại
-nssm stop MyBotTelegram
-nssm restart MyBotTelegram
-
-# Gỡ toàn bộ service (quay lại chạy tay bằng `python my_bot.py`)
+# Gỡ toàn bộ service khi cần
 .\scripts\uninstall_nssm_service.ps1
 ```
 
-⚠️ **Không chạy tay `python my_bot.py` song song khi service đã bật** — Telegram chỉ
-cho 1 tiến trình poll cùng lúc, chạy 2 nơi sẽ báo lỗi `Conflict: terminated by other
-getUpdates request`. Muốn chạy tay để debug, `nssm stop MyBotTelegram` trước.
+---
 
-## Lưu ý khi migrate từ bản 1-file cũ
+## 🎮 Danh Sách Lệnh & Thao Tác (`/commands`)
 
-- Đường dẫn DB mặc định đổi từ `bot_data.db` → `data/bot_data.db` (đã set sẵn trong
-  `.env.example`). Nếu muốn giữ DB cũ, chỉnh `DB_PATH` trong `.env` trỏ về file cũ,
-  hoặc copy file `.db` vào `data/`.
-- Log mặc định đổi từ `bot.log` → `logs/bot.log` tương tự.
-- Toàn bộ hành vi, lệnh, bug-fix trong bản gốc (concurrent_updates, user-lock,
-  /stop cancel, ThinkingStreamFilter, v.v.) được giữ nguyên 100% — chỉ khác vị trí file.
+| Lệnh | Phân Quyền | Mô Tả Chức Năng |
+|---|---|---|
+| `/start` | Mọi người | Khởi động bot và hiển thị lời chào |
+| `/help` | Mọi người | Xem hướng dẫn sử dụng chi tiết |
+| `/ui` | Mọi người | Mở Trạm Điều Khiển Telegram đa cấp dạng nút bấm |
+| `/weather <thành phố>` | Mọi người | Tra cứu thời tiết hiện tại & chất lượng không khí (PM2.5) |
+| `/news [nguồn]` | Mọi người | Điểm tin nhanh từ `vnexpress`, `tuoitre`, `thanhnien`, `dantri`, `bbcvietnamese` |
+| `/nickname <tên>` | Mọi người | Đặt tên gọi riêng để bot xưng hô thân mật |
+| `/persona [tên]` | Mọi người | Đổi tính cách bot: `ban_than`, `chuyen_gia`, `hai_huoc`, `co_van` |
+| `/autoweb` | Mọi người | Bật/tắt chế độ **Tự động tìm kiếm thông minh** (tự phân loại câu hỏi & nhặt từ khóa) |
+| `/voice <tên>` | Mọi người | Đổi giọng đọc Piper TTS |
+| `/stt <local\|groq>` | Mọi người | Đổi engine nghe giọng nói giữa `faster-whisper` và `Groq Whisper` |
+| `/ttsmode <off\|smart\|always>` | Mọi người | Cấu hình chế độ trả lời bằng giọng nói |
+| `/export` | Mọi người | Xuất toàn bộ lịch sử hội thoại thành file `.txt` |
+| `/stop` | Mọi người | Dừng quá trình AI đang tạo câu trả lời dở dang |
+| `/reset` | Mọi người | Xóa sạch ngữ cảnh trò chuyện gần đây |
+| `/resetmemory` | Mọi người | Xóa sạch hồ sơ trí nhớ dài hạn (những gì bot đã nhớ về bạn) |
+| `/ping` | Admin | Kiểm tra độ trễ và tình trạng kết nối tới Ollama |
+| `/shutdown` | Admin | Tắt nguồn server từ xa (yêu cầu xác nhận 2 bước) |
+| `/reboot` | Admin | Khởi động lại server từ xa (yêu cầu xác nhận 2 bước) |
+
+---
+
+## 🏗️ Cấu Trúc Mã Nguồn
+
+```text
+chatAi_bots/
+├── my_bot.py                 # 🚀 Entrypoint — Khởi tạo Application & liên kết handler
+├── config.py                  # ⚙️ Nạp biến môi trường (.env) & hằng số hệ thống
+├── bot_logger.py               # 📝 Quản lý logging xoay vòng tập trung
+├── utils.py                     # 🧰 Các tiện ích phụ trợ: phân quyền, rate limit, locks...
+├── llm_engine.py                 # 🧠 Xử lý LLM: Streaming, Grounded RAG, Realtime Clock
+├── database.py                    # 🗄️ Quản trị CSDL SQLite (lịch sử, cài đặt, profile)
+├── reasoning.py                     # 💡 Phân loại câu hỏi, suy luận ẩn, tóm tắt trí nhớ dài hạn
+├── local_voice.py                    # 🎙️ Quản lý engine faster-whisper và Piper TTS local
+│
+├── skills/                            # 🔧 Các module nghiệp vụ độc lập (Không phụ thuộc Telegram)
+│   ├── web_search.py                  #    🔍 Tìm kiếm đa tầng, làm sạch query, nhặt từ khóa cốt lõi
+│   ├── ocr.py                         #    🖼️ OCR trích xuất chữ và dịch thuật ảnh/PDF
+│   ├── voice.py                       #    🗣️ Điều phối STT (Local/Groq) và tạo voice reply
+│   ├── weather.py                     #    🌤️ Tra cứu thời tiết & AQI (Open-Meteo API)
+│   ├── news.py                        #    📰 Đọc RSS các báo điện tử hàng đầu
+│   ├── pdf_report.py                  #    📄 Tạo báo cáo nghiên cứu dạng PDF chuyên nghiệp
+│   └── dashboard.py                   #    🖥️ Giám sát tài nguyên phần cứng (CPU/RAM/Disk)
+│
+├── handlers/                          # 📨 Bộ tiếp nhận & điều phối sự kiện Telegram Update
+│   ├── text_handler.py                #    Xử lý chat văn bản, kích hoạt Smart Auto-Web
+│   ├── voice_handler.py               #    Xử lý tin nhắn thoại đầu vào
+│   ├── media_handler.py               #    Xử lý hình ảnh và tài liệu PDF
+│   ├── commands.py                    #    Xử lý toàn bộ lệnh /command
+│   └── dashboard_handler.py           #    Xử lý giao diện Inline Keyboard (/ui)
+│
+├── webapp/                            # 🏮 Trạm Điều Khiển Web (Dashboard trình duyệt)
+│   ├── main.py                        #    FastAPI App — Cung cấp API giám sát read-only
+│   └── static/                        #    Giao diện phong cách Sơn mài (HTML, CSS, JS thuần)
+│
+├── data/                              # Nơi lưu bot_data.db (tự động tạo)
+├── voices/                            # Nơi chứa các model giọng đọc Piper (.onnx)
+├── logs/                              # Nơi lưu trữ file log xoay vòng
+├── requirements.txt                   # Danh sách thư viện phụ thuộc
+└── .env.example                       # Mẫu cấu hình môi trường
+```
+
+---
+
+## 📄 Giấy Phép (License)
+
+Dự án được phân phối dưới giấy phép **MIT License**. Bạn có toàn quyền sử dụng, sửa đổi và đóng góp mã nguồn vì mục đích học tập cũng như thương mại.
