@@ -1,3 +1,17 @@
 2026-09-08 09:21:23,486 | INFO | my_bot | 🚀 Bot đang khởi động...
 2026-09-08 09:21:24,231 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
 2026-09-08 09:21:24,453 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-08 09:25:09,344 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-08 09:25:13,769 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-08 09:25:13,982 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-08 09:25:13,983 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-08 09:36:48,304 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-08 09:36:52,764 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-08 09:36:52,982 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-08 09:36:52,983 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-08 09:54:47,707 | INFO | my_bot | 🔎 Search query: 'giá vàng hôm nay'
+2026-09-08 09:54:48,824 | INFO | my_bot | 🔎 Kết quả search (method=searxng, 5 kết quả, 0 nguồn ưu tín): [Cập Nhật Giá Vàng Mới Nhất, Mua Bán Vàng ... - Bảo Tín Minh ](https://btmc.vn/gia-vang-theo-ngay.html) | [Giá vàng hôm nay các thương hiệu Sjc, 9999, 24k, 18k của PNJ](https://www.24h.com.vn/gia-vang-hom-nay-c425.html) | [Bảo Tín Mạnh Hải](https://baotinmanhhai.vn/) | [BẢNG GIÁ VÀNG HÔM NAY TẠI PHÚ QUÝ](https://phuquy.com.vn/bang-gia/vang) | [Trực tiếp giá vàng hôm nay 08/09/2026: SJC, nhẫn 9999, thế g](https://baolamdong.vn/gia-vang)
+2026-09-08 09:54:48,918 | WARNING | my_bot | ⚠️ Lỗi cào nội dung link https://baotinmanhhai.vn/: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1081)
+2026-09-08 09:54:53,314 | INFO | my_bot | Ollama payload summary: messages=2, web_context_chars=2265, total_chars=5055
+2026-09-08 09:54:53,314 | INFO | my_bot | Ollama message[0] role=system chars=1456 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-08 09:54:53,315 | INFO | my_bot | Ollama message[1] role=user chars=3599 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Thứ Ba, ngày 08/09/2026, 09:54 (GMT+7)) --- Nguồn [1]: Tiêu đề: Cập Nhật Giá Vàng Mới Nhất, Mua Bán Vàng ... - Bảo Tín Minh Châu URL: https://btmc.vn/gia-vang-theo-ngay.

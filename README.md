@@ -16,37 +16,6 @@
 
 ---
 
-## 🌟 Tính Năng Nổi Bật
-
-### 1. 🧠 Trí Tuệ Nhân Tạo & Suy Luận Chuyên Sâu
-- **Phản hồi siêu tốc dạng dòng (Streaming):** Trả lời từng từ mượt mà theo thời gian thực, hỗ trợ hủy tác vụ đang tạo dở với `/stop`.
-- **Suy luận ẩn (Hidden Chain-of-Thought):** Tự động phân loại câu hỏi phức tạp (toán học, lập trình, phân tích đa chiều) để ép mô hình "suy nghĩ ngầm" trong thẻ `<suy_nghi>` trước khi xuất kết quả chính thức; lọc sạch phần suy nghĩ bằng `ThinkingStreamFilter`.
-- **4 Persona linh hoạt:** Chuyển đổi giọng điệu nhanh chóng giữa `ban_than` (Bạn thân), `chuyen_gia` (Chuyên gia), `hai_huoc` (Hài hước) và `co_van` (Cố vấn chiến lược).
-- **Hồ sơ & Trí nhớ dài hạn:** Tự động đúc kết thói quen, sở thích của người dùng sau mỗi 10 lượt trò chuyện để cá nhân hóa câu trả lời mà không làm phình ngữ cảnh (hỗ trợ xóa riêng với `/resetmemory`).
-
-### 2. 🌐 Hệ Thống Tìm Kiếm Thông Minh Đa Tầng & Thời Gian Thực (Smart Web RAG)
-- **Nguồn tìm kiếm linh hoạt:** Ưu tiên instance **SearXNG** tự host (bảo mật, không bị rate-limit) kết hợp dự phòng **DuckDuckGo API (DDGS)** và cào HTML trực tiếp.
-- **Tiền lọc ý định siêu tốc (Fast Heuristic Intent Filter):** Nhận diện lập tức các câu chào hỏi, viết code, giải toán, sáng tác, tâm sự để phản hồi ngay bằng kho tri thức bách khoa của AI, không gọi tìm kiếm web vô ích.
-- **Tối ưu hóa câu truy vấn (Query Reformulation):** Tự động bóc tách ngôn ngữ tự nhiên thành từ khóa tìm kiếm Google/DuckDuckGo chuẩn mực.
-- **Cơ chế "Nhặt từ khóa cốt lõi" (Adaptive Keyword Extraction & Retry):** Khi câu hỏi công nghệ dài hoặc phức tạp không ra kết quả ban đầu, hệ thống tự động loại bỏ từ bổ nghĩa, bảo toàn số phiên bản phần mềm (như `3.7`, `3.14`, `5090`) để tìm lại, hỗ trợ truy vấn công nghệ quốc tế theo thời gian thực (`<core_query> latest update`).
-- **Định vị Thời Gian Thực (Real-time Clock Anchor - GMT+7):** Cung cấp mốc ngày, giờ thực tế cho mô hình; đối chiếu dữ liệu tìm được với tri thức AI để phân tích các lĩnh vực biến đổi từng giờ (AI, phần mềm, công nghệ mới), **chấm dứt hoàn toàn phản hồi cộc lốc "không có dữ liệu"**.
-- **Bảo mật & Ưu tiên nguồn tin cậy:** Sắp xếp nguồn ưu tín lên đầu (VnExpress, Tuổi Trẻ, Báo Chính Phủ, WHO, Wikipedia...) và trang bị **SSRF Guard** ngăn chặn bot truy cập các địa chỉ IP nội bộ độc hại.
-
-### 3. 🎙️ Đàm Thoại Giọng Nói 100% Local (Không Cần API Ngoài)
-- **Nghe (STT):** Sử dụng `faster-whisper` chạy trực tiếp trên máy chủ (CPU/GPU), hỗ trợ nhận diện tiếng Việt chính xác cao và tự động dự phòng sang Groq Whisper API nếu có cấu hình.
-- **Nói (TTS):** Chuyển văn bản thành giọng nói tiếng Việt mượt mà qua `Piper TTS` với các model ONNX gọn nhẹ.
-- **3 Chế độ Voice Reply (`/ttsmode`):** `off` (chỉ gửi text), `smart` (tự động phát âm thanh với câu trả lời ngắn/vừa), `always` (luôn trả lời bằng voice).
-
-### 4. 🖼️ Thị Giác OCR & Dịch Thuật Đa Định Dạng
-- **Hỗ trợ Ảnh & PDF:** Trích xuất chữ tự động từ file ảnh (JPG, PNG, WebP) và tài liệu PDF (cả PDF dạng scan và PDF có lớp text).
-- **Tự động nhận diện ngôn ngữ:** Tự động phát hiện tiếng Việt hoặc tiếng Anh và dịch hai chiều chuẩn xác.
-
-### 5. 🏮 Giao Diện Kép: Telegram Dashboard & Web App Sơn Mài
-- **Trạm Điều Khiển Telegram (`/ui`):** Menu Inline Keyboard đa cấp chia 3 nhánh: 💬 Trò chuyện · 🧰 Tiện ích · 🖥️ Hệ thống. Đổi model Ollama, đổi giọng đọc, đổi persona trực quan bằng nút bấm.
-- **Trạm Điều Khiển Web (`webapp/`):** Dashboard quản trị trình duyệt viết bằng FastAPI + Vanilla JS, thiết kế theo ngôn ngữ **Sơn mài truyền thống** (đen lacquer, son đỏ, khảm vàng). Theo dõi trạng thái Ollama theo thời gian thực (con dấu nhấp nháy), thống kê phần cứng CPU/RAM/Disk, người dùng hoạt động và nhật ký terminal trực tiếp.
-
----
-
 ## 🛠️ Yêu Cầu Hệ Thống
 
 1. **Python:** 3.10+ (Khuyến nghị Python 3.11 hoặc 3.12)
