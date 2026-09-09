@@ -1,31 +1,23 @@
 """
-local_voice.py — Voice pipeline HOÀN TOÀN LOCAL cho my_bot.py, thay thế Groq Whisper (STT)
-và gTTS (TTS), vốn cả hai đều cần gọi ra internet/API ngoài.
-
-  STT: faster-whisper (CTranslate2)  — chạy CPU hoặc GPU, không cần key, không cần internet
-       sau khi đã tải model 1 lần đầu.
-  TTS: Piper TTS                      — engine giọng nói neural nhẹ, chạy CPU tốt, hỗ trợ tiếng Việt,
+local_voice.py — Voice pipeline LOCAL cho my_bot.py:
+  STT: Voicebox (https://github.com/jamiepine/voicebox.git) chạy trên Docker, kết nối qua REST API /transcribe
+  TTS: Piper TTS — engine giọng nói neural nhẹ, chạy CPU tốt, hỗ trợ tiếng Việt,
        hoàn toàn offline sau khi tải file model giọng (.onnx + .onnx.json).
 
 Cài đặt (trên máy chạy bot):
-    pip install faster-whisper piper-tts
+    pip install piper-tts
+    Docker container Voicebox: docker compose up -d --build (tại thư mục voicebox/)
 
-Tải model:
-  1) faster-whisper: KHÔNG cần tải tay — lần đầu chạy sẽ tự tải model (vd "small") vào cache
-     local (~/.cache/huggingface). Sau đó chạy hoàn toàn offline.
-     Nếu máy không có internet lúc đầu, tải trước bằng:
-         from faster_whisper import download_model
-         download_model("small", output_dir="./models/whisper-small")
-     rồi trỏ FASTER_WHISPER_MODEL=./models/whisper-small trong .env
-
-  2) Piper — cần tải file giọng tiếng Việt (.onnx + .onnx.json), ví dụ giọng "vi_VN-vais1000-medium"
-     từ kho model chính thức của Piper (rhasspy/piper-voices). Đặt 2 file vào thư mục ./voices/
-     rồi trỏ đường dẫn qua PIPER_VOICE_PATHS trong .env (xem UPGRADE_GUIDE.md).
+Tải model / Cấu hình:
+  1) Voicebox STT: Chạy qua Docker (mặc định http://127.0.0.1:17600), tự động tải model Whisper
+     theo cấu hình VOICEBOX_MODEL (ví dụ: "small", "base", "turbo").
+  2) Piper TTS: Cần file giọng tiếng Việt (.onnx + .onnx.json) trong ./voices/
+     và khai báo qua biến PIPER_VOICE_PATHS trong .env.
 
 Biến môi trường liên quan (.env):
-    FASTER_WHISPER_MODEL=small        # tiny/base/small/medium/large-v3, hoặc path model đã tải sẵn
-    FASTER_WHISPER_DEVICE=cpu         # cpu | cuda
-    FASTER_WHISPER_COMPUTE=int8       # int8 (nhẹ, khuyên dùng cho CPU) | float16 (GPU)
+    VOICEBOX_URL=http://127.0.0.1:17600
+    VOICEBOX_MODEL=small
+    VOICEBOX_LANGUAGE=vi
     PIPER_VOICE_PATHS=nu:./voices/vi_VN-vais1000-medium.onnx,nam:./voices/vi_VN-25hours_single-low.onnx
     PIPER_DEFAULT_VOICE=nu
 """
@@ -37,41 +29,49 @@ import logging
 from pathlib import Path
 from typing import Optional
 
+import httpx
+from config import VOICEBOX_URL, VOICEBOX_MODEL, VOICEBOX_LANGUAGE
+
 logger = logging.getLogger("my_bot.local_voice")
 
-# ── STT: faster-whisper ──────────────────────────────────────────
-_whisper_model = None
-_WHISPER_MODEL_NAME = os.getenv("FASTER_WHISPER_MODEL", "small")
-_WHISPER_DEVICE = os.getenv("FASTER_WHISPER_DEVICE", "cpu")
-_WHISPER_COMPUTE = os.getenv("FASTER_WHISPER_COMPUTE", "int8")
-
-
-def _get_whisper_model():
-    global _whisper_model
-    if _whisper_model is None:
-        from faster_whisper import WhisperModel  # import trễ để bot vẫn chạy được nếu chưa cài lib
-        logger.info(f"🧠 Đang nạp model faster-whisper '{_WHISPER_MODEL_NAME}' ({_WHISPER_DEVICE}/{_WHISPER_COMPUTE})...")
-        _whisper_model = WhisperModel(_WHISPER_MODEL_NAME, device=_WHISPER_DEVICE, compute_type=_WHISPER_COMPUTE)
-    return _whisper_model
-
-
+# ── STT: Voicebox (Docker REST API) ──────────────────────────────
 def transcribe_audio_local(ogg_path: str) -> str:
-    """Thay thế transcribe_audio() gốc (Groq) — CÙNG chữ ký hàm (sync, nhận path .ogg, trả về text),
-    nên chỉ cần đổi tên hàm được gọi trong handle_voice(), không cần sửa gì khác."""
+    """Gửi file âm thanh tới Voicebox (https://github.com/jamiepine/voicebox.git) chạy Docker
+    để nhận diện giọng nói (STT) qua endpoint POST /transcribe.
+    CÙNG chữ ký hàm (sync, nhận path .ogg, trả về text)."""
     wav_path = ogg_path.replace(".ogg", ".wav")
     try:
         subprocess.run(
             ["ffmpeg", "-y", "-i", ogg_path, "-ar", "16000", "-ac", "1", wav_path],
             check=True, capture_output=True,
         )
-        model = _get_whisper_model()
-        segments, _info = model.transcribe(wav_path, language="vi", beam_size=5, vad_filter=True)
-        text = " ".join(seg.text.strip() for seg in segments).strip()
-        return text or "[Lỗi âm thanh: không nhận diện được nội dung]"
+        url = f"{VOICEBOX_URL.rstrip('/')}/transcribe"
+        with open(wav_path, "rb") as af:
+            files = {"file": (os.path.basename(wav_path), af, "audio/wav")}
+            data = {}
+            if VOICEBOX_LANGUAGE:
+                data["language"] = VOICEBOX_LANGUAGE
+            if VOICEBOX_MODEL:
+                data["model"] = VOICEBOX_MODEL
+
+            with httpx.Client(timeout=60.0) as client:
+                res = client.post(url, files=files, data=data)
+
+        if res.status_code == 200:
+            result = res.json()
+            text = result.get("text", "").strip()
+            return text or "[Lỗi âm thanh: không nhận diện được nội dung]"
+        elif res.status_code == 202:
+            return "[Lỗi âm thanh: Voicebox đang tải model Whisper lần đầu, vui lòng thử lại sau]"
+        else:
+            return f"[Lỗi âm thanh: Voicebox HTTP {res.status_code} - {res.text}]"
+
     except FileNotFoundError:
         return "[Lỗi âm thanh: chưa cài ffmpeg — cần ffmpeg trong PATH]"
-    except ImportError:
-        return "[Lỗi âm thanh: chưa cài faster-whisper — chạy `pip install faster-whisper`]"
+    except (httpx.ConnectError, httpx.NetworkError):
+        return f"[Lỗi âm thanh: Không thể kết nối tới Voicebox tại {VOICEBOX_URL}. Hãy đảm bảo container Voicebox đang chạy]"
+    except httpx.TimeoutException:
+        return "[Lỗi âm thanh: Hết thời gian chờ phản hồi từ Voicebox (timeout)]"
     except Exception as e:
         return f"[Lỗi âm thanh: {e}]"
     finally:
@@ -114,27 +114,12 @@ def _get_piper_voice(voice_name: str):
 
 
 def prepare_text_for_tts(text: str) -> str:
-    """Giữ nguyên logic làm sạch text như bản gốc (bỏ bảng markdown, link, format số)."""
+    """Làm sạch văn bản trước khi đưa vào TTS — chỉ loại bỏ link/đường dẫn URL."""
     import re as _re
     if not text:
         return ""
-    lines = text.splitlines()
-    filtered_lines = [line for line in lines if not ('|' in line or '---' in line)]
-    clean_text = " ".join(filtered_lines)
-    clean_text = _re.sub(r'\[\d+\]', '', clean_text)
-    clean_text = _re.sub(r'https?://\S+', '', clean_text)
-    clean_text = _re.sub(r'[*_`#~]|(- )', ' ', clean_text)
-    clean_text = clean_text.split("🔗")[0].strip()
-
-    def _format_number(match):
-        num_str = match.group(0)
-        try:
-            return f"{int(num_str):,}".replace(",", ".")
-        except ValueError:
-            return num_str
-
-    clean_text = _re.sub(r'\b\d{4,}\b', _format_number, clean_text)
-    return _re.sub(r'\s+', ' ', clean_text).strip()
+    clean_text = _re.sub(r'https?://\S+', '', text)
+    return clean_text.strip()
 
 
 def text_to_speech_ogg_local(text: str, voice: Optional[str] = None, speed: float = 1.0) -> Optional[str]:

@@ -193,7 +193,7 @@ async def cmd_stt(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return await safe_reply(
             update,
             f"🎙️ Dùng: `/stt <local|groq>`\n\nEngine hiện tại: *{cur}*\n\n"
-            f"• `local` — faster-whisper, chạy offline hoàn toàn\n"
+            f"• `local` — Voicebox STT (Docker, https://github.com/jamiepine/voicebox)\n"
             f"• `groq` — Groq Whisper API, cần internet + GROQ_API_KEY ({groq_status})\n\n"
             f"ℹ️ Nếu engine chính lỗi, bot tự động thử engine còn lại.",
         )

@@ -13,7 +13,6 @@ from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
 import database as db
-import reasoning
 from bot_logger import logger
 from config import LONG_TERM_MEMORY_EVERY_N_TURNS, should_trigger_web_search
 from llm_engine import chat_with_llm, decide_web_search
@@ -59,28 +58,9 @@ async def _process_voice_reply(
     except Exception as e:
         logger.warning(f"⚠️ Lỗi tìm kiếm web (voice): {e}")
 
-    complexity = reasoning.classify_complexity(transcribed_text)
-    length_hint = {
-        "simple":  "CỰC KỲ NGẮN GỌN (1 câu, tối đa 20 từ)",
-        "medium":  "NGẮN GỌN (2-3 câu, tối đa 60 từ)",
-        "complex": "ĐẦY ĐỦ Ý nhưng vẫn súc tích (4-6 câu, tối đa 120 từ)",
-    }[complexity]
-
     history = await db.get_history(uid)
-    voice_msgs = history.copy()
-    if voice_msgs:
-        last_usr = voice_msgs[-1]["content"]
-        voice_msgs[-1] = dict(voice_msgs[-1])
-        voice_msgs[-1]["content"] = (
-            f"{last_usr}\n\n"
-            "⚠️ YÊU CẦU ĐẶC BIỆT DÀNH CHO VOICE:\n"
-            f"Người dùng đang nghe qua giọng nói (TTS). Hãy trả lời {length_hint}, "
-            "đi thẳng vào câu trả lời/kết quả chính, nói tự nhiên như đang nói chuyện thật "
-            "(KHÔNG dùng markdown/bảng, KHÔNG đọc toàn bộ thông tin cào được)."
-        )
-
     reply = await chat_with_llm(
-        voice_msgs, model, web_context, force_concise=True,
+        history, model, web_context, force_concise=False,
         nickname=nickname, persona=persona, profile_summary=profile_summary,
     )
     if sources_footer:

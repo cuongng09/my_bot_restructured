@@ -365,7 +365,38 @@ EOF
 fi
 
 # =====================================================================
-# 8. WEBAPP QUA DOCKER
+# 8. VOICEBOX STT QUA DOCKER (https://github.com/jamiepine/voicebox.git)
+# =====================================================================
+VOICEBOX_STARTED=false
+if [ -n "$DOCKER_CMD" ]; then
+    echo ""
+    read -rp "Bạn có muốn cài đặt & khởi chạy Voicebox STT (https://github.com/jamiepine/voicebox.git) bằng Docker không? (Y/n): " RUN_VOICEBOX
+    RUN_VOICEBOX=${RUN_VOICEBOX:-Y}
+    if [[ "$RUN_VOICEBOX" =~ ^[Yy]$ ]]; then
+        if [ -d "$PROJECT_DIR/../voicebox" ]; then
+            VOICEBOX_DIR="$(cd "$PROJECT_DIR/.." && pwd)/voicebox"
+        else
+            VOICEBOX_DIR="$PROJECT_DIR/voicebox"
+        fi
+
+        if [ ! -d "$VOICEBOX_DIR/.git" ]; then
+            log "Đang clone Voicebox từ https://github.com/jamiepine/voicebox.git..."
+            git clone --depth 1 https://github.com/jamiepine/voicebox.git "$VOICEBOX_DIR"
+        else
+            log "Đã có sẵn thư mục Voicebox tại: $VOICEBOX_DIR"
+        fi
+
+        log "Đang build & khởi chạy Voicebox Docker container (cổng 17600)..."
+        (cd "$VOICEBOX_DIR" && $DOCKER_CMD compose up -d --build)
+        VOICEBOX_STARTED=true
+        log "Voicebox STT đã sẵn sàng tại: http://localhost:17600"
+    else
+        log "Bỏ qua cài đặt Voicebox STT."
+    fi
+fi
+
+# =====================================================================
+# 9. WEBAPP QUA DOCKER
 # =====================================================================
 WEBAPP_STARTED_VIA_DOCKER=false
 if [ -n "$DOCKER_CMD" ]; then
@@ -408,7 +439,7 @@ else
 fi
 
 # =====================================================================
-# 9. CÀI ĐẶT SYSTEMD SERVICE (chỉ Linux)
+# 10. CÀI ĐẶT SYSTEMD SERVICE (chỉ Linux)
 # =====================================================================
 SYSTEMD_INSTALLED=false
 SYSTEMD_SERVICE_NAME="telegram-bot.service"
@@ -470,7 +501,7 @@ EOF
 fi
 
 # =====================================================================
-# 10. HOÀN TẤT
+# 11. HOÀN TẤT
 # =====================================================================
 echo ""
 log "Cài đặt hoàn tất! 🎉"
@@ -493,7 +524,13 @@ echo ""
 if [ "$SEARXNG_STARTED" = true ]; then
     echo -e "  4) SearXNG Web Search : ${GREEN}● Đang chạy${NC} tại http://localhost:8081"
 fi
-echo "  5) Quản trị Trạm Điều Khiển Web (Dashboard):"
+if [ "$VOICEBOX_STARTED" = true ]; then
+    echo -e "  5) Voicebox STT       : ${GREEN}● Đang chạy${NC} tại http://localhost:17600"
+    echo "     - Xem nhật ký (logs) : (cd $VOICEBOX_DIR && $DOCKER_CMD compose logs -f)"
+    echo "     - Dừng container     : (cd $VOICEBOX_DIR && $DOCKER_CMD compose down)"
+    echo "     - Khởi động lại      : (cd $VOICEBOX_DIR && $DOCKER_CMD compose restart)"
+fi
+echo "  6) Quản trị Trạm Điều Khiển Web (Dashboard):"
 if [ "$WEBAPP_STARTED_VIA_DOCKER" = true ]; then
     echo -e "     ${GREEN}●${NC} WebApp ĐANG CHẠY ngầm qua Docker tại: http://localhost:8080"
     echo "     - Xem nhật ký (logs) : $DOCKER_CMD compose -f docker-compose.webapp.yml logs -f webapp"

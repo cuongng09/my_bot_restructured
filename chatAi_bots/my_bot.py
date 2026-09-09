@@ -8,7 +8,7 @@ Tính năng (xem chi tiết trong từng module ở skills/ và handlers/):
   🌤️ Thời tiết + chất lượng không khí                            → skills/weather.py
   📰 Tin tức nhanh từ 5 nguồn báo                                → skills/news.py
   🖼️ OCR ảnh/PDF + dịch hai chiều Anh↔Việt                       → skills/ocr.py, handlers/media_handler.py
-  🎙️ Voice: STT (faster-whisper/Groq) + TTS (Piper/gTTS)         → skills/voice.py, handlers/voice_handler.py
+  🎙️ Voice: STT (Voicebox Docker/Groq) + TTS (Piper/gTTS)       → skills/voice.py, handlers/voice_handler.py
   🧠 Suy luận ẩn + trí nhớ dài hạn + persona                      → reasoning.py
   🛠️ Dashboard nút bấm (inline keyboard)                         → handlers/dashboard_handler.py
   🖥️ Lệnh quản trị server (chỉ ADMIN)                            → skills/dashboard.py

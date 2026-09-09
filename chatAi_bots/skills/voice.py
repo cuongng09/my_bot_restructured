@@ -1,6 +1,6 @@
 """
 skills/voice.py — Pipeline giọng nói:
-  STT: faster-whisper (local) hoặc Groq Whisper API (tùy cài đặt /stt của user)
+  STT: Voicebox Docker (local) hoặc Groq Whisper API (tùy cài đặt /stt của user)
   TTS: Piper TTS (local) với fallback về gTTS (cần internet)
   Tích hợp: xem handle_voice() trong handlers/voice_handler.py
 """
@@ -85,25 +85,11 @@ async def transcribe_for_user(uid: int, ogg_path: str) -> str:
 
 # ── TTS (gTTS fallback) ────────────────────────────────────────────────────────
 def _prepare_text_for_tts(text: str) -> str:
-    """Làm sạch văn bản trước khi đưa vào TTS (bỏ bảng Markdown, link, format số)."""
+    """Làm sạch văn bản trước khi đưa vào TTS — chỉ loại bỏ link/đường dẫn URL."""
     if not text:
         return ""
-    lines = text.splitlines()
-    filtered = [line for line in lines if not ('|' in line or '---' in line)]
-    clean = " ".join(filtered)
-    clean = re.sub(r'\[\d+\]', '', clean)
-    clean = re.sub(r'https?://\S+', '', clean)
-    clean = re.sub(r'[*_`#~]|(- )', ' ', clean)
-    clean = clean.split("🔗")[0].strip()
-
-    def _fmt_num(m):
-        try:
-            return f"{int(m.group(0)):,}".replace(",", ".")
-        except ValueError:
-            return m.group(0)
-
-    clean = re.sub(r'\b\d{4,}\b', _fmt_num, clean)
-    return re.sub(r'\s+', ' ', clean).strip()
+    clean = re.sub(r'https?://\S+', '', text)
+    return clean.strip()
 
 
 def text_to_speech_ogg_gtts(text: str) -> Optional[str]:
@@ -129,17 +115,11 @@ def text_to_speech_ogg_gtts(text: str) -> Optional[str]:
 
 
 async def maybe_send_voice_reply(update, uid: int, reply_text: str) -> None:
-    """Gửi voice note phản hồi theo cài đặt /ttsmode của user (off / smart / always).
+    """Gửi voice note phản hồi — không giới hạn độ dài, không chặn theo mode.
     Ưu tiên Piper local; fallback về gTTS nếu Piper chưa cấu hình."""
     settings = await db.get_settings(uid)
-    mode = settings["voice_mode"] or "smart"
-    if mode == "off":
-        return
-    if mode == "smart" and len(reply_text) > 600:
-        return
-
     loop = asyncio.get_event_loop()
-    voice_name = settings["tts_voice"] or None
+    voice_name = settings.get("tts_voice") or None
     ogg_path = None
 
     if local_voice.list_available_voices():

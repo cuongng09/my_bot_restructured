@@ -12,7 +12,7 @@
   <img src="bia_repo.png" alt="Telegram AI Bot Banner" width="100%" />
 </p>
 
-> **Trợ lý AI Telegram Tự Do & Mạnh Mẽ:** Tích hợp Ollama (LLM Streaming + Suy luận ẩn chuyên sâu), Hệ thống Tra cứu Web Thông minh Đa tầng (SearXNG/DuckDuckGo + Nhặt từ khóa cốt lõi + Định vị Thời gian thực), Voice 2 chiều 100% Local (faster-whisper + Piper TTS), Vision OCR & Dịch thuật Ảnh/PDF, Trí nhớ Dài hạn tự tóm tắt, Giao diện kép (Dashboard Telegram & Web App phong cách Sơn mài truyền thống).
+> **Trợ lý AI Telegram Tự Do & Mạnh Mẽ:** Tích hợp Ollama (LLM Streaming + Suy luận ẩn chuyên sâu), Hệ thống Tra cứu Web Thông minh Đa tầng (SearXNG/DuckDuckGo + Nhặt từ khóa cốt lõi + Định vị Thời gian thực), Voice 2 chiều 100% Local (Voicebox Docker STT + Piper TTS), Vision OCR & Dịch thuật Ảnh/PDF, Trí nhớ Dài hạn tự tóm tắt, Giao diện kép (Dashboard Telegram & Web App phong cách Sơn mài truyền thống).
 
 ---
 
@@ -33,7 +33,7 @@
 - **Bảo mật & Ưu tiên nguồn tin cậy:** Sắp xếp nguồn ưu tín lên đầu (VnExpress, Tuổi Trẻ, Báo Chính Phủ, WHO, Wikipedia...) và trang bị **SSRF Guard** ngăn chặn bot truy cập các địa chỉ IP nội bộ độc hại.
 
 ### 3. 🎙️ Đàm Thoại Giọng Nói 100% Local (Không Cần API Ngoài)
-- **Nghe (STT):** Sử dụng `faster-whisper` chạy trực tiếp trên máy chủ (CPU/GPU), hỗ trợ nhận diện tiếng Việt chính xác cao và tự động dự phòng sang Groq Whisper API nếu có cấu hình.
+- **Nghe (STT):** Sử dụng **Voicebox** (mã nguồn mở: [jamiepine/voicebox](https://github.com/jamiepine/voicebox.git)) chạy độc lập qua Docker (Whisper REST API), hỗ trợ nhận diện tiếng Việt chính xác cao và tự động dự phòng sang Groq Whisper API nếu có cấu hình.
 - **Nói (TTS):** Chuyển văn bản thành giọng nói tiếng Việt mượt mà qua `Piper TTS` với các model ONNX gọn nhẹ.
 - **3 Chế độ Voice Reply (`/ttsmode`):** `off` (chỉ gửi text), `smart` (tự động phát âm thanh với câu trả lời ngắn/vừa), `always` (luôn trả lời bằng voice).
 
@@ -52,10 +52,11 @@
 1. **Python:** 3.10+ (Khuyến nghị Python 3.11 hoặc 3.12)
 2. **Ollama:** Đã cài đặt và đang chạy local (`ollama serve`) với mô hình sẵn có (VD: `llama3.1`, `qwen2.5:7b`, v.v.)
 3. **Hệ thống Dependencies (Cài trên hệ điều hành):**
-   - **FFmpeg:** Xử lý & chuyển đổi file âm thanh (`.ogg`, `.wav`, `.mp3`) — dùng cho cả voice local (faster-whisper/Piper).
+   - **FFmpeg:** Xử lý & chuyển đổi file âm thanh (`.ogg`, `.wav`, `.mp3`) — dùng cho pipeline voice.
    - **Tesseract OCR:** Trích chữ từ hình ảnh (cần package `tesseract-ocr` và ngôn ngữ `tesseract-ocr-eng` / `tesseract-ocr-vie`).
-4. **Model giọng nói Piper** *(bắt buộc nếu muốn TTS local)*: tải 2 file `.onnx` + `.onnx.json` của 1 giọng tiếng Việt bất kỳ từ kho [`rhasspy/piper-voices`](https://huggingface.co/rhasspy/piper-voices) (thư mục `vi/vi_VN/`), đặt vào `./voices/` rồi khai báo qua `PIPER_VOICE_PATHS` trong `.env`. faster-whisper thì **không cần tải tay** — tự tải model vào cache khi chạy lần đầu.
-5. **Groq API Key** *(tùy chọn, chỉ dùng làm fallback)*: kể từ v5.2, voice mặc định chạy local (faster-whisper); Groq Whisper chỉ còn là phương án dự phòng nếu bạn chủ động chuyển lại. Không có key vẫn chạy được mọi tính năng.
+4. **Voicebox (Docker STT):** Khởi chạy container Voicebox từ repo [jamiepine/voicebox](https://github.com/jamiepine/voicebox.git) qua Docker (script `install.sh` / `install.ps1` hỗ trợ cài tự động).
+5. **Model giọng nói Piper** *(bắt buộc nếu muốn TTS local)*: tải 2 file `.onnx` + `.onnx.json` của 1 giọng tiếng Việt bất kỳ từ kho [`rhasspy/piper-voices`](https://huggingface.co/rhasspy/piper-voices) (thư mục `vi/vi_VN/`), đặt vào `./voices/` rồi khai báo qua `PIPER_VOICE_PATHS` trong `.env`.
+6. **Groq API Key** *(tùy chọn, chỉ dùng làm fallback)*: Groq Whisper chỉ là phương án dự phòng nếu bạn chủ động chuyển lại (`/stt groq`). Không có key vẫn chạy được mọi tính năng.
 
 ---
 
@@ -259,7 +260,7 @@ Get-Content .\logs\bot.log -Wait -Tail 30      # xem log trực tiếp
 | `/persona [tên]` | Mọi người | Đổi tính cách bot: `ban_than`, `chuyen_gia`, `hai_huoc`, `co_van` |
 | `/autoweb` | Mọi người | Bật/tắt chế độ **Tự động tìm kiếm thông minh** (tự phân loại câu hỏi & nhặt từ khóa) |
 | `/voice <tên>` | Mọi người | Đổi giọng đọc Piper TTS |
-| `/stt <local\|groq>` | Mọi người | Đổi engine nghe giọng nói giữa `faster-whisper` và `Groq Whisper` |
+| `/stt <local\|groq>` | Mọi người | Đổi engine nghe giọng nói giữa `Voicebox (Docker)` và `Groq Whisper` |
 | `/ttsmode <off\|smart\|always>` | Mọi người | Cấu hình chế độ trả lời bằng giọng nói |
 | `/export` | Mọi người | Xuất toàn bộ lịch sử hội thoại thành file `.txt` |
 | `/stop` | Mọi người | Dừng quá trình AI đang tạo câu trả lời dở dang |
@@ -282,7 +283,7 @@ chatAi_bots/
 ├── llm_engine.py                 # 🧠 Xử lý LLM: Streaming, Grounded RAG, Realtime Clock
 ├── database.py                    # 🗄️ Quản trị CSDL SQLite (lịch sử, cài đặt, profile)
 ├── reasoning.py                     # 💡 Phân loại câu hỏi, suy luận ẩn, tóm tắt trí nhớ dài hạn
-├── local_voice.py                    # 🎙️ Quản lý engine faster-whisper và Piper TTS local
+├── local_voice.py                    # 🎙️ Quản lý Voicebox STT (Docker) và Piper TTS local
 │
 ├── skills/                            # 🔧 Các module nghiệp vụ độc lập (Không phụ thuộc Telegram)
 │   ├── web_search.py                  #    🔍 Tìm kiếm đa tầng, làm sạch query, nhặt từ khóa cốt lõi

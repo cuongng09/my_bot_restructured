@@ -55,8 +55,11 @@ STREAM_EDIT_INTERVAL = float(os.getenv("STREAM_EDIT_INTERVAL", "0.7"))
 DB_PATH  = os.getenv("DB_PATH", "data/bot_data.db")
 LOG_FILE = os.getenv("LOG_FILE", "logs/bot.log")
 
-# ── Optional API keys ─────────────────────────────────────────────────────────
+# ── Voice / STT Configuration ───────────────────────────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")   # dùng cho engine STT Groq Whisper (/stt groq)
+VOICEBOX_URL = os.getenv("VOICEBOX_URL", "http://127.0.0.1:17600")
+VOICEBOX_MODEL = os.getenv("VOICEBOX_MODEL", "small")
+VOICEBOX_LANGUAGE = os.getenv("VOICEBOX_LANGUAGE", "vi")
 
 # ── Trạm Điều Khiển Web (webapp/) ───────────────────────────────────────────────
 WEBAPP_HOST = os.getenv("WEBAPP_HOST", "0.0.0.0")

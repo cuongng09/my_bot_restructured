@@ -123,8 +123,9 @@ Log-Warn "  TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe"
 # 7. DOCKER, SEARXNG VA WEBAPP
 # =====================================================================
 $dockerCmd = Get-Command docker -ErrorAction SilentlyContinue
-$searxngStarted = $false
-$webappStarted  = $false
+$searxngStarted  = $false
+$voiceboxStarted = $false
+$webappStarted   = $false
 
 if ($dockerCmd) {
     # Kiem tra Docker daemon co dang chay khong
@@ -212,7 +213,34 @@ search:
             }
         }
 
-        # ---- 7.2 Cai dat WebApp qua Docker ----
+        # ---- 7.2 Cai dat Voicebox STT (Docker) ----
+        $installVoicebox = Read-Host "Ban co muon cai dat va khoi chay Voicebox STT (https://github.com/jamiepine/voicebox.git) bang Docker khong? (Y/n)"
+        if ([string]::IsNullOrWhiteSpace($installVoicebox) -or $installVoicebox -match "^[Yy]$") {
+            $parentVoicebox = Join-Path (Split-Path $PROJECT_DIR -Parent) "voicebox"
+            $localVoicebox  = Join-Path $PROJECT_DIR "voicebox"
+            $voiceboxDir    = if (Test-Path $parentVoicebox) { $parentVoicebox } else { $localVoicebox }
+
+            if (-not (Test-Path (Join-Path $voiceboxDir ".git"))) {
+                Log-OK "Dang clone Voicebox tu https://github.com/jamiepine/voicebox.git..."
+                & git clone --depth 1 https://github.com/jamiepine/voicebox.git $voiceboxDir
+            } else {
+                Log-OK "Da co san thu muc Voicebox tai: $voiceboxDir"
+            }
+
+            Log-OK "Dang build va khoi chay Voicebox Docker container (cong 17600)..."
+            Push-Location $voiceboxDir
+            try {
+                & docker compose up -d --build
+                $voiceboxStarted = $true
+                Log-OK "Voicebox STT da san sang tai: http://localhost:17600"
+            } catch {
+                Log-Warn "Loi khi khoi chay Voicebox qua Docker: $_"
+            } finally {
+                Pop-Location
+            }
+        }
+
+        # ---- 7.3 Cai dat WebApp qua Docker ----
         $installWebapp = Read-Host "Ban co muon build va chay Tram Dieu Khien Web (WebApp) bang Docker khong? (Y/n)"
         if ([string]::IsNullOrWhiteSpace($installWebapp) -or $installWebapp -match "^[Yy]$") {
             Log-OK "Dang build Docker image cho WebApp..."
@@ -228,7 +256,7 @@ search:
         }
     }
 } else {
-    Log-Warn "Chua phat hien Docker Desktop. Cai dat tu https://www.docker.com neu muon dung SearXNG."
+    Log-Warn "Chua phat hien Docker Desktop. Cai dat tu https://www.docker.com neu muon dung SearXNG hoac Voicebox."
 }
 
 # =====================================================================
@@ -247,7 +275,12 @@ Write-Host ""
 if ($searxngStarted) {
     Write-Host "  4) SearXNG Web Search: Dang chay tai http://localhost:8081" -ForegroundColor Green
 }
-Write-Host "  5) Quan tri Tram Dieu Khien Web (Dashboard):"
+if ($voiceboxStarted) {
+    Write-Host "  5) Voicebox STT (Docker): Dang chay tai http://localhost:17600" -ForegroundColor Green
+    Write-Host "     - Xem logs  : (cd $voiceboxDir ; docker compose logs -f)"
+    Write-Host "     - Dung       : (cd $voiceboxDir ; docker compose down)"
+}
+Write-Host "  6) Quan tri Tram Dieu Khien Web (Dashboard):"
 if ($webappStarted) {
     Write-Host "     * WebApp DANG CHAY qua Docker tai: http://localhost:8080" -ForegroundColor Green
     Write-Host "     - Xem logs  : docker compose -f docker-compose.webapp.yml logs -f webapp"

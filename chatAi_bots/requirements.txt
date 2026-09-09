@@ -13,8 +13,7 @@ langdetect>=1.0.9
 groq>=0.9
 gTTS>=2.5
 
-# Voice pipeline hoàn toàn local (local_voice.py) — tùy chọn nhưng khuyến nghị
-faster-whisper>=1.0
+# Voice pipeline (local_voice.py) — STT qua Voicebox Docker, TTS qua Piper/gTTS
 piper-tts>=1.2
 
 # Dashboard /sys stats (skills/dashboard.py) — tùy chọn

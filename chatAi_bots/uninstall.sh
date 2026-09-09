@@ -127,9 +127,28 @@ else
 fi
 
 # =====================================================================
-# 1.1 GỠ BỎ WEBAPP DOCKER CONTAINER
+# 1.1 GỠ BỎ VOICEBOX DOCKER CONTAINER
 # =====================================================================
-log "1.1 Đang dừng và gỡ bỏ WebApp Docker container..."
+log "1.1 Đang dừng và gỡ bỏ Voicebox STT Docker container..."
+VOICEBOX_PATH=""
+if [ -d "$PROJECT_DIR/voicebox" ]; then
+    VOICEBOX_PATH="$PROJECT_DIR/voicebox"
+elif [ -d "$PROJECT_DIR/../voicebox" ]; then
+    VOICEBOX_PATH="$(cd "$PROJECT_DIR/.." && pwd)/voicebox"
+fi
+
+if [ -n "$VOICEBOX_PATH" ] && [ -n "$DOCKER_CMD" ]; then
+    (cd "$VOICEBOX_PATH" && $DOCKER_CMD compose down 2>/dev/null || true)
+    $DOCKER_CMD rm -f voicebox 2>/dev/null || true
+    log "Đã dừng và gỡ container Voicebox STT."
+elif [ -z "$DOCKER_CMD" ]; then
+    warn "Không tìm thấy Docker — bỏ qua bước dừng Voicebox container."
+fi
+
+# =====================================================================
+# 1.2 GỠ BỎ WEBAPP DOCKER CONTAINER
+# =====================================================================
+log "1.2 Đang dừng và gỡ bỏ WebApp Docker container..."
 if [ -n "$DOCKER_CMD" ]; then
     $DOCKER_CMD compose -f docker-compose.webapp.yml down -v 2>/dev/null || true
     $DOCKER_CMD rm -f telegram-bot-webapp 2>/dev/null || true

@@ -243,7 +243,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     elif data == "menu_stt":
         current = (await db.get_settings(uid))["stt_engine"] or "local"
-        options = [("local", "🖥️ Local (faster-whisper, offline)")]
+        options = [("local", "🖥️ Local (Voicebox Docker)")]
         if groq_client:
             options.append(("groq", "☁️ Groq Whisper API (cần internet)"))
         kb = [[InlineKeyboardButton(
@@ -259,7 +259,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         choice = data.replace("set_stt_", "")
         await db.set_setting(uid, stt_engine=choice)
         await query.answer(f"Đã đổi engine nghe giọng nói: {choice}")
-        options = [("local", "🖥️ Local (faster-whisper, offline)")]
+        options = [("local", "🖥️ Local (Voicebox Docker)")]
         if groq_client:
             options.append(("groq", "☁️ Groq Whisper API (cần internet)"))
         kb = [[InlineKeyboardButton(

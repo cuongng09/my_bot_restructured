@@ -98,6 +98,27 @@ if ($dockerCmd) {
         } else {
             Log-Info "Khong tim thay thu muc searxng\, bo qua."
         }
+
+        # ---- 4. Gỡ Voicebox container ----
+        Log-OK "Dang kiem tra va don dep Voicebox container..."
+        $parentVoicebox = Join-Path (Split-Path $PROJECT_DIR -Parent) "voicebox"
+        $localVoicebox  = Join-Path $PROJECT_DIR "voicebox"
+        $voiceboxDir    = if (Test-Path $parentVoicebox) { $parentVoicebox } else { $localVoicebox }
+
+        if (Test-Path $voiceboxDir) {
+            Push-Location $voiceboxDir
+            try {
+                & docker compose down *>$null
+                & docker rm -f voicebox *>$null
+                Log-OK "Da dung Voicebox container (giu nguyen thu muc va model cache)."
+            } catch {
+                Log-Warn "Khong the dung Voicebox container: $_"
+            } finally {
+                Pop-Location
+            }
+        } else {
+            Log-Info "Khong tim thay thu muc voicebox\, bo qua."
+        }
     } else {
         Log-Warn "Docker duoc cai nhung daemon chua chay. Bo qua viec dung container."
         Log-Warn "Hay khoi dong Docker Desktop va chay lai script neu can don dep container."
