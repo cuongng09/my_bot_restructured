@@ -85,11 +85,8 @@ async def transcribe_for_user(uid: int, ogg_path: str) -> str:
 
 # ── TTS (gTTS fallback) ────────────────────────────────────────────────────────
 def _prepare_text_for_tts(text: str) -> str:
-    """Làm sạch văn bản trước khi đưa vào TTS — chỉ loại bỏ link/đường dẫn URL."""
-    if not text:
-        return ""
-    clean = re.sub(r'https?://\S+', '', text)
-    return clean.strip()
+    """Làm sạch văn bản trước khi đưa vào TTS (dùng chung logic chuẩn hoá của local_voice)."""
+    return local_voice.prepare_text_for_tts(text)
 
 
 def text_to_speech_ogg_gtts(text: str) -> Optional[str]:

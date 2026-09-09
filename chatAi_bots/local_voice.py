@@ -116,8 +116,8 @@ def _get_piper_voice(voice_name: str):
 def prepare_text_for_tts(text: str) -> str:
     """Làm sạch văn bản trước khi đưa vào TTS.
     Chỉ giữ lại chữ cái, chữ số, dấu câu cơ bản (. , ! ? :).
-    Loại bỏ hoàn toàn: URL, Markdown, emoji, ký tự đặc biệt,
-    code block, HTML, bullet points, ký hiệu toán học, v.v.
+    Loại bỏ hoàn toàn: URL, Markdown, emoji, bảng (|---|---|), dấu |,
+    dấu gạch ngang -, dấu tiêu đề (###), code block, HTML, v.v.
     """
     import re as _re
     import unicodedata as _ud
@@ -135,14 +135,18 @@ def prepare_text_for_tts(text: str) -> str:
     # 3. Xóa URL (http, https, ftp, www)
     text = _re.sub(r'(?:https?://|ftp://|www\.)\S+', '', text)
 
-    # 4. Xóa Markdown formatting
+    # 4. Xóa bảng Markdown & đường kẻ bảng (|---|---|) và dấu |
+    text = _re.sub(r'^\s*\|?[\s:\-]*\-+[\s:\-]*\|.*$', '', text, flags=_re.MULTILINE)
+    text = text.replace('|', ' ')
+
+    # 5. Xóa Markdown formatting & ký hiệu tiêu đề # (###)
     #    Bold/italic: **text**, *text*, __text__, _text_
     text = _re.sub(r'\*{1,3}([^*]*?)\*{1,3}', r'\1', text)
     text = _re.sub(r'_{1,3}([^_]*?)_{1,3}', r'\1', text)
     #    Strikethrough: ~~text~~
     text = _re.sub(r'~~([^~]*?)~~', r'\1', text)
     #    Heading: # ## ###
-    text = _re.sub(r'^#{1,6}\s+', '', text, flags=_re.MULTILINE)
+    text = _re.sub(r'#+', '', text)
     #    Blockquote: > text
     text = _re.sub(r'^\s*>\s?', '', text, flags=_re.MULTILINE)
     #    Horizontal rule: --- *** ___
@@ -152,17 +156,18 @@ def prepare_text_for_tts(text: str) -> str:
     #    Image: ![alt](url) → bỏ
     text = _re.sub(r'!\[[^\]]*?\]\([^)]*?\)', '', text)
 
-    # 5. Xóa bullet / list markers ở đầu dòng (-, *, +, •, ·, số.)
+    # 6. Xóa bullet / list markers ở đầu dòng (-, *, +, •, ·, số.) và dấu gạch ngang -
     text = _re.sub(r'^\s*[-*+•·]\s+', '', text, flags=_re.MULTILINE)
     text = _re.sub(r'^\s*\d+[.)]\s+', '', text, flags=_re.MULTILINE)
+    text = text.replace('-', ' ')
 
-    # 6. Loại bỏ emoji và các ký tự Unicode đặc biệt
+    # 7. Loại bỏ emoji và các ký tự Unicode đặc biệt
     #    Giữ lại: chữ cái (Latin + tiếng Việt + CJK), chữ số, dấu câu cơ bản,
-    #             khoảng trắng và xuống dòng.
+    #             khoảng trắng và xuống dòng (bỏ -, |, # khỏi dấu câu cho phép).
     def _keep_char(c: str) -> bool:
         if c in ' \t\n\r':
             return True
-        if c in '.,!?;:-()[]"\'' :
+        if c in '.,!?;:()[]"\'':
             return True
         cat = _ud.category(c)
         # Lu=Uppercase, Ll=Lowercase, Lt=Titlecase, Lm=Modifier, Lo=Other letter
@@ -171,7 +176,7 @@ def prepare_text_for_tts(text: str) -> str:
 
     text = ''.join(c for c in text if _keep_char(c))
 
-    # 7. Chuẩn hoá khoảng trắng thừa
+    # 8. Chuẩn hoá khoảng trắng thừa
     text = _re.sub(r'\n{3,}', '\n\n', text)   # tối đa 2 dòng trống
     text = _re.sub(r'[ \t]{2,}', ' ', text)   # nhiều space → 1 space
     text = _re.sub(r' +([.,!?;:])', r'\1', text)  # bỏ space trước dấu câu
