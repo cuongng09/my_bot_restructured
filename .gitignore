@@ -12,4 +12,5 @@ chatAi_bots/voices/*.onnx
 chatAi_bots/voices/*.onnx.json
 chatAi_bots/models/
 chatAi_bots/venv/
+chatAi_bots/voicebox/
 venv/

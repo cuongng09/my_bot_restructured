@@ -93,11 +93,13 @@ echo -e "${RED}=====================================================${NC}"
 echo -e "${RED}         CẢNH BÁO: THAO TÁC GỠ CÀI ĐẶT             ${NC}"
 echo -e "${RED}=====================================================${NC}"
 echo "Thao tác này sẽ gỡ bỏ:"
-echo "  1. Dừng & Gỡ container SearXNG & WebApp Docker (giữ nguyên thư mục cấu hình)"
-echo "  2. Dừng, vô hiệu hóa & xóa systemd service telegram-bot (nếu có)"
-echo "  3. Môi trường ảo Python (venv)"
-echo "  4. Các thư mục dữ liệu (data, logs, voices — tùy chọn)"
-echo "  5. File cấu hình .env (tùy chọn)"
+echo "  1.   Dừng & Gỡ container SearXNG & WebApp Docker (giữ nguyên thư mục cấu hình)"
+echo "  1.1  Voicebox STT — xóa backend/venv & node_modules (hỏi trước, tùy chọn)"
+echo "  1.2  Dừng & Gỡ WebApp Docker container"
+echo "  1.3  Dừng, vô hiệu hóa & xóa systemd service telegram-bot (nếu có)"
+echo "  2.   Môi trường ảo Python (venv)"
+echo "  3.   Các thư mục dữ liệu (data, logs, voices — tùy chọn)"
+echo "  4.   File cấu hình .env (tùy chọn)"
 echo ""
 
 read -rp "Bạn có chắc chắn muốn gỡ bỏ hoàn toàn? (y/N): " CONFIRM
@@ -127,9 +129,10 @@ else
 fi
 
 # =====================================================================
-# 1.1 GỠ BỎ VOICEBOX DOCKER CONTAINER
+# 1.1 GỠ BỎ VOICEBOX (CÀI QUA JUST)
 # =====================================================================
-log "1.1 Đang dừng và gỡ bỏ Voicebox STT Docker container..."
+read -rp "Bạn có muốn gỡ bỏ Voicebox STT (xóa venv và dữ liệu cache)? (y/N): " REMOVE_VOICEBOX
+REMOVE_VOICEBOX=${REMOVE_VOICEBOX:-N}
 VOICEBOX_PATH=""
 if [ -d "$PROJECT_DIR/voicebox" ]; then
     VOICEBOX_PATH="$PROJECT_DIR/voicebox"
@@ -137,12 +140,25 @@ elif [ -d "$PROJECT_DIR/../voicebox" ]; then
     VOICEBOX_PATH="$(cd "$PROJECT_DIR/.." && pwd)/voicebox"
 fi
 
-if [ -n "$VOICEBOX_PATH" ] && [ -n "$DOCKER_CMD" ]; then
-    (cd "$VOICEBOX_PATH" && $DOCKER_CMD compose down 2>/dev/null || true)
-    $DOCKER_CMD rm -f voicebox 2>/dev/null || true
-    log "Đã dừng và gỡ container Voicebox STT."
-elif [ -z "$DOCKER_CMD" ]; then
-    warn "Không tìm thấy Docker — bỏ qua bước dừng Voicebox container."
+if [[ "$REMOVE_VOICEBOX" =~ ^[Yy]$ ]]; then
+    if [ -n "$VOICEBOX_PATH" ]; then
+        log "1.1 Đang dọn dẹp môi trường Voicebox tại: $VOICEBOX_PATH"
+        # Xóa Python venv của voicebox (thư mục backend/venv)
+        if [ -d "$VOICEBOX_PATH/backend/venv" ]; then
+            rm -rf "$VOICEBOX_PATH/backend/venv"
+            log "Đã xóa $VOICEBOX_PATH/backend/venv"
+        fi
+        # Xóa node_modules nếu có
+        if [ -d "$VOICEBOX_PATH/node_modules" ]; then
+            rm -rf "$VOICEBOX_PATH/node_modules"
+            log "Đã xóa $VOICEBOX_PATH/node_modules"
+        fi
+        log "Đã dọn dẹp Voicebox (giữ nguyên mã nguồn và thư mục gốc)."
+    else
+        warn "Không tìm thấy thư mục voicebox/, bỏ qua."
+    fi
+else
+    warn "Giữ lại Voicebox STT."
 fi
 
 # =====================================================================
@@ -158,10 +174,10 @@ else
 fi
 
 # =====================================================================
-# 1.2 GỠ BỎ SYSTEMD SERVICE (chỉ Linux)
+# 1.3 GỠ BỎ SYSTEMD SERVICE (chỉ Linux)
 # =====================================================================
-if [[ "$OS" != "macos" ]] && command -v systemctl >/dev/null 2>&1; then
-    log "1.2 Đang kiểm tra và gỡ bỏ systemd service..."
+if [[ "$OS" != "macos" ]] && command -v systemctl > /dev/null 2>&1; then
+    log "1.3 Đang kiểm tra và gỡ bỏ systemd service..."
 
     # Danh sách các service cần kiểm tra và xóa
     SERVICES=("telegram-bot.service" "telegram-bot-webapp.service")

@@ -24,9 +24,10 @@ Write-Host "Thao tac nay se don dep:"
 Write-Host "  1. Cac dich vu Windows Service (NSSM neu co)"
 Write-Host "  2. WebApp Docker container"
 Write-Host "  3. SearXNG Docker container"
-Write-Host "  4. Moi truong ao Python (venv)"
-Write-Host "  5. Du lieu bot (data, logs, voices - tuy chon)"
-Write-Host "  6. File cau hinh .env (tuy chon)"
+Write-Host "  4. Voicebox STT (xoa venv va node_modules - tuy chon)"
+Write-Host "  5. Moi truong ao Python (venv)"
+Write-Host "  6. Du lieu bot (data, logs, voices - tuy chon)"
+Write-Host "  7. File cau hinh .env (tuy chon)"
 Write-Host ""
 
 $confirm = Read-Host "Ban co chac chan muon tiep tuc go cai dat? (y/N)"
@@ -98,27 +99,6 @@ if ($dockerCmd) {
         } else {
             Log-Info "Khong tim thay thu muc searxng\, bo qua."
         }
-
-        # ---- 4. Gỡ Voicebox container ----
-        Log-OK "Dang kiem tra va don dep Voicebox container..."
-        $parentVoicebox = Join-Path (Split-Path $PROJECT_DIR -Parent) "voicebox"
-        $localVoicebox  = Join-Path $PROJECT_DIR "voicebox"
-        $voiceboxDir    = if (Test-Path $parentVoicebox) { $parentVoicebox } else { $localVoicebox }
-
-        if (Test-Path $voiceboxDir) {
-            Push-Location $voiceboxDir
-            try {
-                & docker compose down *>$null
-                & docker rm -f voicebox *>$null
-                Log-OK "Da dung Voicebox container (giu nguyen thu muc va model cache)."
-            } catch {
-                Log-Warn "Khong the dung Voicebox container: $_"
-            } finally {
-                Pop-Location
-            }
-        } else {
-            Log-Info "Khong tim thay thu muc voicebox\, bo qua."
-        }
     } else {
         Log-Warn "Docker duoc cai nhung daemon chua chay. Bo qua viec dung container."
         Log-Warn "Hay khoi dong Docker Desktop va chay lai script neu can don dep container."
@@ -128,7 +108,35 @@ if ($dockerCmd) {
 }
 
 # =====================================================================
-# 4. XOA MOI TRUONG AO PYTHON (VENV)
+# 4. GO BO VOICEBOX STT (CAI QUA JUST)
+# =====================================================================
+$parentVoicebox = Join-Path (Split-Path $PROJECT_DIR -Parent) "voicebox"
+$localVoicebox  = Join-Path $PROJECT_DIR "voicebox"
+$voiceboxDir    = if (Test-Path $parentVoicebox) { $parentVoicebox } else { $localVoicebox }
+
+if (Test-Path $voiceboxDir) {
+    $removeVoicebox = Read-Host "Ban co muon go bo moi truong Voicebox STT (xoa backend\venv va node_modules)? (y/N)"
+    if ($removeVoicebox -match "^[Yy]$") {
+        $vbVenv = Join-Path $voiceboxDir "backend\venv"
+        if (Test-Path $vbVenv) {
+            Remove-Item -Recurse -Force $vbVenv -ErrorAction SilentlyContinue
+            Log-OK "Da xoa $vbVenv"
+        }
+        $vbNodeModules = Join-Path $voiceboxDir "node_modules"
+        if (Test-Path $vbNodeModules) {
+            Remove-Item -Recurse -Force $vbNodeModules -ErrorAction SilentlyContinue
+            Log-OK "Da xoa $vbNodeModules"
+        }
+        Log-OK "Da don dep Voicebox (giu nguyen ma nguon va thu muc goc)."
+    } else {
+        Log-Warn "Giu lai Voicebox STT."
+    }
+} else {
+    Log-Info "Khong tim thay thu muc voicebox\, bo qua."
+}
+
+# =====================================================================
+# 5. XOA MOI TRUONG AO PYTHON (VENV)
 # =====================================================================
 if (Test-Path "venv") {
     Log-OK "Dang xoa moi truong ao Python (venv)..."
@@ -139,7 +147,7 @@ if (Test-Path "venv") {
 }
 
 # =====================================================================
-# 5. TUY CHON XOA DU LIEU (data, logs, voices)
+# 6. TUY CHON XOA DU LIEU (data, logs, voices)
 # =====================================================================
 $removeData = Read-Host "Ban co muon xoa du lieu bot (data, logs, voices)? (y/N)"
 if ($removeData -match "^[Yy]$") {
@@ -166,7 +174,7 @@ if ($removeData -match "^[Yy]$") {
 }
 
 # =====================================================================
-# 6. TUY CHON XOA FILE .env
+# 7. TUY CHON XOA FILE .env
 # =====================================================================
 $removeEnv = Read-Host "Ban co muon xoa file cau hinh .env? (y/N)"
 if ($removeEnv -match "^[Yy]$") {

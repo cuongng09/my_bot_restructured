@@ -125,6 +125,7 @@ Log-Warn "  TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe"
 $dockerCmd = Get-Command docker -ErrorAction SilentlyContinue
 $searxngStarted  = $false
 $voiceboxStarted = $false
+$voiceboxDir     = ""
 $webappStarted   = $false
 
 if ($dockerCmd) {
@@ -213,34 +214,7 @@ search:
             }
         }
 
-        # ---- 7.2 Cai dat Voicebox STT (Docker) ----
-        $installVoicebox = Read-Host "Ban co muon cai dat va khoi chay Voicebox STT (https://github.com/jamiepine/voicebox.git) bang Docker khong? (Y/n)"
-        if ([string]::IsNullOrWhiteSpace($installVoicebox) -or $installVoicebox -match "^[Yy]$") {
-            $parentVoicebox = Join-Path (Split-Path $PROJECT_DIR -Parent) "voicebox"
-            $localVoicebox  = Join-Path $PROJECT_DIR "voicebox"
-            $voiceboxDir    = if (Test-Path $parentVoicebox) { $parentVoicebox } else { $localVoicebox }
-
-            if (-not (Test-Path (Join-Path $voiceboxDir ".git"))) {
-                Log-OK "Dang clone Voicebox tu https://github.com/jamiepine/voicebox.git..."
-                & git clone --depth 1 https://github.com/jamiepine/voicebox.git $voiceboxDir
-            } else {
-                Log-OK "Da co san thu muc Voicebox tai: $voiceboxDir"
-            }
-
-            Log-OK "Dang build va khoi chay Voicebox Docker container (cong 17600)..."
-            Push-Location $voiceboxDir
-            try {
-                & docker compose up -d --build
-                $voiceboxStarted = $true
-                Log-OK "Voicebox STT da san sang tai: http://localhost:17600"
-            } catch {
-                Log-Warn "Loi khi khoi chay Voicebox qua Docker: $_"
-            } finally {
-                Pop-Location
-            }
-        }
-
-        # ---- 7.3 Cai dat WebApp qua Docker ----
+        # ---- 7.2 Cai dat WebApp qua Docker ----
         $installWebapp = Read-Host "Ban co muon build va chay Tram Dieu Khien Web (WebApp) bang Docker khong? (Y/n)"
         if ([string]::IsNullOrWhiteSpace($installWebapp) -or $installWebapp -match "^[Yy]$") {
             Log-OK "Dang build Docker image cho WebApp..."
@@ -256,11 +230,140 @@ search:
         }
     }
 } else {
-    Log-Warn "Chua phat hien Docker Desktop. Cai dat tu https://www.docker.com neu muon dung SearXNG hoac Voicebox."
+    Log-Warn "Chua phat hien Docker Desktop. Cai dat tu https://www.docker.com neu muon dung SearXNG."
 }
 
 # =====================================================================
-# 8. HOAN TAT
+# 8. VOICEBOX STT QUA JUST (https://github.com/jamiepine/voicebox.git)
+# =====================================================================
+Write-Host ""
+$installVoicebox = Read-Host "Ban co muon cai dat Voicebox STT bang 'just' khong? (Y/n)"
+if ([string]::IsNullOrWhiteSpace($installVoicebox) -or $installVoicebox -match "^[Yy]$") {
+    $parentVoicebox = Join-Path (Split-Path $PROJECT_DIR -Parent) "voicebox"
+    $localVoicebox  = Join-Path $PROJECT_DIR "voicebox"
+    $voiceboxDir    = if (Test-Path $parentVoicebox) { $parentVoicebox } else { $localVoicebox }
+
+    # ---- Clone repo neu chua co ----
+    if (-not (Test-Path (Join-Path $voiceboxDir ".git"))) {
+        Log-OK "Dang clone Voicebox tu https://github.com/jamiepine/voicebox.git..."
+        & git clone --depth 1 https://github.com/jamiepine/voicebox.git $voiceboxDir
+    } else {
+        Log-OK "Da co san thu muc Voicebox tai: $voiceboxDir"
+    }
+
+    # ---- Kiem tra / cai just ----
+    $justCmd = Get-Command just -ErrorAction SilentlyContinue
+    if (-not $justCmd) {
+        Log-Warn "'just' chua duoc cai. Dang cai qua winget..."
+        try {
+            & winget install --id Casey.Just -e --source winget --accept-package-agreements --accept-source-agreements
+            # Cap nhat lai PATH trong session hien tai
+            $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" +
+                        [System.Environment]::GetEnvironmentVariable("PATH", "User")
+            $justCmd = Get-Command just -ErrorAction SilentlyContinue
+        } catch {
+            Log-Warn "Khong the cai 'just' qua winget: $_"
+            Log-Warn "Cai thu cong: https://github.com/casey/just#installation"
+            Log-Warn "Sau khi cai, vao thu muc '$voiceboxDir' va chay: just setup"
+            $installVoicebox = "skip"
+        }
+    }
+
+    if ($installVoicebox -ne "skip" -and $justCmd) {
+        # ---- Kiem tra Python tuong thich (Voicebox yeu cau 3.10-3.12) ----
+        $vbPython = $null
+        foreach ($pyTry in @("python3.12", "python3.11", "python3.10", "python3.13")) {
+            if (Get-Command $pyTry -ErrorAction SilentlyContinue) {
+                $vbPython = $pyTry; break
+            }
+        }
+        # Neu chi co python3 / python chung -> kiem tra phien ban
+        if (-not $vbPython) {
+            $defPy = Get-Command python -ErrorAction SilentlyContinue
+            if ($defPy) {
+                $minor = [int](& python -c "import sys; print(sys.version_info.minor)" 2>$null)
+                $major = [int](& python -c "import sys; print(sys.version_info.major)" 2>$null)
+                if ($major -eq 3 -and $minor -le 12) { $vbPython = "python" }
+            }
+        }
+
+        if (-not $vbPython) {
+            Log-Warn "Voicebox yeu cau Python 3.10-3.12 (kokoro khong ho tro Python 3.13+)."
+            Log-Warn "Dang thu cai Python 3.12 qua winget..."
+            try {
+                & winget install --id Python.Python.3.12 -e --source winget `
+                    --accept-package-agreements --accept-source-agreements
+                # Cap nhat PATH
+                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" +
+                            [System.Environment]::GetEnvironmentVariable("PATH","User")
+                if (Get-Command python3.12 -ErrorAction SilentlyContinue) {
+                    $vbPython = "python3.12"
+                    Log-OK "Da cai Python 3.12 thanh cong."
+                }
+            } catch {
+                Log-Warn "Khong the cai Python 3.12 tu dong: $_"
+            }
+            if (-not $vbPython) {
+                Log-Warn "Cai thu cong Python 3.12 tai https://www.python.org/downloads/release/python-3129/"
+                Log-Warn "Sau khi cai, vao thu muc '$voiceboxDir' va chay: just setup"
+                $installVoicebox = "skip"
+            }
+        } else {
+            Log-OK "Se dung $vbPython de tao venv cho Voicebox."
+        }
+    }
+
+    if ($installVoicebox -ne "skip" -and $justCmd) {
+        # ---- Kiem tra bun ----
+        $bunCmd = Get-Command bun -ErrorAction SilentlyContinue
+        if (-not $bunCmd) {
+            Log-Warn "'bun' chua duoc cai. Dang cai qua winget..."
+            try {
+                & winget install --id Oven-sh.Bun -e --source winget --accept-package-agreements --accept-source-agreements
+                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" +
+                            [System.Environment]::GetEnvironmentVariable("PATH", "User")
+            } catch {
+                Log-Warn "Khong the cai 'bun' tu dong. Cai thu cong: https://bun.sh"
+            }
+        }
+
+        Log-OK "Dang chay 'just setup' trong $voiceboxDir (co the mat vai phut, tu detect GPU)..."
+        Push-Location $voiceboxDir
+        try {
+            & just setup
+            $voiceboxStarted = $true
+            Log-OK "Voicebox STT da duoc cai dat xong."
+        } catch {
+            Log-Warn "Loi khi chay 'just setup': $_"
+        } finally {
+            Pop-Location
+        }
+    }
+}
+
+# =====================================================================
+# 9. CAI WINDOWS SERVICE NSSM (tuy chon)
+# =====================================================================
+Write-Host ""
+$nssmScript = Join-Path $PROJECT_DIR "scripts\install_nssm_service.ps1"
+$installNssm = Read-Host "Ban co muon cai bot chay tu dong khi khoi dong Windows (dung NSSM Service)? (Y/n)"
+$nssmInstalled = $false
+if ([string]::IsNullOrWhiteSpace($installNssm) -or $installNssm -match "^[Yy]$") {
+    if (Test-Path $nssmScript) {
+        try {
+            & $nssmScript
+            $nssmInstalled = $true
+        } catch {
+            Log-Warn "Loi khi cai NSSM service: $_"
+            Log-Warn "Ban co the chay thu cong sau: .\scripts\install_nssm_service.ps1"
+        }
+    } else {
+        Log-Warn "Khong tim thay script '$nssmScript'. Cai thu cong sau."
+    }
+}
+
+# =====================================================================
+# 10. HOAN TAT
 # =====================================================================
 Write-Host ""
 Log-OK "Cai dat hoan tat!"
@@ -268,17 +371,27 @@ Write-Host ""
 Write-Host "Cac buoc tiep theo:" -ForegroundColor Cyan
 Write-Host "  1) Kiem tra file .env (dien ALLOWED_USERS, ADMIN_USER_IDS neu can)."
 Write-Host "  2) Dam bao Ollama dang chay: ollama serve"
-Write-Host "  3) Chay bot Telegram:"
-Write-Host "       .\venv\Scripts\Activate.ps1"
-Write-Host "       python my_bot.py"
+if ($nssmInstalled) {
+    Write-Host "  3) Bot Telegram: dang chay ngam qua Windows Service (MyBotTelegram)" -ForegroundColor Green
+    Write-Host "     - Xem logs  : Get-Content logs\bot.log -Wait -Tail 30"
+    Write-Host "     - Dung       : nssm stop MyBotTelegram"
+    Write-Host "     - Khoi lai   : nssm restart MyBotTelegram"
+    Write-Host "     - Go service : .\scripts\uninstall_nssm_service.ps1"
+} else {
+    Write-Host "  3) Chay bot Telegram:"
+    Write-Host "       .\venv\Scripts\Activate.ps1"
+    Write-Host "       python my_bot.py"
+}
 Write-Host ""
 if ($searxngStarted) {
     Write-Host "  4) SearXNG Web Search: Dang chay tai http://localhost:8081" -ForegroundColor Green
 }
 if ($voiceboxStarted) {
-    Write-Host "  5) Voicebox STT (Docker): Dang chay tai http://localhost:17600" -ForegroundColor Green
-    Write-Host "     - Xem logs  : (cd $voiceboxDir ; docker compose logs -f)"
-    Write-Host "     - Dung       : (cd $voiceboxDir ; docker compose down)"
+    Write-Host "  5) Voicebox STT: Da cai dat xong tai $voiceboxDir" -ForegroundColor Green
+    Write-Host "     - Khoi chay backend : cd `"$voiceboxDir`" ; just dev-backend"
+    Write-Host "       -> API chay tai    : http://localhost:17493"
+    Write-Host "     - Dung backend      : Ctrl+C trong terminal dang chay"
+    Write-Host "     - Cap nhat / cai lai: cd `"$voiceboxDir`" ; just setup"
 }
 Write-Host "  6) Quan tri Tram Dieu Khien Web (Dashboard):"
 if ($webappStarted) {

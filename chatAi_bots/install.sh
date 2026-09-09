@@ -365,34 +365,129 @@ EOF
 fi
 
 # =====================================================================
-# 8. VOICEBOX STT QUA DOCKER (https://github.com/jamiepine/voicebox.git)
+# 8. VOICEBOX STT QUA JUST (https://github.com/jamiepine/voicebox.git)
 # =====================================================================
 VOICEBOX_STARTED=false
-if [ -n "$DOCKER_CMD" ]; then
-    echo ""
-    read -rp "Bạn có muốn cài đặt & khởi chạy Voicebox STT (https://github.com/jamiepine/voicebox.git) bằng Docker không? (Y/n): " RUN_VOICEBOX
-    RUN_VOICEBOX=${RUN_VOICEBOX:-Y}
-    if [[ "$RUN_VOICEBOX" =~ ^[Yy]$ ]]; then
-        if [ -d "$PROJECT_DIR/../voicebox" ]; then
-            VOICEBOX_DIR="$(cd "$PROJECT_DIR/.." && pwd)/voicebox"
-        else
-            VOICEBOX_DIR="$PROJECT_DIR/voicebox"
-        fi
-
-        if [ ! -d "$VOICEBOX_DIR/.git" ]; then
-            log "Đang clone Voicebox từ https://github.com/jamiepine/voicebox.git..."
-            git clone --depth 1 https://github.com/jamiepine/voicebox.git "$VOICEBOX_DIR"
-        else
-            log "Đã có sẵn thư mục Voicebox tại: $VOICEBOX_DIR"
-        fi
-
-        log "Đang build & khởi chạy Voicebox Docker container (cổng 17600)..."
-        (cd "$VOICEBOX_DIR" && $DOCKER_CMD compose up -d --build)
-        VOICEBOX_STARTED=true
-        log "Voicebox STT đã sẵn sàng tại: http://localhost:17600"
+echo ""
+read -rp "Bạn có muốn cài đặt Voicebox STT (https://github.com/jamiepine/voicebox.git) bằng 'just' không? (Y/n): " RUN_VOICEBOX
+RUN_VOICEBOX=${RUN_VOICEBOX:-Y}
+if [[ "$RUN_VOICEBOX" =~ ^[Yy]$ ]]; then
+    if [ -d "$PROJECT_DIR/../voicebox" ]; then
+        VOICEBOX_DIR="$(cd "$PROJECT_DIR/.." && pwd)/voicebox"
     else
-        log "Bỏ qua cài đặt Voicebox STT."
+        VOICEBOX_DIR="$PROJECT_DIR/voicebox"
     fi
+
+    # ---- Clone repo nếu chưa có ----
+    if [ ! -d "$VOICEBOX_DIR/.git" ]; then
+        log "Đang clone Voicebox từ https://github.com/jamiepine/voicebox.git..."
+        git clone --depth 1 https://github.com/jamiepine/voicebox.git "$VOICEBOX_DIR"
+    else
+        log "Đã có sẵn thư mục Voicebox tại: $VOICEBOX_DIR"
+    fi
+
+    # ---- Kiểm tra / cài just ----
+    if ! command -v just > /dev/null 2>&1; then
+        warn "'just' chưa được cài. Đang thử cài tự động..."
+        if [[ "$OS" == "macos" ]]; then
+            brew install just
+        elif [[ "$OS" == "debian" ]]; then
+            # Thử snap hoặc cargo
+            if command -v snap > /dev/null 2>&1; then
+                sudo snap install --edge just
+            elif command -v cargo > /dev/null 2>&1; then
+                cargo install just
+            else
+                warn "Không thể cài 'just' tự động. Cài thủ công: https://github.com/casey/just#installation"
+                warn "Sau khi cài, vào thư mục '$VOICEBOX_DIR' và chạy: just setup && just dev-backend"
+                RUN_VOICEBOX="skip"
+            fi
+        elif [[ "$OS" == "arch" ]]; then
+            sudo pacman -S --noconfirm just
+        elif [[ "$OS" == "fedora" || "$OS" == "rhel" ]]; then
+            if command -v cargo > /dev/null 2>&1; then
+                cargo install just
+            else
+                warn "Không thể cài 'just' tự động. Cài thủ công: https://github.com/casey/just#installation"
+                RUN_VOICEBOX="skip"
+            fi
+        else
+            warn "Không thể cài 'just' tự động trên hệ điều hành này."
+            warn "Cài thủ công: https://github.com/casey/just#installation"
+            RUN_VOICEBOX="skip"
+        fi
+    fi
+
+    if [[ "$RUN_VOICEBOX" != "skip" ]] && command -v just > /dev/null 2>&1; then
+        # ---- Kiểm tra Python tương thích (Voicebox yêu cầu 3.10–3.12) ----
+        _vb_python=""
+        for _py_try in python3.12 python3.11 python3.10 python3.13; do
+            if command -v "$_py_try" > /dev/null 2>&1; then
+                _vb_python="$_py_try"
+                break
+            fi
+        done
+
+        if [ -z "$_vb_python" ]; then
+            # Chỉ có Python 3.14+ — thử cài python3.12
+            warn "Voicebox yêu cầu Python 3.10–3.12 (kokoro không hỗ trợ Python 3.13+)."
+            warn "Đang thử cài python3.12 tự động..."
+            if [[ "$OS" == "debian" ]]; then
+                sudo apt install -y python3.12 python3.12-venv python3.12-dev 2>/dev/null || true
+            elif [[ "$OS" == "fedora" || "$OS" == "rhel" ]]; then
+                sudo dnf install -y python3.12 2>/dev/null || true
+            elif [[ "$OS" == "arch" ]]; then
+                # python312 thường có trong AUR; thử pacman với tên chính thức trước
+                sudo pacman -S --noconfirm python312 2>/dev/null || true
+            elif [[ "$OS" == "macos" ]]; then
+                brew install python@3.12 2>/dev/null || true
+            fi
+            # Kiểm tra lại sau khi cài
+            if command -v python3.12 > /dev/null 2>&1; then
+                _vb_python="python3.12"
+                log "Đã cài python3.12 thành công."
+            else
+                warn "Không thể cài python3.12 tự động."
+                warn "Cài thủ công rồi chạy lại: just setup (trong $VOICEBOX_DIR)"
+                warn "  Ubuntu/Debian : sudo apt install python3.12 python3.12-venv"
+                warn "  Fedora        : sudo dnf install python3.12"
+                warn "  Arch          : yay -S python312"
+                warn "  macOS         : brew install python@3.12"
+                RUN_VOICEBOX="skip"
+            fi
+        else
+            log "Sẽ dùng $_vb_python để tạo venv cho Voicebox."
+            # Đảm bảo dev headers có sẵn để build C extensions (ví dụ: pyopenjtalk)
+            if [[ "$OS" == "debian" ]]; then
+                _vb_dev_pkg="${_vb_python}-dev"   # ví dụ: python3.12-dev
+                if ! dpkg -s "$_vb_dev_pkg" > /dev/null 2>&1; then
+                    warn "Thiếu $_vb_dev_pkg (cần để build pyopenjtalk). Đang cài..."
+                    sudo apt install -y "$_vb_dev_pkg" 2>/dev/null || \
+                        warn "Không cài được $_vb_dev_pkg — pyopenjtalk có thể bị lỗi build."
+                fi
+            elif [[ "$OS" == "fedora" || "$OS" == "rhel" ]]; then
+                sudo dnf install -y "${_vb_python}-devel" 2>/dev/null || true
+            fi
+        fi
+
+        # ---- Kiểm tra bun (JS dependency manager cho Voicebox) ----
+        if [[ "$RUN_VOICEBOX" != "skip" ]]; then
+            if ! command -v bun > /dev/null 2>&1; then
+                warn "'bun' chưa được cài — đang cài tự động..."
+                curl -fsSL https://bun.sh/install | bash
+                # Thêm vào PATH cho session hiện tại
+                export BUN_INSTALL="$HOME/.bun"
+                export PATH="$BUN_INSTALL/bin:$PATH"
+            fi
+
+            log "Đang chạy 'just setup' trong $VOICEBOX_DIR (có thể mất vài phút, tự detect GPU)..."
+            (cd "$VOICEBOX_DIR" && just setup)
+            VOICEBOX_STARTED=true
+            log "Voicebox STT đã được cài đặt xong."
+        fi
+    fi
+else
+    log "Bỏ qua cài đặt Voicebox STT."
 fi
 
 # =====================================================================
@@ -525,10 +620,11 @@ if [ "$SEARXNG_STARTED" = true ]; then
     echo -e "  4) SearXNG Web Search : ${GREEN}● Đang chạy${NC} tại http://localhost:8081"
 fi
 if [ "$VOICEBOX_STARTED" = true ]; then
-    echo -e "  5) Voicebox STT       : ${GREEN}● Đang chạy${NC} tại http://localhost:17600"
-    echo "     - Xem nhật ký (logs) : (cd $VOICEBOX_DIR && $DOCKER_CMD compose logs -f)"
-    echo "     - Dừng container     : (cd $VOICEBOX_DIR && $DOCKER_CMD compose down)"
-    echo "     - Khởi động lại      : (cd $VOICEBOX_DIR && $DOCKER_CMD compose restart)"
+    echo -e "  5) Voicebox STT       : ${GREEN}● Đã cài xong${NC} tại $VOICEBOX_DIR"
+    echo "     - Khởi chạy backend  : (cd $VOICEBOX_DIR && just dev-backend)"
+    echo "       → API chạy tại      : http://localhost:17493"
+    echo "     - Dừng backend       : Ctrl+C trong terminal đang chạy"
+    echo "     - Cập nhật / cài lại : (cd $VOICEBOX_DIR && just setup)"
 fi
 echo "  6) Quản trị Trạm Điều Khiển Web (Dashboard):"
 if [ "$WEBAPP_STARTED_VIA_DOCKER" = true ]; then

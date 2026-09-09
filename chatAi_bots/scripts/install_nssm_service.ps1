@@ -50,10 +50,13 @@ if ([string]::IsNullOrWhiteSpace($NssmPath)) {
         $NssmPath = $candidate.Source
     } elseif (Test-Path "$PSScriptRoot\nssm.exe") {
         $NssmPath = "$PSScriptRoot\nssm.exe"
+    } elseif (Test-Path "$PSScriptRoot\..\nssm.exe") {
+        # nssm.exe dat o thu muc goc du an (thu muc cha cua scripts\)
+        $NssmPath = (Resolve-Path "$PSScriptRoot\..\nssm.exe").Path
     } else {
         Write-Host "❌ Không tìm thấy nssm.exe." -ForegroundColor Red
         Write-Host "   Tải tại https://nssm.cc/download, giải nén, copy nssm.exe" -ForegroundColor Yellow
-        Write-Host "   (bản win64) vào thư mục '.\scripts\' rồi chạy lại script này." -ForegroundColor Yellow
+        Write-Host "   (bản win64) vào thư mục gốc dự án hoặc '.\scripts\' rồi chạy lại script này." -ForegroundColor Yellow
         exit 1
     }
 }
