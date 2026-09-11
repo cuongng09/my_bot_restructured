@@ -215,6 +215,22 @@ def _log_payload_debug(formatted: list[dict], web_context: str) -> None:
         )
 
 
+def clean_model_generated_sources(text: str) -> str:
+    """Loại bỏ phần 'Nguồn tham khảo' hoặc danh sách link URL do chính LLM tự sinh ở cuối văn bản,
+    để tránh bị trùng lặp với sources_footer do hệ thống đính kèm."""
+    if not text:
+        return text
+    # 1. Tìm và cắt bỏ khối 'Nguồn tham khảo:' hoặc 'Tài liệu tham khảo:' ở cuối
+    cleaned = re.sub(
+        r'(?i)\n+([#*_\s]*(?:nguồn(?:\s+tham\s+khảo)?|tài liệu(?:\s+tham\s+khảo)?|tham khảo|references|sources)[:\s*]*[\r\n]+(?:[-*•\d.\[]\s*.*[\r\n]*)+)\s*$',
+        '',
+        text.strip(),
+    )
+    # 2. Loại bỏ các dòng trần chỉ chứa URL hoặc link ở cuối
+    cleaned = re.sub(r'(?i)\n+(?:(?:nguồn|nguồn tham khảo|link)[:\s*]*)?(?:https?://\S+\s*)+$', '', cleaned.strip())
+    return cleaned.strip()
+
+
 def build_grounded_messages(
     messages: list[dict],
     web_context: str = "",
@@ -232,12 +248,13 @@ def build_grounded_messages(
     current_time_str = get_vietnam_time_str()
     system_prompt = reasoning.get_persona_prompt(persona) + (
         f"\n\n🕒 MỐC THỜI GIAN THỰC HIỆN TẠI CỦA HỆ THỐNG: {current_time_str}.\n"
-        "2. Với dữ liệu nhiều ý, số liệu, hoặc so sánh: dùng Bảng hoặc gạch đầu dòng cho dễ đọc.\n"
-        "3. Danh sách link đầy đủ sẽ được hệ thống tự động thêm vào cuối câu trả lời.\n"
+        "1. CÂU ĐẦU TRỌNG TÂM: Luôn mở đầu câu trả lời bằng 1-3 câu ngắn gọn, trực diện, giải đáp ngay thắc mắc cốt lõi của người dùng. Sau đó mới đến phân tích, giải thích hoặc bảng số liệu chi tiết.\n"
+        "2. Với dữ liệu nhiều ý, so sánh, thông số kỹ thuật, hoặc giá cả: Trình bày bảng Markdown rõ ràng (| Tiêu chí | Cột 1 | Cột 2 |).\n"
+        "3. TUYỆT ĐỐI KHÔNG tự tạo mục 'Nguồn tham khảo' hay danh sách link ở cuối — hệ thống sẽ tự động thêm link nguồn.\n"
         "4. KẾT HỢP DỮ LIỆU INTERNET & KIẾN THỨC BÁCH KHOA THEO THỜI GIAN THỰC:\n"
         "   - Một số lĩnh vực (như CÔNG NGHỆ, MÔ HÌNH AI, PHẦN MỀM, PHẦN CỨNG) cập nhật liên tục từng ngày, từng giờ.\n"
         "   - Khi có khối 'DỮ LIỆU INTERNET THỜI GIAN THỰC', hãy ưu tiên cập nhật số liệu và sự kiện mới nhất từ khối dữ liệu này, đối chiếu với tri thức nền tảng của bạn để tổng hợp bức tranh công nghệ hoàn chỉnh và cập nhật nhất tính đến hiện tại.\n"
-        "   - Nếu dữ liệu internet chưa đề cập hết hoặc còn thiếu (kể cả khi chỉ nhặt được từ khóa tóm tắt): bạn ĐƯỢC PHÉP linh hoạt kết hợp với kiến thức nền tảng (bách khoa toàn thư) của mình để giải thích cặn kẽ, đầy đủ cho bạn mình, nêu rõ phiên bản/mốc thông tin mới nhất bạn biết và gợi ý nguồn chính thức (GitHub/website). Tuyệt đối KHÔNG trả lời cộc lốc 'không có dữ liệu'.\n"
+        "   - Nếu dữ liệu internet chưa đề cập hết hoặc còn thiếu: bạn ĐƯỢC PHÉP linh hoạt kết hợp với kiến thức nền tảng của mình để giải thích cặn kẽ, đầy đủ, nêu rõ phiên bản mới nhất bạn biết. Tuyệt đối KHÔNG trả lời cộc lốc 'không có dữ liệu'.\n"
         "   - Khi không có khối dữ liệu này, bạn tự do sử dụng toàn bộ tri thức bách khoa của mình để hỗ trợ và trò chuyện bình thường."
     )
     if profile_summary:
@@ -312,24 +329,30 @@ async def chat_with_llm(
     messages: list[dict], model: str, web_context: str = "", force_concise: bool = False,
     nickname: Optional[str] = None, persona: Optional[str] = None, profile_summary: str = "",
 ) -> str:
-    """Gọi Ollama /api/chat KHÔNG streaming — trả về toàn bộ câu trả lời 1 lần."""
-    formatted = build_grounded_messages(messages, web_context, force_concise, nickname, persona, profile_summary)
+    """Gọi Ollama và thu thập toàn bộ câu trả lời 1 lần.
+    Sử dụng stream ngầm để giữ kết nối socket luôn nhận dữ liệu liên tục,
+    tránh hoàn toàn việc bị httpx timeout khi suy luận dài hoặc prompt lớn."""
     last_err: Optional[Exception] = None
     for attempt in range(1, OLLAMA_RETRY_ATTEMPTS + 1):
+        collected = []
+        is_error = False
         try:
-            r = await _http_client.post(
-                f"{OLLAMA_BASE_URL}/api/chat",
-                json={"model": model, "messages": formatted, "stream": False,
-                      "options": _gen_options(bool(web_context))},
-                timeout=OLLAMA_TIMEOUT_SEC,
-            )
-            r.raise_for_status()
-            return r.json()["message"]["content"].strip()
+            async for piece in chat_with_llm_stream(
+                messages, model, web_context, force_concise, nickname, persona, profile_summary
+            ):
+                if piece.startswith("❌ Lỗi Ollama (stream):"):
+                    is_error = True
+                    last_err = piece
+                    break
+                collected.append(piece)
+            if not is_error and collected:
+                return "".join(collected).strip()
         except Exception as e:
             last_err = e
             logger.warning(f"⚠️ Lỗi gọi Ollama (lần {attempt}/{OLLAMA_RETRY_ATTEMPTS}): {e}")
-            if attempt < OLLAMA_RETRY_ATTEMPTS:
-                await asyncio.sleep(1.0)
+        if attempt < OLLAMA_RETRY_ATTEMPTS:
+            await asyncio.sleep(1.0)
+
     return (
         f"❌ Không kết nối được tới Ollama sau {OLLAMA_RETRY_ATTEMPTS} lần thử ({last_err}).\n"
         f"💡 Kiểm tra Ollama đã chạy chưa (`ollama serve`) và model `{model}` đã được `ollama pull` chưa."

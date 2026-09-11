@@ -22,3 +22,8 @@ psutil>=5.9
 # 🏮 Trạm Điều Khiển Web (webapp/) — dashboard quản trị trên trình duyệt
 fastapi>=0.110
 uvicorn[standard]>=0.29
+
+# Xuất tệp Word / Excel báo cáo đẹp mắt, chống vỡ bảng trên Telegram
+python-docx>=1.1.0
+openpyxl>=3.1.0
+

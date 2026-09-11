@@ -35,17 +35,12 @@ async def _process_voice_reply(
     persona: Optional[str],
     profile_summary: str,
 ) -> str:
-    """Tìm web (nếu cần) + gọi LLM không-stream (tối ưu cho voice — concise)."""
+    """Tìm web thông minh mặc định + gọi LLM không-stream."""
     web_context, sources_footer = "", ""
-    auto_web = await get_auto_web_mode(uid)
     try:
-        if auto_web:
-            decision = await decide_web_search(transcribed_text, model)
-            need_search = decision.get("need_search", False)
-            search_query = decision.get("query", "").strip()
-        else:
-            need_search = should_trigger_web_search(transcribed_text)
-            search_query = clean_search_query(transcribed_text) if need_search else ""
+        decision = await decide_web_search(transcribed_text, model)
+        need_search = decision.get("need_search", False)
+        search_query = decision.get("query", "").strip()
 
         if need_search and search_query:
             await update.effective_chat.send_action(ChatAction.TYPING)
@@ -63,6 +58,8 @@ async def _process_voice_reply(
         history, model, web_context, force_concise=False,
         nickname=nickname, persona=persona, profile_summary=profile_summary,
     )
+    from llm_engine import clean_model_generated_sources
+    reply = clean_model_generated_sources(reply)
     if sources_footer:
         reply += sources_footer
     return reply
@@ -117,6 +114,39 @@ async def handle_voice(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if should_summarize:
         asyncio.create_task(_update_long_term_memory(uid, model))
 
+    # Tách câu đầu trọng tâm để phản hồi voice siêu nhanh
+    from skills.document_exporter import split_core_and_detail, export_document_smart, has_tabular_or_detailed_content
+    core_summary, _ = split_core_and_detail(reply)
+
     await update.effective_chat.send_action(ChatAction.TYPING)
-    await safe_reply(update, reply)
-    await maybe_send_voice_reply(update, uid, reply)
+
+    # Hiển thị text: ngắn gọn khi dài/chi tiết (tương tự text_handler)
+    check = has_tabular_or_detailed_content(reply)
+    is_long_detail = check.get("has_table") or check.get("is_detailed")
+    if is_long_detail:
+        text_to_show = f"{core_summary}\n\n📄 *Thông tin chi tiết được đính kèm trong tệp bên dưới:* 📎"
+    else:
+        text_to_show = reply
+    await safe_reply(update, text_to_show)
+
+    # Tự động xuất tệp Excel (.xlsx) hoặc Word (.docx) nếu có bảng số liệu hoặc phân tích chi tiết
+    try:
+        export_result = export_document_smart(transcribed, reply, summary=core_summary)
+        if export_result:
+            file_path, file_type = export_result
+            with open(file_path, "rb") as doc_file:
+                caption = (
+                    f"📊 *Thông tin chi tiết ({file_type})*\n"
+                    f"Tệp đã được định dạng chuẩn, không bị vỡ bảng hay lỗi font."
+                )
+                await update.effective_chat.send_document(
+                    document=doc_file,
+                    caption=caption,
+                    parse_mode="Markdown",
+                )
+    except Exception as exp_err:
+        logger.warning(f"⚠️ Lỗi gửi tệp đính kèm trong voice_handler: {exp_err}")
+
+    # Voice reply: CHỈ ĐỌC CÂU ĐẦU TRỌNG TÂM (core_summary)
+    # Giảm thời gian phát từ hàng chục giây xuống 2-5s, không đọc bảng biểu hay URL!
+    await maybe_send_voice_reply(update, uid, core_summary)

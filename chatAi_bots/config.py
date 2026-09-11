@@ -33,7 +33,7 @@ TELEGRAM_CONNECT_TIMEOUT = float(os.getenv("TELEGRAM_CONNECT_TIMEOUT", "15"))
 TELEGRAM_READ_TIMEOUT    = float(os.getenv("TELEGRAM_READ_TIMEOUT", "30"))
 OLLAMA_BASE_URL  = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_MODEL    = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
-OLLAMA_TIMEOUT_SEC    = int(os.getenv("OLLAMA_TIMEOUT_SEC", "120"))
+OLLAMA_TIMEOUT_SEC    = int(os.getenv("OLLAMA_TIMEOUT_SEC", "240"))
 OLLAMA_RETRY_ATTEMPTS = int(os.getenv("OLLAMA_RETRY_ATTEMPTS", "2"))
 OLLAMA_CONTEXT_SIZE   = int(os.getenv("OLLAMA_CONTEXT_SIZE", "8192"))
 
@@ -54,6 +54,8 @@ STREAM_EDIT_INTERVAL = float(os.getenv("STREAM_EDIT_INTERVAL", "0.7"))
 # ── Paths ─────────────────────────────────────────────────────────────────────
 DB_PATH  = os.getenv("DB_PATH", "data/bot_data.db")
 LOG_FILE = os.getenv("LOG_FILE", "logs/bot.log")
+REPORTS_OUTPUT_DIR = os.getenv("REPORTS_OUTPUT_DIR", "data/reports")
+
 
 # ── Voice / STT Configuration ───────────────────────────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")   # dùng cho engine STT Groq Whisper (/stt groq)

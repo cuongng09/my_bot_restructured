@@ -100,22 +100,18 @@ function renderStatus(status) {
   }
 
   $("stat-model").textContent = status.default_model || "—";
+  $("stat-hw").textContent = `${fmtPercent(status.cpu)} / ${fmtPercent(status.ram_percent)}`;
 
-  $("stat-cpu").textContent = fmtPercent(status.cpu);
   $("stat-cpu-bar").style.width = `${status.cpu ?? 0}%`;
   $("stat-cpu-bar").className =
     "stat-card__bar-fill" + (status.cpu > 80 ? " stat-card__bar-fill--warn" : "");
-
-  $("stat-ram").textContent = fmtPercent(status.ram_percent);
-  $("stat-ram-bar").style.width = `${status.ram_percent ?? 0}%`;
-  $("stat-ram-bar").className =
-    "stat-card__bar-fill" + (status.ram_percent > 85 ? " stat-card__bar-fill--warn" : "");
 
   const kv = $("kv-list");
   kv.innerHTML = "";
   const rows = [
     ["Ollama", status.ollama_alive ? `✅ ${status.models.length} model đã cài` : "❌ không kết nối được"],
     ["Model mặc định", status.default_model],
+    ["Tìm kiếm", "🌐 Thông minh đa tầng (Mặc định)"],
     ["Uptime server", status.uptime_hours != null ? `${status.uptime_hours} giờ` : "— (thiếu psutil)"],
     ["Ổ đĩa đã dùng", fmtPercent(status.disk_percent)],
     ["Người dùng được phép", status.allowed_users_count == null ? "Mở cho tất cả" : status.allowed_users_count],
@@ -133,6 +129,50 @@ function renderStatus(status) {
 
 function renderStats(stats) {
   $("stat-active").textContent = stats.ready ? stats.active_today : "—";
+}
+
+function renderVoicebox(vb) {
+  const statEl = $("stat-voicebox");
+  if (vb.online) {
+    statEl.innerHTML = '<span class="badge badge--jade">🟢 Online</span>';
+    $("vb-status").innerHTML = '<span class="badge badge--jade">🟢 Hoạt động</span>';
+  } else {
+    statEl.innerHTML = '<span class="badge badge--muted">⚪ Offline</span>';
+    $("vb-status").innerHTML = '<span class="badge badge--muted">⚪ Ngoại tuyến</span>';
+  }
+
+  $("vb-whisper").textContent = `Whisper ${(vb.whisper_model || "small").toUpperCase()}`;
+
+  const profilesCount = vb.profiles ? vb.profiles.length : 0;
+  $("vb-profiles").textContent = profilesCount > 0 ? `${profilesCount} hồ sơ` : "Chưa tải lên mẫu";
+
+  const effectsCount = vb.effects ? vb.effects.length : 0;
+  $("vb-effects").textContent = effectsCount > 0 ? `${effectsCount} bộ lọc có sẵn` : "Mặc định";
+}
+
+function renderReports(data) {
+  const wrap = $("reports-list");
+  if (!data.reports || data.reports.length === 0) {
+    wrap.innerHTML = '<div class="log-empty">Chưa có tệp báo cáo nào được xuất. Bảng số liệu sẽ tự động xuất thành file Excel/Word khi bạn hỏi bot!</div>';
+    return;
+  }
+
+  const rows = data.reports.map((r) => {
+    const icon = r.ext === "xlsx" ? "📊" : (r.ext === "docx" ? "📄" : "📑");
+    const badgeClass = r.ext === "xlsx" ? "badge--jade" : "badge--red";
+    return `<div class="report-item">
+      <div class="report-item__info">
+        <span class="report-item__icon">${icon}</span>
+        <div>
+          <div class="report-item__name">${escapeHtml(r.filename)}</div>
+          <div class="report-item__meta">${escapeHtml(r.created_at)} • ${r.size_kb} KB</div>
+        </div>
+      </div>
+      <a href="/api/reports/download/${encodeURIComponent(r.filename)}" class="btn-download" download>Tải về</a>
+    </div>`;
+  }).join("");
+
+  wrap.innerHTML = rows;
 }
 
 function renderLogs(data) {
@@ -174,9 +214,7 @@ function renderUsers(data) {
       const roleBadge = u.is_admin
         ? '<span class="badge badge--red">Admin</span>'
         : '<span class="badge badge--muted">Thành viên</span>';
-      const webBadge = u.auto_web
-        ? '<span class="badge badge--jade">Auto-web</span>'
-        : "";
+      const webBadge = '<span class="badge badge--jade">Smart Search</span>';
       return `<tr>
         <td class="mono">${u.uid}</td>
         <td>${escapeHtml(u.nickname || "—")}</td>
@@ -192,14 +230,18 @@ function renderUsers(data) {
 
 // ── Vòng lặp làm mới ─────────────────────────────────────────────────────
 async function refreshAll() {
-  const [status, stats, users, logs] = await Promise.all([
+  const [status, stats, users, logs, voicebox, reports] = await Promise.all([
     apiFetch("/api/status"),
     apiFetch("/api/stats"),
     apiFetch("/api/users?limit=100"),
     apiFetch("/api/logs?limit=80"),
+    apiFetch("/api/voicebox"),
+    apiFetch("/api/reports"),
   ]);
   renderStatus(status);
   renderStats(stats);
+  renderVoicebox(voicebox);
+  renderReports(reports);
   renderUsers(users);
   renderLogs(logs);
 }

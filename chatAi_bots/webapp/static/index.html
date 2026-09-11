@@ -47,29 +47,48 @@
     <!-- ── Hàng thẻ số liệu ── -->
     <section class="stat-grid">
       <div class="card">
-        <div class="eyebrow">Mô hình đang dùng</div>
+        <div class="eyebrow">Mô hình AI Ollama</div>
         <div class="stat-card__value stat-card__value--small mono" id="stat-model">—</div>
+      </div>
+      <div class="card">
+        <div class="eyebrow">Voicebox STT/TTS</div>
+        <div class="stat-card__value stat-card__value--small" id="stat-voicebox">Đang kết nối…</div>
       </div>
       <div class="card">
         <div class="eyebrow">Hoạt động hôm nay</div>
         <div class="stat-card__value" id="stat-active">—</div>
       </div>
       <div class="card">
-        <div class="eyebrow">CPU</div>
-        <div class="stat-card__value" id="stat-cpu">—</div>
+        <div class="eyebrow">CPU / RAM</div>
+        <div class="stat-card__value stat-card__value--small" id="stat-hw">—</div>
         <div class="stat-card__bar"><div class="stat-card__bar-fill" id="stat-cpu-bar" style="width:0%"></div></div>
       </div>
-      <div class="card">
-        <div class="eyebrow">RAM</div>
-        <div class="stat-card__value" id="stat-ram">—</div>
-        <div class="stat-card__bar"><div class="stat-card__bar-fill" id="stat-ram-bar" style="width:0%"></div></div>
+    </section>
+
+    <!-- ── Voicebox Studio & Báo cáo Word/Excel ── -->
+    <section class="split">
+      <div class="panel">
+        <h2 class="section-title">🎙️ Voicebox Studio & Âm thanh</h2>
+        <div class="kv-list" id="voicebox-kv">
+          <div class="kv-row"><span class="kv-row__label">Trạng thái Docker</span><span class="kv-row__value" id="vb-status">—</span></div>
+          <div class="kv-row"><span class="kv-row__label">Model Whisper STT</span><span class="kv-row__value" id="vb-whisper">—</span></div>
+          <div class="kv-row"><span class="kv-row__label">Hồ sơ giọng nói (Profiles)</span><span class="kv-row__value" id="vb-profiles">—</span></div>
+          <div class="kv-row"><span class="kv-row__label">Hiệu ứng âm thanh (Effects)</span><span class="kv-row__value" id="vb-effects">—</span></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="section-title">📊 Tệp Báo Cáo & Dữ Liệu (Word / Excel)</h2>
+        <div class="reports-wrap" id="reports-list">
+          <div class="log-empty">Chưa có tệp xuất nào gần đây.</div>
+        </div>
       </div>
     </section>
 
     <!-- ── Nhật ký + Cấu hình ── -->
     <section class="split">
       <div class="panel">
-        <h2 class="section-title">📜 Nhật ký gần đây</h2>
+        <h2 class="section-title">📜 Nhật ký thời gian thực</h2>
         <div class="log-feed" id="log-feed">
           <div class="log-empty">Đang tải nhật ký…</div>
         </div>
@@ -85,7 +104,7 @@
 
     <!-- ── Bảng người dùng ── -->
     <section class="panel">
-      <h2 class="section-title">👥 Người dùng</h2>
+      <h2 class="section-title">👥 Người dùng Telegram</h2>
       <div class="table-wrap">
         <table class="users" id="users-table">
           <thead>

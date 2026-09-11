@@ -139,6 +139,55 @@ async def api_stats(x_admin_token: Optional[str] = Header(None)):
         await conn.close()
 
 
+@app.get("/api/voicebox")
+async def api_voicebox(x_admin_token: Optional[str] = Header(None)):
+    _check_token(x_admin_token)
+    from skills.voicebox_client import (
+        get_voicebox_health, get_current_whisper_model, list_voice_profiles, list_audio_effects
+    )
+    health = await get_voicebox_health()
+    active_whisper = get_current_whisper_model()
+    profiles = await list_voice_profiles()
+    effects = await list_audio_effects()
+    return JSONResponse({
+        "online": health.get("online", False),
+        "health": health,
+        "whisper_model": active_whisper,
+        "profiles": profiles,
+        "effects": effects,
+    })
+
+
+@app.get("/api/reports")
+async def api_reports(x_admin_token: Optional[str] = Header(None)):
+    _check_token(x_admin_token)
+    from config import REPORTS_OUTPUT_DIR
+    p = Path(REPORTS_OUTPUT_DIR)
+    reports = []
+    if p.exists():
+        for f in sorted(p.glob("*.*"), key=lambda x: x.stat().st_mtime, reverse=True)[:50]:
+            if f.suffix.lower() in [".xlsx", ".docx", ".pdf"]:
+                reports.append({
+                    "filename": f.name,
+                    "ext": f.suffix.lower().replace(".", ""),
+                    "size_kb": round(f.stat().st_size / 1024, 1),
+                    "created_at": datetime.fromtimestamp(f.stat().st_mtime).strftime("%d/%m/%Y %H:%M"),
+                })
+    return JSONResponse({"reports": reports})
+
+
+@app.get("/api/reports/download/{filename}")
+async def api_download_report(filename: str, x_admin_token: Optional[str] = Header(None)):
+    _check_token(x_admin_token)
+    from config import REPORTS_OUTPUT_DIR
+    safe_name = Path(filename).name
+    target = Path(REPORTS_OUTPUT_DIR) / safe_name
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=404, detail="Không tìm thấy tệp.")
+    return FileResponse(target, filename=safe_name)
+
+
+
 @app.get("/api/users")
 async def api_users(limit: int = 100, x_admin_token: Optional[str] = Header(None)):
     _check_token(x_admin_token)

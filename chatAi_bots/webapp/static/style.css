@@ -433,4 +433,46 @@ table.users td.mono { font-family: var(--font-mono); color: var(--ivory); }
   .header { flex-direction: column; align-items: flex-start; }
 }
 
+/* ── Báo cáo & Tài liệu tải về ─────────────────────────────────────────── */
+.reports-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 240px;
+  overflow-y: auto;
+}
+.report-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s ease;
+}
+.report-item:hover { border-color: var(--hairline-strong); }
+.report-item__info { display: flex; align-items: center; gap: var(--space-3); }
+.report-item__icon { font-size: 1.3rem; }
+.report-item__name { font-weight: 500; font-size: 0.9rem; color: var(--ivory); }
+.report-item__meta { font-size: 0.75rem; color: var(--ivory-dim); margin-top: 2px; }
+.btn-download {
+  display: inline-block;
+  padding: 5px 12px;
+  background: var(--panel-2);
+  color: var(--gold);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-download:hover {
+  background: var(--gold);
+  color: var(--ink);
+  text-decoration: none;
+}
+
 [hidden] { display: none !important; }
+

@@ -70,32 +70,67 @@ async def _stream_reply(
             buffer += visible
             full_text += visible
             now = loop.time()
-            if now - last_edit >= STREAM_EDIT_INTERVAL and len(full_text) <= 3900:
-                try:
-                    await placeholder.edit_text(full_text + " ▌")
-                except Exception:
-                    pass
+            if now - last_edit >= STREAM_EDIT_INTERVAL:
+                from skills.document_exporter import split_core_and_detail, has_tabular_or_detailed_content
+                c_check = has_tabular_or_detailed_content(full_text)
+                if c_check.get("has_table") or (c_check.get("is_detailed") and len(full_text) > 500):
+                    core_part, _ = split_core_and_detail(full_text)
+                    preview = f"{core_part}\n\n⏳ *Đang xử lý nội dung chi tiết vào tệp tài liệu...* ▌"
+                    try:
+                        await placeholder.edit_text(preview, parse_mode="Markdown")
+                    except Exception:
+                        pass
+                elif len(full_text) <= 3900:
+                    try:
+                        await placeholder.edit_text(full_text + " ▌")
+                    except Exception:
+                        pass
                 last_edit = now
     except asyncio.CancelledError:
+        from llm_engine import clean_model_generated_sources
+        from skills.document_exporter import split_core_and_detail, has_tabular_or_detailed_content
         full_text += think_filter.flush()
-        full_text += "\n\n⏹️ _(đã dừng theo yêu cầu /stop)_"
-        if sources_footer:
-            full_text += sources_footer
+        full_text = clean_model_generated_sources(full_text)
+        stop_note = "\n\n⏹️ _(đã dừng theo yêu cầu /stop)_"
+        check = has_tabular_or_detailed_content(full_text)
+        is_long_detail = check.get("has_table") or check.get("is_detailed")
+        if is_long_detail:
+            core_summary, _ = split_core_and_detail(full_text)
+            display_text = f"{core_summary}{stop_note}"
+            if sources_footer:
+                display_text += sources_footer
+        else:
+            display_text = full_text + stop_note + (sources_footer or "")
         try:
-            await placeholder.edit_text(full_text[:4000], parse_mode="Markdown")
+            await placeholder.edit_text(display_text[:4000], parse_mode="Markdown")
         except Exception:
             try:
-                await placeholder.edit_text(full_text[:4000])
+                await placeholder.edit_text(display_text[:4000])
             except Exception:
                 pass
         return full_text
 
     full_text += think_filter.flush()
+    from llm_engine import clean_model_generated_sources
+    from skills.document_exporter import split_core_and_detail, has_tabular_or_detailed_content
+    full_text = clean_model_generated_sources(full_text)
 
-    if sources_footer and full_text:
-        full_text += sources_footer
+    # Quyết định hiển thị: câu đầu trọng tâm + chi tiết vào file Word / Excel
+    check = has_tabular_or_detailed_content(full_text)
+    is_long_detail = check.get("has_table") or check.get("is_detailed")
 
-    first_chunk = full_text[:4000] if full_text else "⚠️ (không có phản hồi)"
+    if is_long_detail:
+        core_summary, _ = split_core_and_detail(full_text)
+        file_hint = "\n\n📄 *Thông tin chi tiết được đính kèm trong tệp bên dưới:* 📎"
+        display_text = core_summary + file_hint
+        if sources_footer:
+            display_text += sources_footer
+    else:
+        display_text = full_text
+        if sources_footer:
+            display_text += sources_footer
+
+    first_chunk = display_text[:4000] if display_text else "⚠️ (không có phản hồi)"
     try:
         await placeholder.edit_text(first_chunk, parse_mode="Markdown")
     except Exception:
@@ -104,11 +139,11 @@ async def _stream_reply(
         except Exception:
             pass
 
-    if len(full_text) > 4000:
-        for chunk in split_message(full_text[4000:]):
+    if len(display_text) > 4000:
+        for chunk in split_message(display_text[4000:]):
             await safe_reply(update, chunk)
 
-    return full_text
+    return full_text  # Luôn trả full_text để exporter dùng
 
 
 async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -139,19 +174,13 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     web_context, force_concise, sources_footer = "", False, ""
     try:
-        auto_web = await get_auto_web_mode(uid)
-        if auto_web:
-            # Chế độ Tự động tìm kiếm thông minh:
-            # Sử dụng bộ phân tích input (Heuristic + LLM) để phân loại:
-            # - Nếu là tri thức bách khoa, sáng tạo, code, toán, tâm sự: need_search=False
-            # - Nếu là thời sự, giá cả, thực tế: need_search=True và trích xuất search_query tối ưu
-            decision = await decide_web_search(text, model)
-            need_search = decision.get("need_search", False)
-            search_query = decision.get("query", "").strip()
-        else:
-            # Khi TẮT auto_web: chỉ tra cứu khi câu hỏi có từ khóa thời sự rõ ràng
-            need_search = should_trigger_web_search(text)
-            search_query = clean_search_query(text) if need_search else ""
+        # Chế độ Tìm kiếm thông minh đa tầng MẶC ĐỊNH cho toàn bộ tin nhắn:
+        # 1. Lọc nhanh chào hỏi/code/toán không cần search
+        # 2. LLM phân tích thời sự/công nghệ/thực tế và trích xuất search query tối ưu
+        # 3. SearXNG -> DDGS -> HTML cào sâu -> RAG
+        decision = await decide_web_search(text, model)
+        need_search = decision.get("need_search", False)
+        search_query = decision.get("query", "").strip()
 
         if need_search and search_query:
             raw_data = await raw_search_data(search_query)
@@ -187,6 +216,26 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             ACTIVE_GEN_TASKS.pop(uid, None)
 
     await add_to_history(uid, "assistant", reply)
+
+    # Tự động xuất tệp Excel (.xlsx) hoặc Word (.docx) nếu có bảng số liệu hoặc phân tích chi tiết
+    try:
+        from skills.document_exporter import export_document_smart, split_core_and_detail
+        core_sum, _ = split_core_and_detail(reply)
+        export_result = export_document_smart(text, reply, summary=core_sum)
+        if export_result:
+            file_path, file_type = export_result
+            with open(file_path, "rb") as doc_file:
+                caption = (
+                    f"📊 *Thông tin chi tiết ({file_type})*\n"
+                    f"Tệp đã được định dạng chuẩn, không bị vỡ bảng hay lỗi font."
+                )
+                await update.effective_chat.send_document(
+                    document=doc_file,
+                    caption=caption,
+                    parse_mode="Markdown",
+                )
+    except Exception as exp_err:
+        logger.warning(f"⚠️ Lỗi gửi tệp đính kèm: {exp_err}")
 
     should_summarize = await db.bump_turn_and_should_summarize(uid, every_n_turns=LONG_TERM_MEMORY_EVERY_N_TURNS)
     if should_summarize:

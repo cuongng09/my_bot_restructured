@@ -112,9 +112,13 @@ def text_to_speech_ogg_gtts(text: str) -> Optional[str]:
 
 
 async def maybe_send_voice_reply(update, uid: int, reply_text: str) -> None:
-    """Gửi voice note phản hồi — không giới hạn độ dài, không chặn theo mode.
+    """Gửi voice note phản hồi.
     Ưu tiên Piper local; fallback về gTTS nếu Piper chưa cấu hình."""
     settings = await db.get_settings(uid)
+    voice_mode = settings.get("voice_mode") or "smart"
+    if voice_mode == "off":
+        return
+
     loop = asyncio.get_event_loop()
     voice_name = settings.get("tts_voice") or None
     ogg_path = None

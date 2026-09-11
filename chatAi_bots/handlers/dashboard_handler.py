@@ -35,20 +35,15 @@ from skills.dashboard import skill_ping, skill_sysadmin, run_sysaction
 from skills.voice import groq_client
 from skills.weather import skill_weather
 from skills.news import skill_news
-from utils import is_allowed, is_admin, safe_reply, get_auto_web_mode, get_user_model
+from skills.voicebox_client import (
+    get_voicebox_health, get_current_whisper_model, set_current_whisper_model,
+    list_voice_profiles, list_audio_effects, WHISPER_SIZES,
+)
+from utils import is_allowed, is_admin, safe_reply, get_user_model
 
 
 async def _safe_edit_message_text(query, *args, **kwargs):
-    """Wrapper an toàn quanh query.edit_message_text().
-
-    Telegram trả lỗi `BadRequest: Message is not modified` khi nội dung + reply_markup
-    mới gửi lên giống HỆT nội dung đang hiển thị (vd người dùng bấm lại nút vừa bấm,
-    hoặc 2 lần bấm rất nhanh vào cùng 1 nút toggle trước khi tin nhắn kịp cập nhật).
-    Đây không phải lỗi thật — tin nhắn đã đúng nội dung mong muốn rồi — nên chỉ cần bỏ
-    qua thay vì để exception văng lên global_error_handler và làm callback bị coi là lỗi.
-    Mọi lỗi BadRequest khác (network, entity quá dài, markup sai...) vẫn được raise lại
-    bình thường để không che giấu lỗi thật.
-    """
+    """Wrapper an toàn quanh query.edit_message_text()."""
     try:
         return await query.edit_message_text(*args, **kwargs)
     except BadRequest as e:
@@ -65,13 +60,7 @@ _webapp_url_warned = False  # chỉ log cảnh báo 1 lần, tránh spam log m�
 
 
 def _valid_webapp_button_url() -> str | None:
-    """Trả về WEBAPP_PUBLIC_URL nếu dùng được làm nút inline Telegram, ngược lại None.
-
-    Telegram Bot API từ chối TOÀN BỘ bàn phím inline (lỗi Button_url_invalid) nếu một
-    nút có url trỏ tới localhost/127.0.0.1/0.0.0.0 hoặc thiếu scheme http(s) — vì máy
-    người dùng mở Telegram không thể resolve các host đó về máy chạy bot. Nếu không
-    validate trước, cả lệnh /ui sẽ crash (không hiện gì) thay vì chỉ riêng nút này lỗi.
-    """
+    """Trả về WEBAPP_PUBLIC_URL nếu dùng được làm nút inline Telegram, ngược lại None."""
     global _webapp_url_warned
     url = (WEBAPP_PUBLIC_URL or "").strip()
     if not url:
@@ -88,21 +77,20 @@ def _valid_webapp_button_url() -> str | None:
     if not is_valid and not _webapp_url_warned:
         _webapp_url_warned = True
         logger.warning(
-            f"⚠️ WEBAPP_PUBLIC_URL='{url}' không dùng được làm nút Telegram (localhost/127.0.0.1 "
-            f"hoặc thiếu http/https) — Telegram sẽ từ chối, nên nút '🌐 Mở Trạm Điều Khiển Web' "
-            f"đã được TỰ ẨN để /ui không bị lỗi. Hãy đổi WEBAPP_PUBLIC_URL trong .env sang địa chỉ "
-            f"IP LAN của máy chạy bot (vd http://192.168.1.10:8080) hoặc domain/HTTPS công khai."
+            f"⚠️ WEBAPP_PUBLIC_URL='{url}' không dùng được làm nút Telegram."
         )
     return url if is_valid else None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 🏮 Trạm chính (main menu) — có trạng thái sống nên render bằng hàm async
+# 🏮 Trạm chính (main menu)
 # ─────────────────────────────────────────────────────────────────────────────
 async def _render_main(uid: int) -> tuple[str, InlineKeyboardMarkup]:
     settings = await db.get_settings(uid)
     models = await get_ollama_models()
-    seal = "🔴 HOẠT ĐỘNG" if models else "⚫ MẤT KẾT NỐI OLLAMA"
+    vb_health = await get_voicebox_health()
+    vb_status = "🟢 HOẠT ĐỘNG" if vb_health.get("online") else "⚪ NGOẠI TUYẾN"
+    active_whisper = get_current_whisper_model()
 
     persona_label = reasoning.PERSONAS.get(
         settings["persona"], reasoning.PERSONAS[reasoning.DEFAULT_PERSONA]
@@ -110,16 +98,18 @@ async def _render_main(uid: int) -> tuple[str, InlineKeyboardMarkup]:
     nickname_line = f"👤 Tên gọi: *{settings['nickname']}*" if settings["nickname"] else "👤 Tên gọi: _chưa đặt_"
 
     text = (
-        f"🏮 *TRẠM ĐIỀU KHIỂN*\n"
-        f"{seal}\n"
+        f"🏮 *TRẠM ĐIỀU KHIỂN TRUNG TÂM*\n"
+        f"🦙 Ollama: `{'🟢 HOẠT ĐỘNG' if models else '⚫ MẤT KẾT NỐI'}` • Model: `{settings['model'] or '(mặc định)'}`\n"
+        f"🎙️ Voicebox: `{vb_status}` • Whisper: `{active_whisper}`\n"
+        f"🌐 Tra cứu: `Mặc định thông minh đa tầng`\n"
         f"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n"
-        f"🦙 Mô hình: `{settings['model'] or '(mặc định)'}`\n"
         f"🎭 Tính cách: {persona_label}\n"
         f"{nickname_line}"
     )
     rows = [
         [InlineKeyboardButton("💬 Trò chuyện", callback_data="menu_chat"),
-         InlineKeyboardButton("🧰 Tiện ích",   callback_data="menu_skills")],
+         InlineKeyboardButton("🎙️ Voicebox Studio", callback_data="menu_voicebox")],
+        [InlineKeyboardButton("🧰 Tiện ích", callback_data="menu_skills")],
     ]
     if is_admin(uid):
         rows.append([
@@ -170,8 +160,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         kb = [
             [InlineKeyboardButton("🦙 Đổi mô hình",   callback_data="menu_models"),
              InlineKeyboardButton("🎭 Đổi tính cách", callback_data="menu_persona")],
-            [InlineKeyboardButton("👤 Đặt tên gọi riêng", callback_data="ui_set_nickname"),
-             InlineKeyboardButton("🎙️ Cài đặt giọng nói", callback_data="menu_voice")],
+            [InlineKeyboardButton("👤 Đặt tên gọi riêng", callback_data="ui_set_nickname")],
             [_back()],
         ]
         await _safe_edit_message_text(query, 
@@ -220,26 +209,93 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
 
-    # ── 🎙️ Giọng nói (STT/TTS) ────────────────────────────────────────────────
-    elif data == "menu_voice":
+    # ── 🎙️ Voicebox Studio (Tận dụng toàn bộ tính năng Voicebox) ─────────────
+    elif data == "menu_voicebox":
         settings = await db.get_settings(uid)
-        groq_note = "✅" if groq_client else "❌ chưa cấu hình"
+        vb_health = await get_voicebox_health()
+        vb_status = "🟢 ONLINE" if vb_health.get("online") else "⚪ OFFLINE"
+        active_whisper = get_current_whisper_model()
+        tts_mode = settings.get("voice_mode") or "smart"
+        tts_mode_label = {"off": "🔇 Tắt", "smart": "⚡ Chỉ đọc trọng tâm", "always": "🔊 Luôn đọc"}.get(tts_mode, tts_mode)
+
         kb = [
-            [InlineKeyboardButton(
-                f"🎧 Nghe giọng nói: {settings['stt_engine'] or 'local'}", callback_data="menu_stt"
-            )],
-            [InlineKeyboardButton(
-                f"🔊 Trả lời bằng voice: {settings['voice_mode'] or 'smart'}", callback_data="menu_ttsmode"
-            )],
-            [InlineKeyboardButton(
-                f"🗣️ Giọng đọc: {settings['tts_voice'] or '(mặc định)'}", callback_data="menu_voice_pick"
-            )],
-            [_back("menu_chat", "Trò chuyện")],
+            [InlineKeyboardButton(f"🎧 Model Whisper: {active_whisper.upper()}", callback_data="menu_whisper_models"),
+             InlineKeyboardButton(f"🔊 Chế độ đọc: {tts_mode_label}", callback_data="menu_ttsmode")],
+            [InlineKeyboardButton("🗣️ Hồ sơ giọng nói (Profiles)", callback_data="menu_voice_profiles"),
+             InlineKeyboardButton("🎛️ Hiệu ứng âm thanh (Effects)", callback_data="menu_audio_effects")],
+            [InlineKeyboardButton(f"🎙️ Engine STT: {settings['stt_engine'] or 'local'}", callback_data="menu_stt"),
+             InlineKeyboardButton(f"🗣️ Giọng đọc Piper: {settings['tts_voice'] or '(mặc định)'}", callback_data="menu_voice_pick")],
+            [_back()],
         ]
-        await _safe_edit_message_text(query, 
-            f"🎙️ *CÀI ĐẶT GIỌNG NÓI*\nGroq Whisper (engine dự phòng): {groq_note}",
+        await _safe_edit_message_text(query,
+            f"🎙️ *VOICEBOX STUDIO & PIPELINE ÂM THANH*\n"
+            f"Trạng thái Docker: `{vb_status}`\n"
+            f"Model Whisper STT: `Whisper {active_whisper.upper()}`\n"
+            f"Chế độ voice reply: `{tts_mode_label}`\n\n"
+            f"💡 _Khi dùng voice, bot chỉ đọc 1-3 câu trọng tâm (2-5s), không đọc bảng biểu hay URL! Dữ liệu bảng biểu được tự động xuất file Excel/Word gửi đính kèm._",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
+
+    elif data == "menu_whisper_models":
+        current_w = get_current_whisper_model()
+        kb = [[InlineKeyboardButton(
+            f"{'✅ ' if sz == current_w else ''}Whisper {sz.upper()}", callback_data=f"set_whisper_{sz}"
+        )] for sz in WHISPER_SIZES]
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
+        await _safe_edit_message_text(query,
+            "🎧 *CHỌN MODEL WHISPER STT (VOICEBOX)*\n"
+            "_Model nhỏ (tiny/base/small) xử lý siêu nhanh; model lớn (medium/turbo) nhận diện chuẩn xác hơn._",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+        )
+
+    elif data.startswith("set_whisper_"):
+        sz = data.replace("set_whisper_", "")
+        set_current_whisper_model(sz)
+        await query.answer(f"Đã chọn Whisper {sz.upper()}")
+        kb = [[InlineKeyboardButton(
+            f"{'✅ ' if s == sz else ''}Whisper {s.upper()}", callback_data=f"set_whisper_{s}"
+        )] for s in WHISPER_SIZES]
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
+        await _safe_edit_message_text(query,
+            f"🎧 *MODEL WHISPER STT*\n✅ Đang dùng: `Whisper {sz.upper()}`",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+        )
+
+    elif data == "menu_voice_profiles":
+        profiles = await list_voice_profiles()
+        if not profiles:
+            kb = [[_back("menu_voicebox", "Voicebox Studio")]]
+            await _safe_edit_message_text(query,
+                "🗣️ *HỒ SƠ GIỌNG NÓI (VOICEBOX)*\n\n"
+                "ℹ️ Chưa có profile nào tải lên Voicebox Docker.\n"
+                "Bạn có thể thêm mẫu giọng đọc hoặc nhân bản giọng nói trực tiếp qua giao diện web Voicebox tại http://localhost:17600.",
+                parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+            )
+        else:
+            kb = [[InlineKeyboardButton(f"🎙️ {p.get('name', 'Preset')}", callback_data=f"view_profile_{p.get('id', '')}")] for p in profiles[:8]]
+            kb.append([_back("menu_voicebox", "Voicebox Studio")])
+            await _safe_edit_message_text(query,
+                f"🗣️ *HỒ SƠ GIỌNG NÓI (VOICEBOX)*\nĐang có {len(profiles)} hồ sơ giọng trong Voicebox:",
+                parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+            )
+
+    elif data.startswith("view_profile_"):
+        await query.answer("Hồ sơ giọng nói đã được cấu hình trong Voicebox.")
+
+    elif data == "menu_audio_effects":
+        effects = await list_audio_effects()
+        kb = []
+        for ef in effects:
+            kb.append([InlineKeyboardButton(f"🎛️ {ef.get('name', 'Preset')}", callback_data=f"info_effect_{ef.get('id', '')}")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
+        desc_list = "\n".join(f"• *{ef.get('name')}*: {ef.get('description', '')}" for ef in effects) if effects else "Chưa có presets."
+        await _safe_edit_message_text(query,
+            f"🎛️ *HIỆU ỨNG ÂM THANH (VOICEBOX)*\nCác bộ lọc âm thanh có sẵn:\n\n{desc_list}",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+        )
+
+    elif data.startswith("info_effect_"):
+        await query.answer("Hiệu ứng âm thanh từ Voicebox.")
 
     elif data == "menu_stt":
         current = (await db.get_settings(uid))["stt_engine"] or "local"
@@ -249,7 +305,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         kb = [[InlineKeyboardButton(
             f"{'✅ ' if key == current else ''}{label}", callback_data=f"set_stt_{key}"
         )] for key, label in options]
-        kb.append([_back("menu_voice", "Giọng nói")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
         await _safe_edit_message_text(query, 
             "🎧 *ENGINE NGHE GIỌNG NÓI*\n_Nếu engine chính lỗi, bot tự chuyển sang engine còn lại._",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
@@ -265,7 +321,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         kb = [[InlineKeyboardButton(
             f"{'✅ ' if key == choice else ''}{label}", callback_data=f"set_stt_{key}"
         )] for key, label in options]
-        kb.append([_back("menu_voice", "Giọng nói")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
         await _safe_edit_message_text(query, 
             f"🎧 *ENGINE NGHE GIỌNG NÓI*\n✅ Đang dùng: {choice}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
@@ -274,16 +330,18 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     elif data == "menu_ttsmode":
         current = (await db.get_settings(uid))["voice_mode"] or "smart"
         options = [
-            ("off",    "🔇 Tắt — chỉ trả lời bằng chữ"),
-            ("smart",  "🙂 Thông minh — tự đọc câu trả lời ngắn"),
-            ("always", "🔊 Luôn đọc — kể cả câu trả lời dài"),
+            ("smart",  "⚡ Thông minh — chỉ đọc câu trọng tâm (Siêu nhanh)"),
+            ("always", "🔊 Luôn đọc — kể cả câu dài"),
+            ("off",    "🔇 Tắt — chỉ trả lời văn bản"),
         ]
         kb = [[InlineKeyboardButton(
             f"{'✅ ' if key == current else ''}{label}", callback_data=f"set_tts_{key}"
         )] for key, label in options]
-        kb.append([_back("menu_voice", "Giọng nói")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
         await _safe_edit_message_text(query, 
-            "🔊 *CHẾ ĐỘ TRẢ LỜI BẰNG VOICE*", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+            "🔊 *CHẾ ĐỘ TRẢ LỜI BẰNG VOICE*\n"
+            "_Chế độ 'Thông minh' chỉ đọc 1-3 câu trọng tâm (2-5s), thông tin bảng biểu và chi tiết sẽ được gửi bằng văn bản và tệp Word/Excel đính kèm._",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
 
     elif data.startswith("set_tts_"):
@@ -291,14 +349,14 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await db.set_setting(uid, voice_mode=choice)
         await query.answer(f"Đã đổi chế độ voice reply: {choice}")
         options = [
-            ("off",    "🔇 Tắt — chỉ trả lời bằng chữ"),
-            ("smart",  "🙂 Thông minh — tự đọc câu trả lời ngắn"),
-            ("always", "🔊 Luôn đọc — kể cả câu trả lời dài"),
+            ("smart",  "⚡ Thông minh — chỉ đọc câu trọng tâm (Siêu nhanh)"),
+            ("always", "🔊 Luôn đọc — kể cả câu dài"),
+            ("off",    "🔇 Tắt — chỉ trả lời văn bản"),
         ]
         kb = [[InlineKeyboardButton(
             f"{'✅ ' if key == choice else ''}{label}", callback_data=f"set_tts_{key}"
         )] for key, label in options]
-        kb.append([_back("menu_voice", "Giọng nói")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
         await _safe_edit_message_text(query, 
             f"🔊 *CHẾ ĐỘ TRẢ LỜI BẰNG VOICE*\n✅ Đang dùng: {choice}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
@@ -309,14 +367,14 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         if not voices:
             await _safe_edit_message_text(query, 
                 "🗣️ *GIỌNG ĐỌC*\n⚠️ Chưa cấu hình giọng Piper nào (xem `PIPER_VOICE_PATHS` trong `.env`).",
-                parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[_back("menu_voice", "Giọng nói")]]),
+                parse_mode="Markdown", reply_markup=InlineKeyboardMarkup([[_back("menu_voicebox", "Voicebox Studio")]]),
             )
             return
         current = (await db.get_settings(uid))["tts_voice"]
         kb = [[InlineKeyboardButton(
             f"{'✅ ' if v == current else ''}{v}", callback_data=f"set_voice_{v}"
         )] for v in voices]
-        kb.append([_back("menu_voice", "Giọng nói")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
         await _safe_edit_message_text(query, 
             "🗣️ *CHỌN GIỌNG ĐỌC*", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
@@ -332,7 +390,7 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         kb = [[InlineKeyboardButton(
             f"{'✅ ' if v == name else ''}{v}", callback_data=f"set_voice_{v}"
         )] for v in voices]
-        kb.append([_back("menu_voice", "Giọng nói")])
+        kb.append([_back("menu_voicebox", "Voicebox Studio")])
         await _safe_edit_message_text(query, 
             f"🗣️ *CHỌN GIỌNG ĐỌC*\n✅ Đang dùng: {name}",
             parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
@@ -369,35 +427,43 @@ async def handle_callback_query(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     # ── 🧰 Tiện ích ───────────────────────────────────────────────────────────
     elif data == "menu_skills":
-        auto_web = await get_auto_web_mode(uid)
-        auto_web_label = "🌐 Tự động tìm web: BẬT ✅" if auto_web else "🌐 Tự động tìm web: TẮT ⛔"
+        kb = [
+            [InlineKeyboardButton("🌤️ Thời tiết các vùng", callback_data="menu_weather"),
+             InlineKeyboardButton("📰 Tin tức báo chí",     callback_data="menu_news")],
+            [InlineKeyboardButton("🔤 Dịch văn bản",         callback_data="ui_translation_menu")],
+            [_back()],
+        ]
+        await _safe_edit_message_text(query, 
+            "🧰 *TIỆN ÍCH MỞ RỘNG*\n_Chọn danh mục tiện ích bạn muốn tra cứu:_\n\n"
+            "💡 _Tìm kiếm thông minh thời gian thực luôn tự động hoạt động cho mọi câu hỏi!_",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+        )
+
+    elif data == "menu_weather":
         kb = [
             [InlineKeyboardButton("🌤️ Hà Nội",        callback_data="ui_wf_hanoi"),
-             InlineKeyboardButton("🌤️ Hồ Chí Minh",   callback_data="ui_wf_hcm"),
-             InlineKeyboardButton("🌤️ Đà Nẵng",       callback_data="ui_wf_danang")],
+             InlineKeyboardButton("🌤️ Hồ Chí Minh",   callback_data="ui_wf_hcm")],
+            [InlineKeyboardButton("🌤️ Đà Nẵng",       callback_data="ui_wf_danang")],
+            [_back("menu_skills", "Tiện ích")],
+        ]
+        await _safe_edit_message_text(query,
+            "🌤️ *DỰ BÁO THỜI TIẾT & CHẤT LƯỢNG KHÔNG KHÍ (AQI)*\n_Chọn thành phố bạn muốn xem:_",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+        )
+
+    elif data == "menu_news":
+        kb = [
             [InlineKeyboardButton("📰 VnExpress",      callback_data="ui_nw_vnexpress"),
              InlineKeyboardButton("📰 Tuổi Trẻ",       callback_data="ui_nw_tuoitre")],
             [InlineKeyboardButton("📰 Thanh Niên",     callback_data="ui_nw_thanhnien"),
              InlineKeyboardButton("📰 Dân Trí",        callback_data="ui_nw_dantri")],
             [InlineKeyboardButton("📰 BBC Tiếng Việt", callback_data="ui_nw_bbcvietnamese")],
-            [InlineKeyboardButton("🔤 Dịch văn bản",   callback_data="ui_translation_menu")],
-            [InlineKeyboardButton(auto_web_label,      callback_data="ui_toggle_auto_web")],
-            [_back()],
+            [_back("menu_skills", "Tiện ích")],
         ]
-        await _safe_edit_message_text(query, 
-            "🧰 *TIỆN ÍCH*", parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
+        await _safe_edit_message_text(query,
+            "📰 *TIN TỨC BÁO CHÍ MỚI NHẤT*\n_Chọn nguồn báo để xem tin tiêu điểm:_",
+            parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(kb),
         )
-
-    elif data == "ui_toggle_auto_web":
-        new_state = not await get_auto_web_mode(uid)
-        await db.set_setting(uid, auto_web=new_state)
-        msg = (
-            "✅ Đã *bật* Tự động tìm web thông minh — bot sẽ tự phân tích câu hỏi để tra cứu khi cần với từ khóa tối ưu."
-            if new_state else
-            "⛔ Đã *tắt* Tự động tìm web — bot chỉ tìm web khi có từ khóa gợi ý."
-        )
-        await query.answer("Đã đổi chế độ tự động tìm web")
-        await safe_reply(update, msg)
 
     elif data == "ui_translation_menu":
         kb = [

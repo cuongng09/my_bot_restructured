@@ -21,8 +21,10 @@ RUN pip install --no-cache-dir \
     psutil>=5.9 \
     python-dotenv>=1.0
 
-# Copy mã nguồn WebApp và file config
+# Copy mã nguồn WebApp, file config và module skills
 COPY config.py /app/config.py
+COPY bot_logger.py /app/bot_logger.py
+COPY skills /app/skills
 COPY webapp /app/webapp
 
 # Tạo sẵn thư mục mount dữ liệu và nhật ký

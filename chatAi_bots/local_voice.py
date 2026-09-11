@@ -51,8 +51,12 @@ def transcribe_audio_local(ogg_path: str) -> str:
             data = {}
             if VOICEBOX_LANGUAGE:
                 data["language"] = VOICEBOX_LANGUAGE
-            if VOICEBOX_MODEL:
-                data["model"] = VOICEBOX_MODEL
+            try:
+                from skills.voicebox_client import get_current_whisper_model
+                data["model"] = get_current_whisper_model()
+            except ImportError:
+                if VOICEBOX_MODEL:
+                    data["model"] = VOICEBOX_MODEL
 
             with httpx.Client(timeout=60.0) as client:
                 res = client.post(url, files=files, data=data)
@@ -161,22 +165,7 @@ def prepare_text_for_tts(text: str) -> str:
     text = _re.sub(r'^\s*\d+[.)]\s+', '', text, flags=_re.MULTILINE)
     text = text.replace('-', ' ')
 
-    # 7. Loại bỏ emoji và các ký tự Unicode đặc biệt
-    #    Giữ lại: chữ cái (Latin + tiếng Việt + CJK), chữ số, dấu câu cơ bản,
-    #             khoảng trắng và xuống dòng (bỏ -, |, # khỏi dấu câu cho phép).
-    def _keep_char(c: str) -> bool:
-        if c in ' \t\n\r':
-            return True
-        if c in '.,!?;:()[]"\'':
-            return True
-        cat = _ud.category(c)
-        # Lu=Uppercase, Ll=Lowercase, Lt=Titlecase, Lm=Modifier, Lo=Other letter
-        # Nd=Decimal digit, No=Other number
-        return cat.startswith('L') or cat in ('Nd', 'No')
-
-    text = ''.join(c for c in text if _keep_char(c))
-
-    # 8. Chuẩn hoá khoảng trắng thừa
+    # 7. Chuẩn hoá khoảng trắng thừa
     text = _re.sub(r'\n{3,}', '\n\n', text)   # tối đa 2 dòng trống
     text = _re.sub(r'[ \t]{2,}', ' ', text)   # nhiều space → 1 space
     text = _re.sub(r' +([.,!?;:])', r'\1', text)  # bỏ space trước dấu câu

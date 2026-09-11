@@ -269,14 +269,12 @@ async def cmd_autoweb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     if not is_allowed(uid):
         return
-    new_state = not await get_auto_web_mode(uid)
-    await db.set_setting(uid, auto_web=new_state)
     msg = (
-        "✅ Đã **BẬT** chế độ **Tự động tìm kiếm thông minh 🌐** — bot sẽ tự phân tích câu hỏi để tra cứu internet khi cần với từ khóa tối ưu."
-        if new_state else
-        "⛔ Đã **TẮT** chế độ Tự động tìm kiếm thông minh — bot chỉ tra cứu web khi câu hỏi có từ khóa gợi ý rõ ràng."
+        "🌐 Chế độ **Tìm kiếm thông minh đa tầng** hiện đã được thiết lập làm **mặc định vĩnh viễn** cho mọi câu hỏi (cả Text và Voice).\n"
+        "Hệ thống sẽ tự động lọc ý định, trích xuất từ khóa tối ưu và tra cứu internet theo thời gian thực mà không cần bạn phải thao tác bật/tắt thủ công nữa!"
     )
     await safe_reply(update, msg)
+
 
 
 # ── /shutdown /reboot (Admin only) ────────────────────────────────────────────
