@@ -4,47 +4,56 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Trạm Điều Khiển — My Bot</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23C1401F%22/><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22none%22 stroke=%22%23C9A227%22 stroke-width=%224%22/></svg>" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22><stop offset=%220%22 stop-color=%22%2306b6d4%22/><stop offset=%22.5%22 stop-color=%22%232563eb%22/><stop offset=%221%22 stop-color=%22%238b5cf6%22/></linearGradient></defs><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22url(%23g)%22/><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22none%22 stroke=%22white%22 stroke-opacity=%22.5%22 stroke-width=%223%22/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
 
-  <!-- ── Màn hình nhập token (chỉ hiện khi WEBAPP_TOKEN được cấu hình) ── -->
+  <div class="bg-ambient" aria-hidden="true">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+    <div class="bg-blob blob-4"></div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+  </div>
+
   <div class="gate" id="gate" hidden>
     <div class="gate__card">
-      <div class="brand__mark">🏮</div>
+      <div class="gate__mark"><span>🏮</span></div>
       <h1>Trạm Điều Khiển</h1>
       <p>Nhập token quản trị để mở bảng điều khiển.</p>
       <input type="password" id="gate-input" placeholder="Token quản trị" autocomplete="off" />
-      <button id="gate-submit">Mở trạm</button>
+      <button id="gate-submit">
+        <span>Mở trạm</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
       <div class="gate__error" id="gate-error"></div>
     </div>
   </div>
 
-  <!-- ── Trang chính ── -->
   <div class="wrap" id="app" hidden>
 
     <header class="header">
       <div class="brand">
         <span class="brand__mark">🏮</span>
-        <div>
+        <div class="brand__text">
           <h1>Trạm Điều Khiển</h1>
           <div class="brand__sub">Bảng quản trị · My Bot</div>
         </div>
       </div>
       <div class="header__right">
         <span class="clock" id="clock">--:--:--</span>
-        <div class="seal" id="seal">
+        <div class="seal seal--offline" id="seal">
           <span class="seal__stamp"><span class="seal__glyph">安</span></span>
           <span class="seal__text" id="seal-text">Đang kiểm tra…</span>
         </div>
       </div>
     </header>
 
-    <!-- ── Hàng thẻ số liệu ── -->
     <section class="stat-grid">
       <div class="card">
         <div class="eyebrow">Mô hình AI Ollama</div>
@@ -65,10 +74,12 @@
       </div>
     </section>
 
-    <!-- ── Voicebox Studio & Báo cáo Word/Excel ── -->
     <section class="split">
       <div class="panel">
-        <h2 class="section-title">🎙️ Voicebox Studio & Âm thanh</h2>
+        <h2 class="section-title">
+          <span class="section-title__icon">🎙️</span>
+          Voicebox Studio &amp; Âm thanh
+        </h2>
         <div class="kv-list" id="voicebox-kv">
           <div class="kv-row"><span class="kv-row__label">Trạng thái Docker</span><span class="kv-row__value" id="vb-status">—</span></div>
           <div class="kv-row"><span class="kv-row__label">Model Whisper STT</span><span class="kv-row__value" id="vb-whisper">—</span></div>
@@ -78,33 +89,44 @@
       </div>
 
       <div class="panel">
-        <h2 class="section-title">📊 Tệp Báo Cáo & Dữ Liệu (Word / Excel)</h2>
+        <h2 class="section-title">
+          <span class="section-title__icon">📊</span>
+          Tệp Báo Cáo &amp; Dữ Liệu
+        </h2>
         <div class="reports-wrap" id="reports-list">
           <div class="log-empty">Chưa có tệp xuất nào gần đây.</div>
         </div>
       </div>
     </section>
 
-    <!-- ── Nhật ký + Cấu hình ── -->
     <section class="split">
-      <div class="panel">
-        <h2 class="section-title">📜 Nhật ký thời gian thực</h2>
+      <div class="panel panel--log">
+        <h2 class="section-title">
+          <span class="section-title__icon">📜</span>
+          Nhật ký thời gian thực
+          <span class="live-dot" aria-hidden="true"></span>
+        </h2>
         <div class="log-feed" id="log-feed">
           <div class="log-empty">Đang tải nhật ký…</div>
         </div>
       </div>
 
       <div class="panel">
-        <h2 class="section-title">⚙️ Cấu hình hệ thống</h2>
+        <h2 class="section-title">
+          <span class="section-title__icon">⚙️</span>
+          Cấu hình hệ thống
+        </h2>
         <div class="kv-list" id="kv-list">
           <div class="kv-row"><span class="kv-row__label">Ollama</span><span class="kv-row__value">—</span></div>
         </div>
       </div>
     </section>
 
-    <!-- ── Bảng người dùng ── -->
     <section class="panel">
-      <h2 class="section-title">👥 Người dùng Telegram</h2>
+      <h2 class="section-title">
+        <span class="section-title__icon">👥</span>
+        Người dùng Telegram
+      </h2>
       <div class="table-wrap">
         <table class="users" id="users-table">
           <thead>

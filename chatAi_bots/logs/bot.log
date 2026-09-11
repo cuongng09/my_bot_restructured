@@ -476,3 +476,23 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2026-09-11 11:34:20,959 | INFO | my_bot | Ollama message[8] role=assistant chars=142 preview=Giá lăn bánh Mercedes GLC 300 4Matic 2026 tại TP.HCM khoảng 3,272 tỷ VNĐ, Hà Nội khoảng 3,331 tỷ VNĐ, và các tỉnh lân cận khoảng 3,252 tỷ VNĐ.
 2026-09-11 11:34:20,959 | INFO | my_bot | Ollama message[9] role=user chars=20 preview=bạn có thể làm đc gì
 2026-09-11 11:34:38,383 | INFO | my_bot | 📄 Đã tạo tệp Word: data/reports/b_n_c__th__l_m__c_g__20260911_113438.docx
+2026-09-11 12:35:23,268 | INFO | my_bot | 🔎 Search query: 'top 1 trending github'
+2026-09-11 12:35:24,355 | INFO | my_bot | 🔎 Kết quả search (method=searxng, 5 kết quả, 0 nguồn ưu tín): [Trending repositories on GitHub today](https://github.com/trending) | [Trendshift: Live trending GitHub repositories — daily moment](https://trendshift.io/) | [Claude-howto - top 1 github trending - Facebook](https://www.facebook.com/groups/indiehackervn/posts/2119452988842262/) | [EvanLi/Github-Ranking](https://github.com/EvanLi/Github-Ranking) | [Top 10 Trending AI GitHub Repositories in July 2026](https://www.analyticsvidhya.com/blog/2026/07/trending-ai-github-repositories/)
+2026-09-11 12:35:27,194 | INFO | my_bot | Ollama payload summary: messages=10, web_context_chars=5007, total_chars=9787
+2026-09-11 12:35:27,194 | INFO | my_bot | Ollama message[0] role=system chars=2255 preview=Bạn là một người bạn đồng hành AI thông minh, nói chuyện tự nhiên như một người bạn thân đang trò chuyện qua Telegram — không phải một cỗ máy trả lời khô khan. Xưng 'mình', gọi người dùng là 'bạn'. Gần gũi, thoải mái, đô
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[1] role=user chars=105 preview=[Lịch sử trò chuyện cũ đã được rút gọn để nhường chỗ cho dữ liệu web mới; chỉ giữ các tin nhắn gần nhất.]
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[2] role=assistant chars=192 preview=Top trending GitHub repositories now:  | Repo | What it does | | --- | --- | | usestrix/strix | ~42K stars | | xai-org/grok-build | ~9.3K stars |  Đây là những dự án AI phổ biến nhất hiện tại!
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[3] role=user chars=26 preview=top trendingbm yt việt nam
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[4] role=assistant chars=194 preview=Top trending trên YouTube Việt Nam hiện tại:  1. **LISA - SaWaDiKa (Official Music Video)** 2. **JISOO - CLICK (Official MV)** 3. **PHƯƠNG MỸ CHI x DTAP**  Hãy xem qua những MV này trên YouTube!
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[5] role=user chars=11 preview=giá glc 300
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[6] role=assistant chars=142 preview=Giá lăn bánh Mercedes GLC 300 4Matic 2026 tại TP.HCM khoảng 3,272 tỷ VNĐ, Hà Nội khoảng 3,331 tỷ VNĐ, và các tỉnh lân cận khoảng 3,252 tỷ VNĐ.
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[7] role=user chars=20 preview=bạn có thể làm đc gì
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[8] role=assistant chars=486 preview=Mình có thể giúp bạn nhiều thứ lắm! Dưới đây là một số việc mình có thể làm:  - So sánh giá và thông số kỹ thuật của các mẫu xe như Mazda, VinFast, Geely. - Cập nhật thông tin về giá vàng, giá cổ phiếu (như FPT). - Tìm k
+2026-09-11 12:35:27,195 | INFO | my_bot | Ollama message[9] role=user chars=6356 preview=--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: Thứ Sáu, ngày 11/09/2026, 12:35 (GMT+7)) --- Nguồn [1]: Tiêu đề: Trending repositories on GitHub today URL: https://github.com/trending Nội dung: ayghri / i-have-adhd A 
+2026-09-11 12:35:48,372 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-09-11 19:34:40,431 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-11 19:34:45,110 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-11 19:34:45,466 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-11 21:16:14,342 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-11 21:16:15,042 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-11 21:16:15,261 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot

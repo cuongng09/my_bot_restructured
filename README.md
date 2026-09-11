@@ -97,6 +97,23 @@ docker compose -f docker-compose.webapp.yml up -d --build
 # → http://localhost:8080
 ```
 
+```
+# Vào thư mục gốc bot (nơi chứa docker-compose.webapp.yml)
+cd bot
+
+# Cách 1 — Rebuild tiêu chuẩn (dùng cache layer còn hợp lệ, nhanh)
+docker compose -f docker-compose.webapp.yml up -d --build --force-recreate
+
+# Cách 2 — Rebuild "sạch hoàn toàn" (bỏ cache, dùng khi vừa sửa Dockerfile hoặc requirements)
+docker compose -f docker-compose.webapp.yml down --rmi local
+docker compose -f docker-compose.webapp.yml build --no-cache
+docker compose -f docker-compose.webapp.yml up -d
+
+# Xem log realtime để chắc chắn không lỗi
+docker compose -f docker-compose.webapp.yml logs -f --tail=80
+```
+
+
 ### Voicebox
 
 ```bash

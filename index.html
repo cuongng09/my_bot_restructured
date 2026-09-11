@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ollama Telegram Bot v7.0 — AI Local, Chat Không Giới Hạn</title>
+<meta name="description" content="Ollama Telegram Bot v7.0 — Kết nối LLM chạy local với Telegram. Streaming realtime, Vision, Voice, RAG, Docker deploy trong 60 giây." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   LIQUID GLASS DESIGN TOKENS
+============================================================ */
+:root{
+  --bg-0:#eef2f7;
+  --bg-1:#e3e9f2;
+  --bg-2:#d8e0ec;
+
+  --primary:#2563eb;
+  --primary-light:#3b82f6;
+  --primary-dark:#1d4ed8;
+  --indigo:#6366f1;
+  --violet:#8b5cf6;
+  --emerald:#10b981;
+  --amber:#f59e0b;
+  --rose:#f43f5e;
+  --cyan:#06b6d4;
+
+  --text:#0a1220;
+  --text-soft:#1e293b;
+  --muted:#4a5b73;
+  --dim:#7c8ba1;
+
+  /* Liquid glass surfaces */
+  --glass-tint:rgba(255,255,255,0.55);
+  --glass-tint-strong:rgba(255,255,255,0.75);
+  --glass-tint-soft:rgba(255,255,255,0.35);
+  --glass-border:rgba(255,255,255,0.9);
+  --glass-border-soft:rgba(255,255,255,0.6);
+  --glass-shadow:0 8px 32px rgba(31,50,90,0.10), 0 2px 8px rgba(31,50,90,0.06);
+  --glass-shadow-lg:0 24px 60px -12px rgba(31,50,90,0.22), 0 8px 20px -8px rgba(31,50,90,0.12);
+  --glass-inner:inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(255,255,255,0.4);
+
+  /* Code block unified theme */
+  --code-bg:linear-gradient(160deg,#0f172a 0%,#0a101e 100%);
+  --code-border:rgba(56,189,248,0.16);
+  --code-glow:0 20px 50px -18px rgba(15,23,42,0.55), 0 0 0 1px rgba(56,189,248,0.10), inset 0 1px 0 rgba(255,255,255,0.06);
+  --code-text:#cbd5e1;
+  --code-cmd:#7dd3fc;
+  --code-key:#c4b5fd;
+  --code-str:#6ee7b7;
+  --code-cmt:#64748b;
+
+  --radius:24px;
+  --radius-sm:16px;
+  --radius-lg:32px;
+  --maxw:1240px;
+
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --display:'Space Grotesk','Inter',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font);
+  background:var(--bg-0);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  position:relative;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::selection{background:rgba(37,99,235,.25);color:var(--primary-dark)}
+
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#94a3b8,#64748b);
+  border-radius:10px;border:3px solid var(--bg-0);
+}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#3b82f6,#6366f1)}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+============================================================ */
+.scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:999;
+  background:transparent;pointer-events:none;
+}
+.scroll-progress::after{
+  content:'';display:block;height:100%;width:var(--sp,0%);
+  background:linear-gradient(90deg,#06b6d4,#2563eb 35%,#6366f1 70%,#8b5cf6);
+  box-shadow:0 0 12px rgba(37,99,235,.6),0 0 4px rgba(99,102,241,.9);
+  transition:width .1s linear;
+  border-radius:0 3px 3px 0;
+}
+
+/* ============================================================
+   BACKGROUND LAYERS — LIQUID AMBIENT
+============================================================ */
+#bg-canvas{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;opacity:.55;pointer-events:none;
+}
+.grain{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+.liquid-blob{
+  position:fixed;border-radius:50%;filter:blur(120px);
+  z-index:0;pointer-events:none;opacity:.55;
+  will-change:transform;
+}
+.blob-1{
+  width:680px;height:680px;top:-300px;left:-200px;
+  background:radial-gradient(circle at 30% 30%,#93c5fd,transparent 65%);
+  animation:blobFloat1 24s ease-in-out infinite;
+}
+.blob-2{
+  width:600px;height:600px;top:8%;right:-240px;
+  background:radial-gradient(circle at 60% 40%,#c4b5fd,transparent 65%);
+  animation:blobFloat2 28s ease-in-out infinite;
+}
+.blob-3{
+  width:560px;height:560px;bottom:-160px;left:38%;
+  background:radial-gradient(circle at 40% 50%,#6ee7b7,transparent 68%);
+  opacity:.35;animation:blobFloat3 32s ease-in-out infinite;
+}
+.blob-4{
+  width:520px;height:520px;top:55%;left:-180px;
+  background:radial-gradient(circle at 50% 50%,#fbcfe8,transparent 70%);
+  opacity:.3;animation:blobFloat2 26s ease-in-out infinite reverse;
+}
+@keyframes blobFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(120px,90px) scale(1.15)}}
+@keyframes blobFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-100px,110px) scale(1.1)}}
+@keyframes blobFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,-90px) scale(1.18)}}
+
+.vignette{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 100% 55% at 50% 0%,rgba(255,255,255,.65) 0%,transparent 55%),
+    radial-gradient(ellipse 120% 90% at 50% 50%,transparent 40%,rgba(216,224,236,.55) 100%);
+}
+
+/* ============================================================
+   LAYOUT
+============================================================ */
+.wrap{position:relative;z-index:2}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+section{position:relative;padding:120px 0}
+.sec-head{text-align:center;max-width:740px;margin:0 auto 70px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:8px 18px;border-radius:100px;
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:0 4px 16px rgba(31,50,90,.08), inset 0 1px 0 rgba(255,255,255,.95);
+  color:var(--primary-dark);
+  font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  margin-bottom:22px;
+}
+.eyebrow .dot{
+  width:7px;height:7px;border-radius:50%;background:var(--primary);
+  box-shadow:0 0 0 3px rgba(37,99,235,.18);
+  animation:pulseDot 2.4s ease-in-out infinite;
+}
+@keyframes pulseDot{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 3px rgba(37,99,235,.18)}
+  50%{transform:scale(.7);box-shadow:0 0 0 6px rgba(37,99,235,.05)}
+}
+
+h2.sec-title{
+  font-family:var(--display);
+  font-size:clamp(30px,4.6vw,50px);
+  font-weight:700;line-height:1.13;letter-spacing:-.03em;
+  margin-bottom:18px;color:var(--text);
+}
+.sec-sub{color:var(--muted);font-size:17px;line-height:1.7}
+
+.grad-text{
+  background:linear-gradient(110deg,#2563eb 0%,#6366f1 30%,#0ea5e9 60%,#8b5cf6 90%,#2563eb 100%);
+  background-size:250% auto;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:shine 8s linear infinite;
+}
+@keyframes shine{to{background-position:250% center}}
+
+/* ============================================================
+   NAVBAR — LIQUID GLASS
+============================================================ */
+.nav{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  z-index:100;width:calc(100% - 32px);max-width:var(--maxw);
+  transition:all .5s var(--ease);
+  padding:12px 8px;
+  border-radius:22px;
+  background:transparent;
+  border:1px solid transparent;
+}
+.nav.scrolled{
+  padding:10px 16px;
+  background:rgba(255,255,255,.62);
+  backdrop-filter:blur(28px) saturate(190%);
+  -webkit-backdrop-filter:blur(28px) saturate(190%);
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:
+    0 12px 40px -12px rgba(31,50,90,.18),
+    0 4px 12px -4px rgba(31,50,90,.08),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.35);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:700;font-size:16.5px;letter-spacing:-.02em;color:var(--text)}
+.logo-mark{
+  width:40px;height:40px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(140deg,#06b6d4,#2563eb 45%,#6366f1 75%,#8b5cf6);
+  box-shadow:
+    0 8px 20px -6px rgba(37,99,235,.5),
+    0 2px 6px -2px rgba(99,102,241,.6),
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -2px 6px rgba(0,0,0,.12);
+  flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.logo-mark::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.4),transparent);
+  border-radius:13px 13px 50% 50%;
+}
+.logo-mark svg{width:21px;height:21px;color:#fff;position:relative;z-index:1}
+.logo-ver{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;
+  padding:3px 8px;border-radius:7px;
+  background:linear-gradient(140deg,rgba(37,99,235,.12),rgba(99,102,241,.1));
+  border:1px solid rgba(37,99,235,.2);
+  color:var(--primary);letter-spacing:.02em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{
+  padding:9px 16px;border-radius:12px;font-size:14px;font-weight:500;color:var(--muted);
+  transition:all .3s var(--ease);position:relative;
+}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.5)}
+.nav-links a.active{
+  color:var(--primary-dark);
+  background:rgba(255,255,255,.7);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 2px 6px -2px rgba(37,99,235,.15);
+}
+
+.nav-cta{display:flex;align-items:center;gap:10px}
+
+/* ============================================================
+   BUTTONS — LIQUID GLASS
+============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:11px 22px;border-radius:14px;
+  font-size:14.5px;font-weight:600;letter-spacing:-.01em;
+  transition:all .35s var(--ease);
+  position:relative;overflow:hidden;white-space:nowrap;
+  isolation:isolate;
+}
+.btn svg{width:17px;height:17px;flex-shrink:0;position:relative;z-index:1}
+.btn span{position:relative;z-index:1}
+
+.btn-ghost{
+  background:rgba(255,255,255,.75);
+  border:1px solid rgba(255,255,255,.95);
+  color:var(--text);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:
+    0 4px 14px -4px rgba(31,50,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.4);
+}
+.btn-ghost:hover{
+  background:rgba(255,255,255,.92);
+  transform:translateY(-2px);
+  box-shadow:
+    0 12px 28px -8px rgba(31,50,90,.18),
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(255,255,255,.5);
+}
+
+.btn-primary{
+  background:linear-gradient(140deg,#2563eb 0%,#4f46e5 50%,#6366f1 100%);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:
+    0 12px 32px -10px rgba(37,99,235,.7),
+    0 4px 12px -4px rgba(79,70,229,.5),
+    inset 0 1px 0 rgba(255,255,255,.4),
+    inset 0 -2px 8px rgba(0,0,0,.15);
+  overflow:hidden;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(140deg,rgba(255,255,255,.3),transparent 40%);
+  pointer-events:none;
+}
+.btn-primary::after{
+  content:'';position:absolute;top:-50%;left:-60%;
+  width:60%;height:200%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
+  transform:rotate(20deg);
+  transition:left .8s var(--ease);
+}
+.btn-primary:hover::after{left:120%}
+.btn-primary:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    0 20px 44px -10px rgba(37,99,235,.85),
+    0 6px 16px -4px rgba(79,70,229,.6),
+    inset 0 1px 0 rgba(255,255,255,.5),
+    inset 0 -2px 8px rgba(0,0,0,.18);
+}
+.btn-lg{padding:15px 30px;font-size:15.5px;border-radius:16px}
+
+.burger{display:none;width:44px;height:44px;border-radius:13px;border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.7);place-items:center;backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 4px 10px -4px rgba(31,50,90,.15)}
+.burger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s;position:relative}
+.burger span::before,.burger span::after{content:'';position:absolute;left:0;width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+.burger span::before{top:-6px}
+.burger span::after{top:6px}
+.burger.open span{background:transparent}
+.burger.open span::before{top:0;transform:rotate(45deg)}
+.burger.open span::after{top:0;transform:rotate(-45deg)}
+
+.mobile-menu{
+  display:none;flex-direction:column;gap:4px;
+  position:absolute;top:calc(100% + 10px);left:0;right:0;
+  padding:16px;border-radius:22px;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(30px) saturate(190%);
+  -webkit-backdrop-filter:blur(30px) saturate(190%);
+  border:1px solid rgba(255,255,255,.95);
+  box-shadow:
+    0 24px 60px -16px rgba(31,50,90,.2),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  opacity:0;transform:translateY(-12px) scale(.98);pointer-events:none;
+  transition:.4s var(--ease);transform-origin:top center;
+}
+.mobile-menu.open{opacity:1;transform:none;pointer-events:auto}
+.mobile-menu a{padding:13px 16px;border-radius:12px;font-weight:500;color:var(--muted);transition:.25s}
+.mobile-menu a:hover{background:rgba(37,99,235,.08);color:var(--primary)}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero{padding-top:180px;padding-bottom:100px}
+.hero-grid{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;
+}
+
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(40px,6.4vw,72px);
+  font-weight:700;line-height:1.05;letter-spacing:-.04em;
+  margin-bottom:24px;color:var(--text);
+}
+.hero p.lead{
+  color:var(--muted);font-size:17.5px;line-height:1.75;max-width:570px;margin-bottom:36px;
+}
+.hero p.lead strong{color:var(--text);font-weight:600}
+
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:28px}
+
+.install-inline{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 12px 12px 20px;
+  border-radius:16px;
+  background:rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.95);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:
+    0 6px 20px -8px rgba(31,50,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  max-width:540px;
+  font-family:var(--mono);font-size:13px;
+  transition:all .3s var(--ease);
+}
+.install-inline:hover{
+  border-color:rgba(37,99,235,.35);
+  box-shadow:
+    0 12px 28px -8px rgba(37,99,235,.2),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  transform:translateY(-2px);
+}
+.install-inline .prompt{color:var(--emerald);user-select:none;font-weight:600}
+.install-inline code{color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.copy-btn{
+  width:36px;height:36px;border-radius:11px;flex-shrink:0;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.8);
+  border:1px solid rgba(255,255,255,.95);
+  color:var(--muted);transition:.3s var(--ease);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+}
+.copy-btn:hover{background:#fff;color:var(--primary);transform:translateY(-1px);box-shadow:0 4px 12px -4px rgba(37,99,235,.3)}
+.copy-btn svg{width:15px;height:15px}
+.copy-btn.copied{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.4);color:var(--emerald)}
+
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.tag{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;border-radius:100px;
+  font-size:12.5px;font-weight:500;color:var(--text-soft);
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(255,255,255,.95);
+  backdrop-filter:blur(14px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 2px 6px -2px rgba(31,50,90,.08);
+  transition:.3s var(--ease);
+}
+.tag:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 6px 14px -4px rgba(37,99,235,.15)}
+.tag svg{width:13px;height:13px;color:var(--primary)}
+
+/* ============================================================
+   TERMINAL — LIQUID GLASS
+============================================================ */
+.terminal-wrap{position:relative;perspective:1400px}
+.terminal-wrap::before{
+  content:'';position:absolute;inset:-60px;z-index:-1;
+  background:
+    radial-gradient(circle at 30% 40%,rgba(37,99,235,.28),transparent 55%),
+    radial-gradient(circle at 70% 60%,rgba(139,92,246,.24),transparent 55%);
+  filter:blur(60px);
+}
+.terminal{
+  border-radius:26px;overflow:hidden;
+  background:linear-gradient(160deg,rgba(15,23,42,.98),rgba(10,16,30,1));
+  border:1px solid rgba(148,163,184,.18);
+  box-shadow:
+    0 45px 100px -30px rgba(15,23,42,.75),
+    0 20px 45px -20px rgba(37,99,235,.35),
+    0 0 0 1px rgba(56,189,248,.12),
+    inset 0 1px 0 rgba(255,255,255,.09),
+    inset 0 -1px 0 rgba(0,0,0,.4);
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .6s var(--ease);
+  animation:floatY 8s ease-in-out infinite;
+}
+.terminal::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(160deg,rgba(255,255,255,.08),transparent 30%,transparent 70%,rgba(56,189,248,.04));
+}
+.terminal::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(125,211,252,.5),transparent);
+}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+.term-bar{
+  display:flex;align-items:center;gap:8px;
+  padding:14px 18px;
+  background:rgba(255,255,255,.035);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  position:relative;z-index:1;
+}
+.term-dots{display:flex;gap:8px}
+.term-dots i{width:12px;height:12px;border-radius:50%;display:block;box-shadow:inset 0 -1px 2px rgba(0,0,0,.25)}
+.term-dots i:nth-child(1){background:linear-gradient(140deg,#ff7a6b,#ff5f57)}
+.term-dots i:nth-child(2){background:linear-gradient(140deg,#ffd166,#febc2e)}
+.term-dots i:nth-child(3){background:linear-gradient(140deg,#4ade80,#28c840)}
+.term-title{
+  flex:1;text-align:center;font-family:var(--mono);font-size:12px;color:#64748b;
+  margin-right:52px;letter-spacing:.02em;
+}
+.term-body{
+  height:300px;padding:20px 22px;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:8px;
+  font-family:var(--mono);font-size:13px;line-height:1.55;
+  overflow:hidden;color:#e2e8f0;
+  position:relative;z-index:1;
+}
+.term-line{white-space:pre-wrap;word-break:break-word;opacity:0;transform:translateY(4px)}
+.term-line.visible{animation:termIn .3s var(--ease) forwards}
+@keyframes termIn{to{opacity:1;transform:none}}
+.term-line.cmd{color:#f8fafc}
+.term-line.cmd .dollar{color:#34d399;font-weight:600}
+.term-line.out{color:#64748b}
+.term-line.ok{color:#34d399}
+.term-line.info{color:#7dd3fc}
+.cursor{
+  display:inline-block;width:8px;height:15px;background:#7dd3fc;
+  vertical-align:middle;animation:blink 1.05s steps(2) infinite;
+  box-shadow:0 0 8px rgba(125,211,252,.8);
+}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+/* Floating badge */
+.float-badge{
+  position:absolute;right:-22px;bottom:-28px;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 20px;border-radius:18px;
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.95);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:
+    0 20px 50px -18px rgba(31,50,90,.25),
+    0 0 0 1px rgba(16,185,129,.15),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  animation:floatY 6s ease-in-out infinite .8s;
+}
+.float-badge .ping{
+  width:10px;height:10px;border-radius:50%;background:var(--emerald);
+  box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:ping 2s infinite;
+}
+@keyframes ping{
+  0%{box-shadow:0 0 0 0 rgba(16,185,129,.65)}
+  70%{box-shadow:0 0 0 14px rgba(16,185,129,0)}
+  100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}
+}
+.float-badge .fb-label{font-size:10.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.float-badge .fb-val{font-family:var(--mono);font-size:14px;color:var(--emerald);font-weight:600}
+
+/* ============================================================
+   STATS — LIQUID GLASS
+============================================================ */
+.stats{padding:0 0 50px}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-radius:28px;overflow:hidden;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:
+    0 24px 60px -20px rgba(31,50,90,.15),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.5);
+  position:relative;
+}
+.stats-grid::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
+}
+.stat{
+  padding:38px 26px;text-align:center;position:relative;
+  transition:.4s var(--ease);
+}
+.stat:not(:last-child)::after{
+  content:'';position:absolute;right:0;top:24%;height:52%;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(148,163,184,.35),transparent);
+}
+.stat:hover{background:rgba(255,255,255,.5)}
+.stat-num{
+  font-family:var(--display);font-size:clamp(28px,3.6vw,42px);font-weight:700;
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:8px;
+}
+.stat-lbl{font-size:13px;color:var(--muted);font-weight:500}
+
+/* ============================================================
+   FEATURES — LIQUID GLASS CARDS
+============================================================ */
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+}
+.card{
+  position:relative;padding:32px 30px;border-radius:var(--radius);
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:
+    0 12px 30px -12px rgba(31,50,90,.14),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.5);
+  overflow:hidden;
+  transition:all .5s var(--ease);
+  will-change:transform;
+}
+.card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  opacity:0;transition:opacity .5s;
+  background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),rgba(37,99,235,.1),transparent 42%);
+  z-index:1;
+}
+.card::after{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
+  opacity:.9;
+}
+.card:hover::before{opacity:1}
+.card:hover{
+  border-color:rgba(255,255,255,1);
+  transform:translateY(-8px);
+  box-shadow:
+    0 30px 60px -20px rgba(37,99,235,.28),
+    0 12px 28px -12px rgba(31,50,90,.16),
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(255,255,255,.6);
+}
+.card h3{
+  font-family:var(--display);font-size:19px;font-weight:600;
+  letter-spacing:-.02em;margin-bottom:10px;position:relative;color:var(--text);z-index:2;
+}
+.card p{font-size:14.5px;color:var(--muted);line-height:1.7;position:relative;z-index:2}
+.card code{
+  font-family:var(--mono);font-size:12.5px;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.18);
+  padding:1px 6px;border-radius:5px;color:var(--primary-dark);
+}
+
+.icon-box{
+  width:56px;height:56px;border-radius:18px;
+  display:grid;place-items:center;margin-bottom:22px;
+  position:relative;z-index:2;
+  background:linear-gradient(140deg,rgba(255,255,255,.95),rgba(241,245,249,.85));
+  border:1px solid rgba(255,255,255,1);
+  color:var(--primary);
+  box-shadow:
+    0 10px 22px -10px rgba(37,99,235,.4),
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(255,255,255,.4);
+  transition:.5s var(--ease);
+  overflow:hidden;
+}
+.icon-box::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(140deg,currentColor,transparent 55%);
+  opacity:.14;
+}
+.icon-box svg{width:26px;height:26px;position:relative;z-index:1;transition:.5s var(--ease)}
+.card:hover .icon-box{transform:scale(1.08) rotate(-4deg)}
+.card:hover .icon-box svg{transform:scale(1.05)}
+
+.icon-box.indigo{color:var(--indigo);box-shadow:0 10px 22px -10px rgba(99,102,241,.45),inset 0 1px 0 rgba(255,255,255,1)}
+.icon-box.emerald{color:var(--emerald);box-shadow:0 10px 22px -10px rgba(16,185,129,.45),inset 0 1px 0 rgba(255,255,255,1)}
+.icon-box.violet{color:var(--violet);box-shadow:0 10px 22px -10px rgba(139,92,246,.45),inset 0 1px 0 rgba(255,255,255,1)}
+.icon-box.amber{color:var(--amber);box-shadow:0 10px 22px -10px rgba(245,158,11,.45),inset 0 1px 0 rgba(255,255,255,1)}
+.icon-box.rose{color:var(--rose);box-shadow:0 10px 22px -10px rgba(244,63,94,.45),inset 0 1px 0 rgba(255,255,255,1)}
+
+/* ============================================================
+   MODELS — LIQUID GLASS CHIPS (MARQUEE on hover)
+============================================================ */
+.models-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+}
+.model-chip{
+  display:flex;align-items:center;gap:14px;
+  padding:18px 20px;border-radius:18px;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:
+    0 6px 16px -8px rgba(31,50,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  transition:.4s var(--ease);
+  cursor:default;
+  position:relative;overflow:hidden;
+}
+.model-chip::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
+}
+.model-chip:hover{
+  background:rgba(255,255,255,.85);
+  border-color:rgba(255,255,255,1);
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:
+    0 20px 40px -16px rgba(37,99,235,.28),
+    inset 0 1px 0 rgba(255,255,255,1);
+}
+.model-dot{
+  width:11px;height:11px;border-radius:50%;flex-shrink:0;
+  background:var(--primary);
+  box-shadow:0 0 0 4px rgba(37,99,235,.15), 0 0 12px rgba(37,99,235,.5);
+  animation:modelPulse 3s ease-in-out infinite;
+}
+@keyframes modelPulse{0%,100%{opacity:1}50%{opacity:.6}}
+.model-chip:nth-child(2n) .model-dot{background:var(--indigo);box-shadow:0 0 0 4px rgba(99,102,241,.15),0 0 12px rgba(99,102,241,.5)}
+.model-chip:nth-child(3n) .model-dot{background:var(--emerald);box-shadow:0 0 0 4px rgba(16,185,129,.15),0 0 12px rgba(16,185,129,.5)}
+.model-chip:nth-child(5n) .model-dot{background:var(--violet);box-shadow:0 0 0 4px rgba(139,92,246,.15),0 0 12px rgba(139,92,246,.5)}
+.model-chip:nth-child(7n) .model-dot{background:var(--amber);box-shadow:0 0 0 4px rgba(245,158,11,.15),0 0 12px rgba(245,158,11,.5)}
+.model-info{min-width:0}
+.model-name{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.model-meta{font-size:11.5px;color:var(--dim);font-weight:500}
+
+/* ============================================================
+   HOW IT WORKS
+============================================================ */
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{
+  display:flex;gap:20px;padding:22px;border-radius:20px;
+  transition:.4s var(--ease);
+  border:1px solid transparent;
+  position:relative;
+}
+.step:hover{
+  background:rgba(255,255,255,.6);
+  border-color:rgba(255,255,255,.95);
+  backdrop-filter:blur(20px);
+  box-shadow:0 12px 30px -14px rgba(31,50,90,.15), inset 0 1px 0 rgba(255,255,255,.95);
+  transform:translateX(6px);
+}
+.step-num{
+  width:44px;height:44px;border-radius:14px;flex-shrink:0;
+  display:grid;place-items:center;
+  font-family:var(--mono);font-size:14px;font-weight:700;
+  background:linear-gradient(140deg,#2563eb,#6366f1);
+  color:#fff;
+  box-shadow:
+    0 10px 22px -8px rgba(37,99,235,.55),
+    inset 0 1px 0 rgba(255,255,255,.4);
+}
+.step h4{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:6px;letter-spacing:-.02em}
+.step p{font-size:14.2px;color:var(--muted);line-height:1.68}
+.step code{
+  font-family:var(--mono);font-size:12.5px;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.18);
+  padding:1px 6px;border-radius:5px;color:var(--primary-dark);
+}
+
+/* Telegram mockup */
+.tg-phone{
+  border-radius:30px;padding:20px;
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(255,255,255,.95);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:
+    0 40px 90px -30px rgba(31,50,90,.28),
+    0 15px 40px -20px rgba(37,99,235,.2),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.5);
+  position:relative;
+}
+.tg-phone::after{
+  content:'';position:absolute;inset:-40px;z-index:-1;
+  background:radial-gradient(circle at 50% 50%,rgba(37,99,235,.18),transparent 65%);
+  filter:blur(50px);
+}
+.tg-head{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px 18px;
+  border-bottom:1px solid rgba(148,163,184,.2);
+  margin-bottom:18px;
+}
+.tg-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(140deg,#06b6d4,#2563eb 50%,#6366f1);
+  display:grid;place-items:center;flex-shrink:0;
+  box-shadow:0 8px 18px -6px rgba(37,99,235,.6), inset 0 1px 0 rgba(255,255,255,.4);
+  position:relative;
+}
+.tg-avatar::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 55%);
+}
+.tg-avatar svg{width:22px;height:22px;color:#fff;position:relative;z-index:1}
+.tg-name{font-weight:600;font-size:15px;color:var(--text)}
+.tg-status{font-size:11.5px;color:var(--emerald);display:flex;align-items:center;gap:5px;font-weight:500}
+.tg-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px rgba(16,185,129,.7)}
+
+.tg-body{display:flex;flex-direction:column;gap:12px;padding:0 6px 8px;min-height:300px}
+.msg{max-width:82%;padding:12px 16px;border-radius:18px;font-size:13.8px;line-height:1.6;animation:msgIn .5s var(--ease) backwards}
+@keyframes msgIn{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:none}}
+.msg.user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:#fff;border-bottom-right-radius:6px;
+  box-shadow:0 8px 18px -8px rgba(37,99,235,.6), inset 0 1px 0 rgba(255,255,255,.25);
+}
+.msg.bot{
+  align-self:flex-start;
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.95);
+  border-bottom-left-radius:6px;color:var(--text-soft);
+  backdrop-filter:blur(14px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 4px 12px -6px rgba(31,50,90,.1);
+}
+.msg.bot code{
+  font-family:var(--mono);font-size:12.2px;
+  background:rgba(37,99,235,.1);
+  border:1px solid rgba(37,99,235,.2);
+  padding:1px 6px;border-radius:5px;color:var(--primary-dark);
+}
+.msg .typing-dots{display:inline-flex;gap:4px;align-items:center;height:16px}
+.msg .typing-dots i{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:bounce 1.3s infinite}
+.msg .typing-dots i:nth-child(2){animation-delay:.18s}
+.msg .typing-dots i:nth-child(3){animation-delay:.36s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-6px);opacity:1}}
+
+/* ============================================================
+   INSTALL — UNIFIED CODE BLOCKS
+============================================================ */
+.install-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.install-card{
+  border-radius:var(--radius);overflow:hidden;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:
+    0 12px 30px -12px rgba(31,50,90,.14),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  transition:.5s var(--ease);
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.install-card::after{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
+  pointer-events:none;
+}
+.install-card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(255,255,255,1);
+  box-shadow:
+    0 30px 60px -20px rgba(37,99,235,.28),
+    0 12px 28px -12px rgba(31,50,90,.16),
+    inset 0 1px 0 rgba(255,255,255,1);
+}
+.install-card-head{padding:26px 26px 20px;display:flex;align-items:center;gap:14px}
+.install-card-head .icon-box{width:46px;height:46px;border-radius:14px;margin:0}
+.install-card-head .icon-box svg{width:22px;height:22px}
+.install-card-head h3{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text)}
+.install-card-head span{font-size:12.5px;color:var(--dim);display:block;margin-top:2px}
+
+/* Unified code block — same theme across all */
+.code-block{
+  position:relative;margin:0 20px 20px;border-radius:18px;
+  background:var(--code-bg);
+  border:1px solid var(--code-border);
+  padding:20px 52px 20px 20px;
+  font-family:var(--mono);font-size:12.8px;line-height:1.9;
+  color:var(--code-text);
+  overflow-x:auto;
+  flex:1;
+  box-shadow:var(--code-glow);
+  transition:.4s var(--ease);
+}
+.code-block::before{
+  content:'';position:absolute;top:0;left:15%;right:15%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(125,211,252,.5),transparent);
+  pointer-events:none;
+}
+.code-block::after{
+  content:'';position:absolute;bottom:0;left:25%;right:25%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(56,189,248,.15),transparent);
+  pointer-events:none;
+}
+.install-card:hover .code-block{
+  border-color:rgba(56,189,248,.3);
+  box-shadow:
+    0 24px 60px -18px rgba(15,23,42,.65),
+    0 0 0 1px rgba(56,189,248,.2),
+    0 0 30px -8px rgba(56,189,248,.25),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.code-block .cmt{color:var(--code-cmt);font-style:italic}
+.code-block .cmd{color:var(--code-cmd);font-weight:600}
+.code-block .str{color:var(--code-str)}
+.code-block .key{color:var(--code-key);font-weight:500}
+.code-block .copy-btn{
+  position:absolute;top:14px;right:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(148,163,184,.2);
+  color:#94a3b8;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter:blur(10px);
+}
+.code-block .copy-btn:hover{
+  background:rgba(56,189,248,.15);
+  border-color:rgba(56,189,248,.4);
+  color:#7dd3fc;
+  transform:translateY(-1px) scale(1.05);
+}
+.code-block .copy-btn.copied{
+  background:rgba(16,185,129,.18);
+  border-color:rgba(16,185,129,.5);
+  color:#34d399;
+}
+
+/* ============================================================
+   FAQ — LIQUID GLASS
+============================================================ */
+.faq-list{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.faq-item{
+  border-radius:20px;
+  background:rgba(255,255,255,.5);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:
+    0 6px 18px -8px rgba(31,50,90,.1),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  overflow:hidden;transition:.4s var(--ease);
+  position:relative;
+}
+.faq-item::after{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
+  pointer-events:none;
+}
+.faq-item:hover{border-color:rgba(255,255,255,1);transform:translateY(-2px)}
+.faq-item.open{
+  background:rgba(255,255,255,.8);
+  border-color:rgba(255,255,255,1);
+  box-shadow:
+    0 20px 45px -18px rgba(37,99,235,.22),
+    inset 0 1px 0 rgba(255,255,255,1);
+}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:22px 26px;text-align:left;
+  font-size:16px;font-weight:600;font-family:var(--display);letter-spacing:-.015em;
+  color:var(--text);transition:.3s var(--ease);
+}
+.faq-q:hover{color:var(--primary)}
+.faq-icon{
+  width:32px;height:32px;border-radius:11px;flex-shrink:0;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.8);
+  border:1px solid rgba(255,255,255,.95);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 2px 6px -2px rgba(31,50,90,.1);
+  transition:.4s var(--ease);
+}
+.faq-icon svg{width:16px;height:16px;color:var(--muted);transition:.4s var(--ease)}
+.faq-item.open .faq-icon{
+  background:linear-gradient(140deg,#2563eb,#6366f1);
+  border-color:rgba(255,255,255,.3);
+  transform:rotate(135deg);
+  box-shadow:0 6px 14px -4px rgba(37,99,235,.5), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.faq-item.open .faq-icon svg{color:#fff}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .5s var(--ease), padding .4s var(--ease);
+  padding:0 26px;
+}
+.faq-item.open .faq-a{max-height:400px;padding-bottom:24px}
+.faq-a p{font-size:14.5px;color:var(--muted);line-height:1.78}
+.faq-a code{
+  font-family:var(--mono);font-size:12.5px;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);
+  padding:1px 6px;border-radius:5px;color:var(--primary-dark);
+}
+
+/* ============================================================
+   CTA PANEL — LIQUID GLASS
+============================================================ */
+.cta-panel{
+  position:relative;border-radius:36px;overflow:hidden;
+  padding:80px 52px;text-align:center;
+  background:linear-gradient(140deg,rgba(37,99,235,.1),rgba(99,102,241,.06) 40%,rgba(139,92,246,.08) 70%,rgba(16,185,129,.06));
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(30px) saturate(190%);
+  -webkit-backdrop-filter:blur(30px) saturate(190%);
+  box-shadow:
+    0 50px 100px -35px rgba(37,99,235,.3),
+    0 20px 50px -20px rgba(31,50,90,.15),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.5);
+}
+.cta-panel::before{
+  content:'';position:absolute;top:-50%;left:-20%;width:140%;height:200%;
+  background:conic-gradient(from 0deg,transparent,rgba(37,99,235,.12),transparent 30%);
+  animation:spin 18s linear infinite;pointer-events:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cta-panel::after{
+  content:'';position:absolute;top:0;left:25%;right:25%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
+  pointer-events:none;
+}
+.cta-panel h2{
+  font-family:var(--display);font-size:clamp(30px,4.6vw,48px);
+  font-weight:700;letter-spacing:-.035em;line-height:1.12;margin-bottom:18px;position:relative;color:var(--text);
+}
+.cta-panel p{color:var(--muted);font-size:17px;max-width:580px;margin:0 auto 38px;position:relative}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer{
+  position:relative;z-index:2;
+  border-top:1px solid rgba(255,255,255,.7);
+  background:rgba(255,255,255,.4);
+  backdrop-filter:blur(20px);
+  padding:64px 0 36px;margin-top:50px;
+}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;
+}
+.footer-brand p{font-size:14px;color:var(--muted);margin-top:18px;max-width:300px;line-height:1.7}
+.footer-col h4{
+  font-family:var(--display);font-size:12.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--text);margin-bottom:20px;
+}
+.footer-col a{
+  display:block;font-size:14px;color:var(--muted);padding:7px 0;transition:.3s var(--ease);
+}
+.footer-col a:hover{color:var(--primary);transform:translateX(4px)}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  padding-top:30px;border-top:1px solid rgba(148,163,184,.2);
+  font-size:13.5px;color:var(--dim);
+}
+.footer-bottom .heart{color:#e11d48;display:inline-block;animation:heartbeat 1.4s ease-in-out infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%,45%{transform:scale(1.2)}30%{transform:scale(1)}}
+
+/* ============================================================
+   SCROLL REVEAL ANIMATIONS
+============================================================ */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+.reveal-left{opacity:0;transform:translateX(-50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal-left.in{opacity:1;transform:none}
+
+.reveal-right{opacity:0;transform:translateX(50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal-right.in{opacity:1;transform:none}
+
+.reveal-scale{opacity:0;transform:scale(.92);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal-scale.in{opacity:1;transform:none}
+
+/* Stagger children */
+.stagger > *{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.stagger.in > *{opacity:1;transform:none}
+.stagger.in > *:nth-child(1){transition-delay:.05s}
+.stagger.in > *:nth-child(2){transition-delay:.12s}
+.stagger.in > *:nth-child(3){transition-delay:.19s}
+.stagger.in > *:nth-child(4){transition-delay:.26s}
+.stagger.in > *:nth-child(5){transition-delay:.33s}
+.stagger.in > *:nth-child(6){transition-delay:.40s}
+.stagger.in > *:nth-child(7){transition-delay:.47s}
+.stagger.in > *:nth-child(8){transition-delay:.54s}
+
+/* Parallax */
+.parallax{will-change:transform;transition:transform .15s linear}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width:1080px){
+  .hero-grid{grid-template-columns:1fr;gap:60px}
+  .hero{padding-top:150px}
+  .hero p.lead{max-width:100%}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .models-grid{grid-template-columns:repeat(3,1fr)}
+  .install-grid{grid-template-columns:1fr;max-width:640px;margin:0 auto}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media (max-width:860px){
+  .nav-links,.nav-cta .btn-ghost{display:none}
+  .burger{display:grid}
+  .mobile-menu{display:flex}
+  .nav{top:10px;width:calc(100% - 20px)}
+  section{padding:90px 0}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2)::after{display:none}
+  .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid rgba(148,163,184,.2)}
+  .demo-grid{grid-template-columns:1fr;gap:50px}
+  .cta-panel{padding:60px 28px}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+}
+@media (max-width:620px){
+  .container{padding:0 18px}
+  .features-grid{grid-template-columns:1fr}
+  .models-grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:clamp(34px,9vw,46px)}
+  .float-badge{right:0;bottom:-20px;padding:12px 16px}
+  .float-badge .fb-val{font-size:12.5px}
+  .term-body{height:250px;font-size:12px}
+  .footer-bottom{justify-content:center;text-align:center}
+  .stats-grid{grid-template-columns:1fr}
+  .stat::after{display:none!important}
+  .stat{border-bottom:1px solid rgba(148,163,184,.2)}
+  .stat:last-child{border-bottom:none}
+  .cta-panel{padding:50px 22px;border-radius:28px}
+  .card{padding:26px 24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  html{scroll-behavior:auto}
+  .reveal,.reveal-left,.reveal-right,.reveal-scale,.stagger > *{opacity:1;transform:none}
+  .parallax{transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+<div class="liquid-blob blob-1"></div>
+<div class="liquid-blob blob-2"></div>
+<div class="liquid-blob blob-3"></div>
+<div class="liquid-blob blob-4"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<div class="wrap">
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 4 6v6c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V6l-8-4Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+      <span>Ollama<span style="color:var(--muted);font-weight:500"> Bot</span></span>
+      <span class="logo-ver">v7.0</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#features">Tính năng</a>
+      <a href="#models">Models</a>
+      <a href="#how">Cách hoạt động</a>
+      <a href="#install">Cài đặt</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <a href="#install" class="btn btn-primary">
+        <span>Bắt đầu ngay</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features">Tính năng</a>
+    <a href="#models">Models</a>
+    <a href="#how">Cách hoạt động</a>
+    <a href="#install">Cài đặt</a>
+    <a href="#faq">FAQ</a>
+    <a href="#" style="color:var(--primary);font-weight:600">GitHub →</a>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <div class="hero-copy">
+        <div class="eyebrow reveal">
+          <span class="dot"></span>
+          v7.0 · Open Source · MIT License
+        </div>
+
+        <h1 class="reveal" style="transition-delay:.08s">
+          LLM chạy <span class="grad-text">local</span>,<br>
+          chat ngay trên <span class="grad-text">Telegram</span>.
+        </h1>
+
+        <p class="lead reveal" style="transition-delay:.16s">
+          Kết nối <strong>Ollama</strong> với Telegram chỉ trong một lệnh duy nhất.
+          Streaming realtime, Vision, Voice, RAG — tất cả chạy trên <strong>phần cứng của bạn</strong>.
+          Không API key, không chi phí, không giới hạn.
+        </p>
+
+        <div class="hero-actions reveal" style="transition-delay:.24s">
+          <a href="#install" class="btn btn-primary btn-lg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+            <span>Cài đặt trong 60 giây</span>
+          </a>
+          <a href="#" class="btn btn-ghost btn-lg">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+            <span>Xem source code</span>
+          </a>
+        </div>
+
+        <div class="install-inline reveal" style="transition-delay:.32s">
+          <span class="prompt">$</span>
+          <code id="heroCmd">git clone https://github.com/ollama-telegram/bot.git &amp;&amp; make up</code>
+          <button class="copy-btn" data-copy="git clone https://github.com/ollama-telegram/bot.git && cd bot && make up" aria-label="Copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+
+        <div class="hero-tags reveal" style="transition-delay:.40s">
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>20+ model</span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Streaming realtime</span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vision &amp; Voice</span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Docker ready</span>
+        </div>
+      </div>
+
+      <!-- Terminal -->
+      <div class="terminal-wrap reveal-scale" style="transition-delay:.3s">
+        <div class="terminal" id="terminal3D">
+          <div class="term-bar">
+            <div class="term-dots"><i></i><i></i><i></i></div>
+            <div class="term-title">ollama-telegram-bot — bash</div>
+          </div>
+          <div class="term-body" id="termBody"></div>
+        </div>
+
+        <div class="float-badge">
+          <span class="ping"></span>
+          <div>
+            <div class="fb-label">Đang xử lý</div>
+            <div class="fb-val" id="tpsVal">42.7 tok/s</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ STATS ============================ -->
+<section class="stats" style="padding-top:60px">
+  <div class="container">
+    <div class="stats-grid reveal" data-parallax="0.04">
+      <div class="stat">
+        <div class="stat-num grad-text"><span class="counter" data-target="14.2" data-dec="1">0</span>k</div>
+        <div class="stat-lbl">GitHub Stars</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num grad-text"><span class="counter" data-target="20">0</span>+</div>
+        <div class="stat-lbl">Model được hỗ trợ</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num grad-text"><span class="counter" data-target="60">0</span>s</div>
+        <div class="stat-lbl">Thời gian cài đặt</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num grad-text"><span class="counter" data-target="100">0</span>%</div>
+        <div class="stat-lbl">Local &amp; riêng tư</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FEATURES ============================ -->
+<section id="features">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="dot"></span>Tính năng</div>
+      <h2 class="sec-title">Mọi thứ bạn cần, <span class="grad-text">không thứ nào bạn không</span></h2>
+      <p class="sec-sub">Được xây dựng cho người dùng thật — nhanh, gọn, bảo mật và mở rộng được.</p>
+    </div>
+
+    <div class="features-grid stagger">
+
+      <article class="card tilt">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 8h6l-3 12"/><path d="M3 12h4M17 12h4"/></svg>
+        </div>
+        <h3>Streaming Realtime</h3>
+        <p>Phản hồi hiển thị từng token ngay khi model sinh ra, kèm chỉnh sửa message mượt mà. Không còn cảnh chờ đợi màn hình trắng.</p>
+      </article>
+
+      <article class="card tilt">
+        <div class="icon-box indigo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <h3>Đa Model Linh Hoạt</h3>
+        <p>Chuyển đổi giữa llama3.2, qwen2.5, mistral, gemma2, phi4 hay bất kỳ model nào trên Ollama chỉ với một dòng lệnh <code>/model</code>.</p>
+      </article>
+
+      <article class="card tilt">
+        <div class="icon-box emerald">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 21"/></svg>
+        </div>
+        <h3>Vision &amp; Phân tích ảnh</h3>
+        <p>Gửi ảnh trực tiếp trong chat, bot tự động nhận diện và phân tích bằng các model đa phương thức như LLaVA, Qwen2-VL hay Gemma3.</p>
+      </article>
+
+      <article class="card tilt">
+        <div class="icon-box violet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>
+        </div>
+        <h3>Voice &amp; Speech-to-Text</h3>
+        <p>Nhắn tin thoại được chuyển thành văn bản tự động qua Whisper local, rồi trả lời bằng giọng nói với Piper TTS. Rảnh tay hoàn toàn.</p>
+      </article>
+
+      <article class="card tilt">
+        <div class="icon-box amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+        </div>
+        <h3>RAG &amp; Knowledge Base</h3>
+        <p>Nhúng tài liệu PDF, Markdown, code vào vector store local (ChromaDB). Bot trả lời dựa trên chính dữ liệu của bạn, kèm trích dẫn nguồn.</p>
+      </article>
+
+      <article class="card tilt">
+        <div class="icon-box rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Bảo mật &amp; Riêng tư</h3>
+        <p>Whitelist user/group, rate limiting, mã hoá token. Toàn bộ hội thoại nằm trong SQLite của bạn — không một byte nào rời khỏi máy.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MODELS ============================ -->
+<section id="models">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="dot"></span>Model Registry</div>
+      <h2 class="sec-title">Chơi với <span class="grad-text">mọi model</span> bạn thích</h2>
+      <p class="sec-sub">Bot tự động phát hiện model đã pull trên Ollama. Không cần cấu hình lại.</p>
+    </div>
+
+    <div class="models-grid stagger">
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">llama3.2</div><div class="model-meta">Meta · 1B / 3B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">qwen2.5</div><div class="model-meta">Alibaba · 7B – 72B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">mistral</div><div class="model-meta">Mistral AI · 7B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">gemma2</div><div class="model-meta">Google · 9B / 27B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">phi4</div><div class="model-meta">Microsoft · 14B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">deepseek-r1</div><div class="model-meta">DeepSeek · 7B / 8B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">llava</div><div class="model-meta">Vision · 7B / 13B</div></div></div>
+      <div class="model-chip"><span class="model-dot"></span><div class="model-info"><div class="model-name">codellama</div><div class="model-meta">Code · 7B / 13B</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HOW IT WORKS ============================ -->
+<section id="how">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="dot"></span>Cách hoạt động</div>
+      <h2 class="sec-title">Ba bước. <span class="grad-text">Không hơn.</span></h2>
+    </div>
+
+    <div class="demo-grid">
+      <div class="steps stagger">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div>
+            <h4>Pull model về máy</h4>
+            <p>Chạy <code>ollama pull llama3.2</code> để tải model. Mọi thứ lưu local, không cần GPU đắt tiền — CPU cũng chạy tốt.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div>
+            <h4>Khởi động bot</h4>
+            <p>Điền <code>TELEGRAM_TOKEN</code> và <code>OLLAMA_HOST</code> vào file <code>.env</code>, rồi chạy <code>make up</code>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div>
+            <h4>Chat &amp; tận hưởng</h4>
+            <p>Mở Telegram, gõ <code>/start</code>. Bot streaming phản hồi ngay lập tức — không latency cloud, không phí token.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tg-phone reveal-right" style="transition-delay:.15s">
+        <div class="tg-head">
+          <div class="tg-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 4 6v6c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V6l-8-4Z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tg-name">Ollama Bot</div>
+            <div class="tg-status">online · llama3.2</div>
+          </div>
+        </div>
+
+        <div class="tg-body" id="tgBody">
+          <div class="msg user" style="animation-delay:.3s">Giải thích Docker layer caching trong 3 gạch đầu dòng</div>
+          <div class="msg bot" style="animation-delay:.9s">
+            1. Mỗi lệnh trong Dockerfile tạo một <code>layer</code> riêng.<br>
+            2. Layer không đổi được tái sử dụng từ cache.<br>
+            3. Đặt lệnh ít thay đổi lên trên để tối đa cache hit.
+          </div>
+          <div class="msg user" style="animation-delay:1.5s">So sánh với BuildKit luôn</div>
+          <div class="msg bot" style="animation-delay:2s">
+            <span class="typing-dots"><i></i><i></i><i></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ INSTALL ============================ -->
+<section id="install">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="dot"></span>Cài đặt</div>
+      <h2 class="sec-title">Deploy trong <span class="grad-text">60 giây</span></h2>
+      <p class="sec-sub">Chọn cách phù hợp với bạn. Tất cả đều dùng chung một file cấu hình <code style="font-family:var(--mono);font-size:13px;color:var(--primary);background:rgba(37,99,235,.1);padding:2px 7px;border-radius:6px;border:1px solid rgba(37,99,235,.18)">.env</code>.</p>
+    </div>
+
+    <div class="install-grid stagger">
+
+      <div class="install-card">
+        <div class="install-card-head">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 10 11 4 5"/><path d="M12 19h8"/></svg>
+          </div>
+          <div>
+            <h3>Docker Compose</h3>
+            <span>Khuyến nghị</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" data-copy="git clone https://github.com/ollama-telegram/bot.git
+cd bot
+cp .env.example .env
+nano .env
+make up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+<span class="cmt"># Clone &amp; cấu hình</span>
+<span class="cmd">git clone</span> https://github.com/ollama-telegram/bot.git
+<span class="cmd">cd</span> bot
+<span class="cmd">cp</span> .env.example .env
+<span class="cmd">nano</span> .env
+
+<span class="cmt"># Khởi động</span>
+<span class="cmd">make</span> up
+        </div>
+      </div>
+
+      <div class="install-card">
+        <div class="install-card-head">
+          <div class="icon-box indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+          </div>
+          <div>
+            <h3>Python thuần</h3>
+            <span>Không cần Docker</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" data-copy="python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m bot.main">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+<span class="cmt"># Tạo môi trường ảo</span>
+<span class="cmd">python3.11</span> -m venv .venv
+<span class="cmd">source</span> .venv/bin/activate
+
+<span class="cmt"># Cài đặt &amp; chạy</span>
+<span class="cmd">pip install</span> -r requirements.txt
+<span class="cmd">python</span> -m bot.main
+        </div>
+      </div>
+
+      <div class="install-card">
+        <div class="install-card-head">
+          <div class="icon-box emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+          </div>
+          <div>
+            <h3>Cấu hình .env</h3>
+            <span>Bắt buộc</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" data-copy="TELEGRAM_TOKEN=123456:ABC-DEF...
+OLLAMA_HOST=http://localhost:11434
+DEFAULT_MODEL=llama3.2
+ALLOWED_USERS=123456789
+STREAM_MODE=true
+VISION_ENABLED=true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+<span class="key">TELEGRAM_TOKEN</span>=<span class="str">123456:ABC-DEF...</span>
+<span class="key">OLLAMA_HOST</span>=<span class="str">http://localhost:11434</span>
+<span class="key">DEFAULT_MODEL</span>=<span class="str">llama3.2</span>
+<span class="key">ALLOWED_USERS</span>=<span class="str">123456789</span>
+<span class="key">STREAM_MODE</span>=<span class="str">true</span>
+<span class="key">VISION_ENABLED</span>=<span class="str">true</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section id="faq">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="dot"></span>FAQ</div>
+      <h2 class="sec-title">Câu hỏi <span class="grad-text">thường gặp</span></h2>
+    </div>
+
+    <div class="faq-list stagger">
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Ollama Telegram Bot v7.0 là gì?
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Đây là một bot Telegram mã nguồn mở, hoạt động như cầu nối giữa Telegram và Ollama — runtime LLM chạy hoàn toàn trên máy của bạn. Bạn có thể chat, gửi ảnh, gửi voice và nhận phản hồi từ các model AI mạnh mẽ mà không cần bất kỳ API trả phí nào.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Cần cấu hình máy như thế nào?
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Tối thiểu <strong>8GB RAM</strong> để chạy model 3B–7B (llama3.2, qwen2.5:7b). Với model 13B–14B nên có 16GB RAM. Nếu có GPU NVIDIA từ 8GB VRAM trở lên, tốc độ sẽ nhanh hơn đáng kể. Bot cũng chạy tốt trên VPS CPU-only với model lượng tử hoá Q4.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Bot có hỗ trợ chat nhóm (group) không?
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Có. Bot hoạt động trong cả private chat và group. Trong group, bạn có thể cấu hình bot chỉ trả lời khi được mention (<code>MENTION_ONLY=true</code>), giới hạn người dùng bằng <code>ALLOWED_USERS</code>, và đặt rate limit để tránh spam.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Dữ liệu của tôi có bị gửi lên cloud không?
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Không. Toàn bộ quá trình suy luận diễn ra trên máy bạn thông qua Ollama. Lịch sử hội thoại lưu trong SQLite local. Bot chỉ giao tiếp với Telegram API để nhận/gửi tin nhắn — nội dung không đi qua bất kỳ server AI trung gian nào.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Có hỗ trợ model vision và voice không?
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Có, từ v6.0. Vision sử dụng các model đa phương thức như <code>llava</code>, <code>qwen2-vl</code>, <code>gemma3</code>. Voice dùng <code>whisper</code> cho speech-to-text và <code>piper</code> cho text-to-speech — tất cả đều chạy local, bật/tắt qua biến môi trường.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Giấy phép là gì? Có miễn phí không?
+          <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><p>Hoàn toàn miễn phí và mã nguồn mở dưới giấy phép <strong>MIT License</strong>. Bạn được phép sử dụng, sửa đổi, phân phối và dùng cho cả mục đích thương mại. Đóng góp PR luôn được chào đón trên GitHub.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CTA ============================ -->
+<section style="padding-top:20px;padding-bottom:90px">
+  <div class="container">
+    <div class="cta-panel reveal-scale">
+      <h2>Sẵn sàng có <span class="grad-text">AI riêng</span> của bạn?</h2>
+      <p>Một lệnh. Sáu mươi giây. Không API key, không hoá đơn hàng tháng, không giới hạn token.</p>
+      <div class="cta-actions">
+        <a href="#install" class="btn btn-primary btn-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
+          <span>Bắt đầu miễn phí</span>
+        </a>
+        <a href="#" class="btn btn-ghost btn-lg">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+          <span>Star on GitHub</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2 4 6v6c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V6l-8-4Z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </span>
+          <span>Ollama<span style="color:var(--muted);font-weight:500"> Bot</span></span>
+          <span class="logo-ver">v7.0</span>
+        </a>
+        <p>Mang LLM chạy local đến gần bạn hơn — qua ứng dụng nhắn tin bạn dùng mỗi ngày.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Sản phẩm</h4>
+        <a href="#features">Tính năng</a>
+        <a href="#models">Models</a>
+        <a href="#install">Cài đặt</a>
+        <a href="#">Changelog v7.0</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tài nguyên</h4>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">Examples</a>
+        <a href="#">Blog</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Cộng đồng</h4>
+        <a href="#">GitHub</a>
+        <a href="#">Discord</a>
+        <a href="#">Telegram Group</a>
+        <a href="#">Đóng góp</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Ollama Telegram Bot · MIT License</span>
+      <span>Made with <span class="heart">♥</span> and local LLMs</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* =========================================================
+     1. SCROLL PROGRESS BAR
+  ========================================================= */
+  const progress = document.getElementById('scrollProgress');
+  function updateProgress() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+    progress.style.setProperty('--sp', p + '%');
+  }
+
+  /* =========================================================
+     2. PARTICLE NETWORK BACKGROUND (LIGHT + LIQUID)
+  ========================================================= */
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let W = 0, H = 0;
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const mouse = { x: -9999, y: -9999 };
+
+  function initCanvas() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    const count = Math.min(Math.floor((W * H) / 24000), 80);
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.28,
+        vy: (Math.random() - 0.5) * 0.28,
+        r: Math.random() * 1.8 + 0.6,
+        hue: Math.random() > 0.5 ? '37,99,235' : (Math.random() > 0.5 ? '139,92,246' : '16,185,129')
+      });
+    }
+  }
+
+  function drawCanvas() {
+    ctx.clearRect(0, 0, W, H);
+    const maxDist = 150;
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < -20) p.x = W + 20;
+      if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20;
+      if (p.y > H + 20) p.y = -20;
+
+      const mdx = p.x - mouse.x;
+      const mdy = p.y - mouse.y;
+      const md = Math.sqrt(mdx * mdx + mdy * mdy);
+      if (md < 140 && md > 0.01) {
+        p.x += (mdx / md) * 0.5;
+        p.y += (mdy / md) * 0.5;
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + p.hue + ',0.42)';
+      ctx.fill();
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < maxDist) {
+          const alpha = (1 - d / maxDist) * 0.13;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = 'rgba(99,116,180,' + alpha + ')';
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(drawCanvas);
+  }
+
+  if (!reduceMotion) {
+    initCanvas();
+    drawCanvas();
+    let resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(initCanvas, 180);
+    });
+    window.addEventListener('mousemove', function (e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', function () {
+      mouse.x = -9999; mouse.y = -9999;
+    });
+  }
+
+  /* =========================================================
+     3. NAVBAR + ACTIVE LINK + PROGRESS (unified rAF)
+  ========================================================= */
+  const nav = document.getElementById('nav');
+  const navLinks = document.querySelectorAll('#navLinks a');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  let ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      updateProgress();
+
+      if (window.scrollY > 24) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+
+      let current = '';
+      const y = window.scrollY + 180;
+      sections.forEach(function (sec) {
+        if (sec.offsetTop <= y) current = sec.id;
+      });
+      navLinks.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* =========================================================
+     4. MOBILE MENU
+  ========================================================= */
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', function () {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  /* =========================================================
+     5. SCROLL REVEAL (all variants)
+  ========================================================= */
+  const allReveal = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -70px 0px' });
+    allReveal.forEach(function (el) { io.observe(el); });
+  } else {
+    allReveal.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* =========================================================
+     6. 3D TILT ON CARDS (liquid glass)
+  ========================================================= */
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.tilt').forEach(function (card) {
+      let raf = null;
+
+      card.addEventListener('mousemove', function (e) {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          const rx = (0.5 - py) * 7;
+          const ry = (px - 0.5) * 7;
+          card.style.transform =
+            'perspective(1000px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-8px)';
+          raf = null;
+        });
+      });
+
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = '';
+      });
+    });
+
+    /* Terminal subtle 3D tilt */
+    const term = document.getElementById('terminal3D');
+    if (term) {
+      term.addEventListener('mousemove', function (e) {
+        const rect = term.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const rx = (0.5 - py) * 4;
+        const ry = (px - 0.5) * 4;
+        term.style.animation = 'none';
+        term.style.transform = 'perspective(1400px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+      });
+      term.addEventListener('mouseleave', function () {
+        term.style.transform = '';
+        term.style.animation = 'floatY 8s ease-in-out infinite';
+      });
+    }
+  }
+
+  /* =========================================================
+     7. PARALLAX ON SCROLL
+  ========================================================= */
+  const parallaxEls = document.querySelectorAll('[data-parallax]');
+  if (!reduceMotion && parallaxEls.length) {
+    let pRaf = null;
+    function updateParallax() {
+      const vh = window.innerHeight;
+      parallaxEls.forEach(function (el) {
+        const rect = el.getBoundingClientRect();
+        const centerOffset = (rect.top + rect.height / 2) - vh / 2;
+        const speed = parseFloat(el.dataset.parallax) || 0.05;
+        el.style.transform = 'translateY(' + (-centerOffset * speed) + 'px)';
+      });
+      pRaf = null;
+    }
+    function onP() {
+      if (pRaf) return;
+      pRaf = requestAnimationFrame(updateParallax);
+    }
+    window.addEventListener('scroll', onP, { passive: true });
+    window.addEventListener('resize', onP);
+    updateParallax();
+  }
+
+  /* =========================================================
+     8. ANIMATED COUNTERS
+  ========================================================= */
+  const counters = document.querySelectorAll('.counter');
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const dec = parseInt(el.dataset.dec || '0', 10);
+    const duration = 1800;
+    const start = performance.now();
+
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 4);
+      const val = target * eased;
+      el.textContent = dec ? val.toFixed(dec) : Math.round(val).toString();
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = dec ? target.toFixed(dec) : target.toString();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if ('IntersectionObserver' in window) {
+    const cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          cio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (c) { cio.observe(c); });
+  } else {
+    counters.forEach(function (c) {
+      const dec = parseInt(c.dataset.dec || '0', 10);
+      c.textContent = dec ? parseFloat(c.dataset.target).toFixed(dec) : c.dataset.target;
+    });
+  }
+
+  /* =========================================================
+     9. TERMINAL TYPING
+  ========================================================= */
+  const termBody = document.getElementById('termBody');
+  const termLines = [
+    { type: 'cmd',  text: 'curl -fsSL https://ollama.com/install.sh | sh' },
+    { type: 'out',  text: '>>> Ollama installed successfully.' },
+    { type: 'cmd',  text: 'ollama pull llama3.2' },
+    { type: 'out',  text: 'pulling manifest ... 100% ▕████████▏ 2.0 GB' },
+    { type: 'cmd',  text: 'git clone https://github.com/ollama-telegram/bot.git' },
+    { type: 'cmd',  text: 'cd bot && cp .env.example .env' },
+    { type: 'cmd',  text: 'make up' },
+    { type: 'info', text: '✔ Container otb-ollama   Started' },
+    { type: 'info', text: '✔ Container otb-bot      Started' },
+    { type: 'ok',   text: '✔ Bot @YourOllamaBot đang chạy · polling 200 OK' },
+    { type: 'ok',   text: '→ Sẵn sàng nhận tin nhắn. Thử /start trên Telegram!' }
+  ];
+
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  async function runTerminal() {
+    if (!termBody) return;
+    termBody.innerHTML = '';
+    const cursor = document.createElement('span');
+    cursor.className = 'cursor';
+
+    for (let i = 0; i < termLines.length; i++) {
+      const line = termLines[i];
+      const row = document.createElement('div');
+      row.className = 'term-line ' + line.type + ' visible';
+
+      if (line.type === 'cmd') {
+        const dollar = document.createElement('span');
+        dollar.className = 'dollar';
+        dollar.textContent = '$ ';
+        row.appendChild(dollar);
+      }
+
+      const txt = document.createElement('span');
+      row.appendChild(txt);
+      row.appendChild(cursor);
+      termBody.appendChild(row);
+
+      if (reduceMotion) {
+        txt.textContent = line.text;
+      } else {
+        const speed = line.type === 'cmd' ? 20 : 8;
+        for (let c = 0; c < line.text.length; c++) {
+          txt.textContent += line.text[c];
+          await sleep(speed);
+        }
+      }
+
+      termBody.appendChild(cursor);
+      await sleep(reduceMotion ? 30 : (line.type === 'cmd' ? 280 : 140));
+
+      while (termBody.children.length > 8) {
+        termBody.removeChild(termBody.firstChild);
+      }
+    }
+    await sleep(5400);
+    runTerminal();
+  }
+
+  setTimeout(runTerminal, 800);
+
+  /* =========================================================
+     10. TOKENS/SEC BADGE
+  ========================================================= */
+  const tpsEl = document.getElementById('tpsVal');
+  if (tpsEl && !reduceMotion) {
+    setInterval(function () {
+      const base = 34 + Math.random() * 18;
+      tpsEl.textContent = base.toFixed(1) + ' tok/s';
+    }, 2200);
+  }
+
+  /* =========================================================
+     11. COPY TO CLIPBOARD
+  ========================================================= */
+  const copyIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      const text = btn.dataset.copy || '';
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        btn.classList.add('copied');
+        btn.innerHTML = checkIcon;
+        setTimeout(function () {
+          btn.classList.remove('copied');
+          btn.innerHTML = copyIcon;
+        }, 1800);
+      } catch (err) {
+        console.warn('Copy failed:', err);
+      }
+    });
+  });
+
+  /* =========================================================
+     12. FAQ ACCORDION
+  ========================================================= */
+  document.querySelectorAll('.faq-item').forEach(function (item) {
+    const q = item.querySelector('.faq-q');
+    q.addEventListener('click', function () {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function (other) {
+        other.classList.remove('open');
+      });
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+  const firstFaq = document.querySelector('.faq-item');
+  if (firstFaq) firstFaq.classList.add('open');
+
+  /* =========================================================
+     13. SMOOTH ANCHOR OFFSET
+  ========================================================= */
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      const id = link.getAttribute('href');
+      if (id === '#' || id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  /* =========================================================
+     14. MAGNETIC BUTTONS (subtle)
+  ========================================================= */
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.btn-primary').forEach(function (btn) {
+      btn.addEventListener('mousemove', function (e) {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = 'translate(' + (x * 0.08) + 'px,' + (y * 0.14 - 3) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function () {
+        btn.style.transform = '';
+      });
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
