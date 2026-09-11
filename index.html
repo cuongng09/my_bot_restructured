@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ollama Telegram Bot v7.0 — AI Local, Chat Không Giới Hạn</title>
-<meta name="description" content="Ollama Telegram Bot v7.0 — Kết nối LLM chạy local với Telegram. Streaming realtime, Vision, Voice, RAG, Docker deploy trong 60 giây." />
+<meta name="description" content="Ollama Telegram Bot v7.0 — Kết nối LLM chạy local với Telegram. Streaming realtime, Vision, Voice, RAG, cài đặt trong 60 giây." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -655,7 +655,7 @@ h2.sec-title{
 .icon-box.rose{color:var(--rose);box-shadow:0 10px 22px -10px rgba(244,63,94,.45),inset 0 1px 0 rgba(255,255,255,1)}
 
 /* ============================================================
-   MODELS — LIQUID GLASS CHIPS (MARQUEE on hover)
+   MODELS — LIQUID GLASS CHIPS
 ============================================================ */
 .models-grid{
   display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
@@ -1204,7 +1204,10 @@ footer{
         <div class="install-inline reveal" style="transition-delay:.32s">
           <span class="prompt">$</span>
           <code id="heroCmd">git clone https://github.com/cuongng09/my_bot_restructured.git</code>
-          <button class="copy-btn" data-copy="git clone https://github.com/cuongng09/my_bot_restructured.git && cd bot && make up" aria-label="Copy">
+          <button class="copy-btn" data-copy="git clone https://github.com/cuongng09/my_bot_restructured.git
+cd my_bot_restructured/chatAi_bots
+chmod +x install.sh
+./install.sh" aria-label="Copy">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
         </div>
@@ -1213,7 +1216,7 @@ footer{
           <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>20+ model</span>
           <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Streaming realtime</span>
           <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vision &amp; Voice</span>
-          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Docker ready</span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>1 lệnh cài đặt</span>
         </div>
       </div>
 
@@ -1370,7 +1373,7 @@ footer{
           <div class="step-num">02</div>
           <div>
             <h4>Khởi động bot</h4>
-            <p>Điền <code>TELEGRAM_TOKEN</code> và <code>OLLAMA_HOST</code> vào file <code>.env</code>, rồi chạy <code>make up</code>.</p>
+            <p>Điền <code>TELEGRAM_TOKEN</code> và <code>OLLAMA_HOST</code> vào file <code>.env</code>, rồi chạy <code>./install.sh</code> (Linux/macOS) hoặc <code>.\install.ps1</code> (Windows).</p>
           </div>
         </div>
         <div class="step">
@@ -1424,62 +1427,67 @@ footer{
 
     <div class="install-grid stagger">
 
+      <!-- Linux / macOS -->
       <div class="install-card">
         <div class="install-card-head">
           <div class="icon-box">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 10 11 4 5"/><path d="M12 19h8"/></svg>
           </div>
           <div>
-            <h3>Docker Compose</h3>
-            <span>Khuyến nghị</span>
+            <h3>Linux / macOS</h3>
+            <span>Khuyến nghị · install.sh</span>
           </div>
         </div>
         <div class="code-block">
           <button class="copy-btn" data-copy="git clone https://github.com/cuongng09/my_bot_restructured.git
-cd bot
-cp .env.example .env
-nano .env
-make up">
+cd my_bot_restructured
+chmod +x chatAi_bots/install.sh
+cd chatAi_bots
+./install.sh">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
-<span class="cmt"># Clone &amp; cấu hình</span>
+<span class="cmt"># Clone repo</span>
 <span class="cmd">git clone</span> https://github.com/cuongng09/my_bot_restructured.git
-<span class="cmd">cd</span> bot
-<span class="cmd">cp</span> .env.example .env
-<span class="cmd">nano</span> .env
+<span class="cmd">cd</span> my_bot_restructured
 
-<span class="cmt"># Khởi động</span>
-<span class="cmd">make</span> up
+<span class="cmt"># Cài đặt</span>
+<span class="cmd">chmod</span> +x chatAi_bots/install.sh
+<span class="cmd">cd</span> chatAi_bots
+<span class="cmd">./install.sh</span>
         </div>
       </div>
 
+      <!-- Windows -->
       <div class="install-card">
         <div class="install-card-head">
           <div class="icon-box indigo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M12 3v18"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
           </div>
           <div>
-            <h3>Python thuần</h3>
-            <span>Không cần Docker</span>
+            <h3>Windows</h3>
+            <span>PowerShell · install.ps1</span>
           </div>
         </div>
         <div class="code-block">
-          <button class="copy-btn" data-copy="python3.11 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python -m bot.main">
+          <button class="copy-btn" data-copy="git clone https://github.com/cuongng09/my_bot_restructured.git
+cd my_bot_restructured
+Set-ExecutionPolicy Unrestricted -Scope Process
+cd chatAi_bots
+.\install.ps1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
-<span class="cmt"># Tạo môi trường ảo</span>
-<span class="cmd">python3.11</span> -m venv .venv
-<span class="cmd">source</span> .venv/bin/activate
+<span class="cmt"># Clone repo</span>
+<span class="cmd">git clone</span> https://github.com/cuongng09/my_bot_restructured.git
+<span class="cmd">cd</span> my_bot_restructured
 
-<span class="cmt"># Cài đặt &amp; chạy</span>
-<span class="cmd">pip install</span> -r requirements.txt
-<span class="cmd">python</span> -m bot.main
+<span class="cmt"># Cài đặt</span>
+<span class="key">Set-ExecutionPolicy</span> Unrestricted -Scope Process
+<span class="cmd">cd</span> chatAi_bots
+<span class="cmd">.\install.ps1</span>
         </div>
       </div>
 
+      <!-- Cấu hình .env -->
       <div class="install-card">
         <div class="install-card-head">
           <div class="icon-box emerald">
