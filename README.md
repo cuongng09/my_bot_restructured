@@ -53,22 +53,6 @@
 
 ---
 
-## 🛠️ Yêu Cầu Hệ Thống
-
-| Thành phần | Bắt buộc | Ghi chú |
-|---|---|---|
-| **Python** | ✅ | 3.11+ (khuyến nghị 3.12) |
-| **Ollama** | ✅ | Chạy `ollama serve`, đã `ollama pull <model>` (VD: `qwen2.5:7b`) |
-| **FFmpeg** | ✅ | Xử lý audio `.ogg`/`.wav`/`.mp3` cho voice pipeline |
-| **Tesseract OCR** | ⚠️ Tùy chọn | Cần `tesseract-ocr-eng` & `tesseract-ocr-vie` |
-| **Voicebox Docker** | ⚠️ Tùy chọn | STT Whisper local; map cổng `17600→17493` |
-| **Piper Voice** | ⚠️ Tùy chọn | Tải `.onnx` + `.onnx.json` từ HuggingFace [`rhasspy/piper-voices`](https://huggingface.co/rhasspy/piper-voices) thư mục `vi/vi_VN/` |
-| **SearXNG** | ⚠️ Tùy chọn | Tìm kiếm riêng tư; fallback sang DuckDuckGo nếu không có |
-| **Docker** | ⚠️ Tùy chọn | Chạy SearXNG, Voicebox và Web Dashboard qua `docker compose` |
-| **Groq API Key** | ❌ Không cần | Chỉ dùng làm fallback STT thay thế Voicebox nếu muốn |
-
----
-
 ## 📦 Cài Đặt
 
 ### Linux / macOS
@@ -79,30 +63,12 @@ cd chatAi_bots
 ./install.sh
 ```
 
-Script tự động:
-- Phát hiện distro (Ubuntu/Debian/Fedora/Arch/macOS)
-- Cài FFmpeg, Tesseract, Python venv
-- Cài Python dependencies từ `requirements.txt`
-- (Tùy chọn) Cài **systemd service** tự khởi động cùng máy
-- (Tùy chọn) Khởi động SearXNG và Web Dashboard qua Docker
-
 ### Windows
 
 ```powershell
 Set-ExecutionPolicy Unrestricted -Scope Process
 cd chatAi_bots
 .\install.ps1
-```
-
-### Chạy thủ công
-
-```bash
-cd chatAi_bots
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env            # Chỉnh TELEGRAM_TOKEN và các biến cần thiết
-python my_bot.py
 ```
 
 ---
@@ -213,33 +179,6 @@ chatAi_bots/
 ├── install.sh                  # Script cài đặt Linux/macOS
 ├── install.ps1                 # Script cài đặt Windows
 └── .env.example                # Mẫu cấu hình môi trường
-```
-
----
-
-## 🔄 Luồng Xử Lý Chính
-
-```
-Tin nhắn văn bản → text_handler.py
-  │
-  ├─ 1. fast_search_intent_check()        Lọc nhanh: chào hỏi/code/toán → bỏ qua search
-  ├─ 2. decide_web_search(LLM)            Phân loại → trích query 2-6 từ khóa cốt lõi
-  ├─ 3. raw_search_data(SearXNG/DDGS)     Tìm kiếm → xếp hạng → cào HTML sâu → RAG
-  ├─ 4. build_grounded_messages()         Đóng gói context web + lịch sử vào prompt
-  ├─ 5. chat_with_llm_stream()            Ollama streaming → lọc <suy_nghi>
-  ├─ 6. [Stream] hiển thị core_summary   Nếu dài: "⏳ đang xuất file..." thay vì tràn chữ
-  ├─ 7. clean_model_generated_sources()   Cắt nguồn tham khảo LLM tự sinh ở đuôi
-  ├─ 8. split_core_and_detail()           Tách câu đầu trọng tâm
-  ├─ 9. Hiển thị: core + "📄 file..." + sources_footer
-  └─10. export_document_smart()           Tự động xuất Excel/Word → gửi file đính kèm
-
-Tin nhắn thoại → voice_handler.py
-  │
-  ├─ Voicebox STT (Whisper Docker)        Giọng nói → văn bản
-  ├─ [Luồng tương tự text_handler]
-  ├─ safe_reply(core_summary + "📄")      Telegram chỉ hiển thị câu đầu trọng tâm
-  ├─ export_document_smart()             Xuất file nếu nội dung chi tiết
-  └─ maybe_send_voice_reply(core_summary) Piper TTS chỉ đọc câu trọng tâm (~2-5s)
 ```
 
 ---
