@@ -32,7 +32,6 @@
   --muted:#4a5b73;
   --dim:#7c8ba1;
 
-  /* Liquid glass surfaces */
   --glass-tint:rgba(255,255,255,0.55);
   --glass-tint-strong:rgba(255,255,255,0.75);
   --glass-tint-soft:rgba(255,255,255,0.35);
@@ -42,7 +41,6 @@
   --glass-shadow-lg:0 24px 60px -12px rgba(31,50,90,0.22), 0 8px 20px -8px rgba(31,50,90,0.12);
   --glass-inner:inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(255,255,255,0.4);
 
-  /* Code block unified theme */
   --code-bg:linear-gradient(160deg,#0f172a 0%,#0a101e 100%);
   --code-border:rgba(56,189,248,0.16);
   --code-glow:0 20px 50px -18px rgba(15,23,42,0.55), 0 0 0 1px rgba(56,189,248,0.10), inset 0 1px 0 rgba(255,255,255,0.06);
@@ -65,9 +63,6 @@
   --ease-out:cubic-bezier(.16,1,.3,1);
 }
 
-/* ============================================================
-   RESET
-============================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
@@ -93,9 +88,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 }
 ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#3b82f6,#6366f1)}
 
-/* ============================================================
-   SCROLL PROGRESS BAR
-============================================================ */
 .scroll-progress{
   position:fixed;top:0;left:0;right:0;height:3px;z-index:999;
   background:transparent;pointer-events:none;
@@ -108,9 +100,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   border-radius:0 3px 3px 0;
 }
 
-/* ============================================================
-   BACKGROUND LAYERS — LIQUID AMBIENT
-============================================================ */
 #bg-canvas{
   position:fixed;inset:0;width:100%;height:100%;
   z-index:0;opacity:.55;pointer-events:none;
@@ -156,9 +145,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     radial-gradient(ellipse 120% 90% at 50% 50%,transparent 40%,rgba(216,224,236,.55) 100%);
 }
 
-/* ============================================================
-   LAYOUT
-============================================================ */
 .wrap{position:relative;z-index:2}
 .container{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 section{position:relative;padding:120px 0}
@@ -202,9 +188,6 @@ h2.sec-title{
 }
 @keyframes shine{to{background-position:250% center}}
 
-/* ============================================================
-   NAVBAR — LIQUID GLASS
-============================================================ */
 .nav{
   position:fixed;top:14px;left:50%;transform:translateX(-50%);
   z-index:100;width:calc(100% - 32px);max-width:var(--maxw);
@@ -270,9 +253,6 @@ h2.sec-title{
 
 .nav-cta{display:flex;align-items:center;gap:10px}
 
-/* ============================================================
-   BUTTONS — LIQUID GLASS
-============================================================ */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:9px;
   padding:11px 22px;border-radius:14px;
@@ -365,9 +345,6 @@ h2.sec-title{
 .mobile-menu a{padding:13px 16px;border-radius:12px;font-weight:500;color:var(--muted);transition:.25s}
 .mobile-menu a:hover{background:rgba(37,99,235,.08);color:var(--primary)}
 
-/* ============================================================
-   HERO
-============================================================ */
 .hero{padding-top:180px;padding-bottom:100px}
 .hero-grid{
   display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;
@@ -436,9 +413,6 @@ h2.sec-title{
 .tag:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 6px 14px -4px rgba(37,99,235,.15)}
 .tag svg{width:13px;height:13px;color:var(--primary)}
 
-/* ============================================================
-   TERMINAL — LIQUID GLASS
-============================================================ */
 .terminal-wrap{position:relative;perspective:1400px}
 .terminal-wrap::before{
   content:'';position:absolute;inset:-60px;z-index:-1;
@@ -510,7 +484,6 @@ h2.sec-title{
 }
 @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
 
-/* Floating badge */
 .float-badge{
   position:absolute;right:-22px;bottom:-28px;
   display:flex;align-items:center;gap:12px;
@@ -537,9 +510,6 @@ h2.sec-title{
 .float-badge .fb-label{font-size:10.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:700}
 .float-badge .fb-val{font-family:var(--mono);font-size:14px;color:var(--emerald);font-weight:600}
 
-/* ============================================================
-   STATS — LIQUID GLASS
-============================================================ */
 .stats{padding:0 0 50px}
 .stats-grid{
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -573,9 +543,6 @@ h2.sec-title{
 }
 .stat-lbl{font-size:13px;color:var(--muted);font-weight:500}
 
-/* ============================================================
-   FEATURES — LIQUID GLASS CARDS
-============================================================ */
 .features-grid{
   display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
 }
@@ -654,9 +621,6 @@ h2.sec-title{
 .icon-box.amber{color:var(--amber);box-shadow:0 10px 22px -10px rgba(245,158,11,.45),inset 0 1px 0 rgba(255,255,255,1)}
 .icon-box.rose{color:var(--rose);box-shadow:0 10px 22px -10px rgba(244,63,94,.45),inset 0 1px 0 rgba(255,255,255,1)}
 
-/* ============================================================
-   MODELS — LIQUID GLASS CHIPS
-============================================================ */
 .models-grid{
   display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
 }
@@ -701,9 +665,6 @@ h2.sec-title{
 .model-name{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--text);letter-spacing:-.01em}
 .model-meta{font-size:11.5px;color:var(--dim);font-weight:500}
 
-/* ============================================================
-   HOW IT WORKS
-============================================================ */
 .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 
 .steps{display:flex;flex-direction:column;gap:10px}
@@ -738,7 +699,6 @@ h2.sec-title{
   padding:1px 6px;border-radius:5px;color:var(--primary-dark);
 }
 
-/* Telegram mockup */
 .tg-phone{
   border-radius:30px;padding:20px;
   background:rgba(255,255,255,.65);
@@ -808,9 +768,6 @@ h2.sec-title{
 .msg .typing-dots i:nth-child(3){animation-delay:.36s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-6px);opacity:1}}
 
-/* ============================================================
-   INSTALL — UNIFIED CODE BLOCKS
-============================================================ */
 .install-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .install-card{
   border-radius:var(--radius);overflow:hidden;
@@ -844,7 +801,6 @@ h2.sec-title{
 .install-card-head h3{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text)}
 .install-card-head span{font-size:12.5px;color:var(--dim);display:block;margin-top:2px}
 
-/* Unified code block — same theme across all */
 .code-block{
   position:relative;margin:0 20px 20px;border-radius:18px;
   background:var(--code-bg);
@@ -899,9 +855,6 @@ h2.sec-title{
   color:#34d399;
 }
 
-/* ============================================================
-   FAQ — LIQUID GLASS
-============================================================ */
 .faq-list{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .faq-item{
   border-radius:20px;
@@ -964,9 +917,6 @@ h2.sec-title{
   padding:1px 6px;border-radius:5px;color:var(--primary-dark);
 }
 
-/* ============================================================
-   CTA PANEL — LIQUID GLASS
-============================================================ */
 .cta-panel{
   position:relative;border-radius:36px;overflow:hidden;
   padding:80px 52px;text-align:center;
@@ -998,9 +948,6 @@ h2.sec-title{
 .cta-panel p{color:var(--muted);font-size:17px;max-width:580px;margin:0 auto 38px;position:relative}
 .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
 
-/* ============================================================
-   FOOTER
-============================================================ */
 footer{
   position:relative;z-index:2;
   border-top:1px solid rgba(255,255,255,.7);
@@ -1028,9 +975,6 @@ footer{
 .footer-bottom .heart{color:#e11d48;display:inline-block;animation:heartbeat 1.4s ease-in-out infinite}
 @keyframes heartbeat{0%,100%{transform:scale(1)}15%,45%{transform:scale(1.2)}30%{transform:scale(1)}}
 
-/* ============================================================
-   SCROLL REVEAL ANIMATIONS
-============================================================ */
 .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal.in{opacity:1;transform:none}
 
@@ -1043,7 +987,6 @@ footer{
 .reveal-scale{opacity:0;transform:scale(.92);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal-scale.in{opacity:1;transform:none}
 
-/* Stagger children */
 .stagger > *{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .stagger.in > *{opacity:1;transform:none}
 .stagger.in > *:nth-child(1){transition-delay:.05s}
@@ -1055,12 +998,8 @@ footer{
 .stagger.in > *:nth-child(7){transition-delay:.47s}
 .stagger.in > *:nth-child(8){transition-delay:.54s}
 
-/* Parallax */
 .parallax{will-change:transform;transition:transform .15s linear}
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
 @media (max-width:1080px){
   .hero-grid{grid-template-columns:1fr;gap:60px}
   .hero{padding-top:150px}
@@ -1146,7 +1085,7 @@ footer{
     </nav>
 
     <div class="nav-cta">
-      <a href="#" class="btn btn-ghost">
+      <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" class="btn btn-ghost">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
         <span>GitHub</span>
       </a>
@@ -1164,7 +1103,7 @@ footer{
     <a href="#how">Cách hoạt động</a>
     <a href="#install">Cài đặt</a>
     <a href="#faq">FAQ</a>
-    <a href="#" style="color:var(--primary);font-weight:600">GitHub →</a>
+    <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600">GitHub →</a>
   </div>
 </header>
 
@@ -1195,7 +1134,7 @@ footer{
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
             <span>Cài đặt trong 60 giây</span>
           </a>
-          <a href="#" class="btn btn-ghost btn-lg">
+          <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
             <span>Xem source code</span>
           </a>
@@ -1205,8 +1144,9 @@ footer{
           <span class="prompt">$</span>
           <code id="heroCmd">git clone https://github.com/cuongng09/my_bot_restructured.git</code>
           <button class="copy-btn" data-copy="git clone https://github.com/cuongng09/my_bot_restructured.git
-cd my_bot_restructured/chatAi_bots
-chmod +x install.sh
+cd my_bot_restructured
+chmod +x chatAi_bots/install.sh
+cd chatAi_bots
 ./install.sh" aria-label="Copy">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
@@ -1593,7 +1533,7 @@ VISION_ENABLED=true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
           <span>Bắt đầu miễn phí</span>
         </a>
-        <a href="#" class="btn btn-ghost btn-lg">
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
           <span>Star on GitHub</span>
         </a>
@@ -1625,23 +1565,23 @@ VISION_ENABLED=true">
         <a href="#features">Tính năng</a>
         <a href="#models">Models</a>
         <a href="#install">Cài đặt</a>
-        <a href="#">Changelog v7.0</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Changelog v7.0</a>
       </div>
 
       <div class="footer-col">
         <h4>Tài nguyên</h4>
-        <a href="#">Documentation</a>
-        <a href="#">API Reference</a>
-        <a href="#">Examples</a>
-        <a href="#">Blog</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Documentation</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">API Reference</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Examples</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Blog</a>
       </div>
 
       <div class="footer-col">
         <h4>Cộng đồng</h4>
-        <a href="#">GitHub</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">GitHub</a>
         <a href="#">Discord</a>
         <a href="#">Telegram Group</a>
-        <a href="#">Đóng góp</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Đóng góp</a>
       </div>
     </div>
 
@@ -1674,7 +1614,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     2. PARTICLE NETWORK BACKGROUND (LIGHT + LIQUID)
+     2. PARTICLE NETWORK BACKGROUND
   ========================================================= */
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
@@ -1771,7 +1711,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     3. NAVBAR + ACTIVE LINK + PROGRESS (unified rAF)
+     3. NAVBAR + ACTIVE LINK + PROGRESS
   ========================================================= */
   const nav = document.getElementById('nav');
   const navLinks = document.querySelectorAll('#navLinks a');
@@ -1819,7 +1759,7 @@ VISION_ENABLED=true">
   });
 
   /* =========================================================
-     5. SCROLL REVEAL (all variants)
+     5. SCROLL REVEAL
   ========================================================= */
   const allReveal = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger');
   if ('IntersectionObserver' in window && !reduceMotion) {
@@ -1837,7 +1777,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     6. 3D TILT ON CARDS (liquid glass)
+     6. 3D TILT ON CARDS
   ========================================================= */
   if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
     document.querySelectorAll('.tilt').forEach(function (card) {
@@ -1866,7 +1806,6 @@ VISION_ENABLED=true">
       });
     });
 
-    /* Terminal subtle 3D tilt */
     const term = document.getElementById('terminal3D');
     if (term) {
       term.addEventListener('mousemove', function (e) {
@@ -1949,7 +1888,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     9. TERMINAL TYPING
+     9. TERMINAL TYPING (script install.sh / install.ps1)
   ========================================================= */
   const termBody = document.getElementById('termBody');
   const termLines = [
@@ -1958,9 +1897,10 @@ VISION_ENABLED=true">
     { type: 'cmd',  text: 'ollama pull llama3.2' },
     { type: 'out',  text: 'pulling manifest ... 100% ▕████████▏ 2.0 GB' },
     { type: 'cmd',  text: 'git clone https://github.com/cuongng09/my_bot_restructured.git' },
-    { type: 'cmd',  text: 'cd bot && cp .env.example .env' },
-    { type: 'cmd',  text: 'make up' },
-    { type: 'info', text: '✔ Container otb-ollama   Started' },
+    { type: 'cmd',  text: 'cd my_bot_restructured/chatAi_bots' },
+    { type: 'cmd',  text: 'chmod +x install.sh && ./install.sh' },
+    { type: 'info', text: '✔ Đã cài Python venv + dependencies' },
+    { type: 'info', text: '✔ Đã cấu hình Ollama service' },
     { type: 'info', text: '✔ Container otb-bot      Started' },
     { type: 'ok',   text: '✔ Bot @YourOllamaBot đang chạy · polling 200 OK' },
     { type: 'ok',   text: '→ Sẵn sàng nhận tin nhắn. Thử /start trên Telegram!' }
@@ -2091,7 +2031,7 @@ VISION_ENABLED=true">
   });
 
   /* =========================================================
-     14. MAGNETIC BUTTONS (subtle)
+     14. MAGNETIC BUTTONS
   ========================================================= */
   if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
     document.querySelectorAll('.btn-primary').forEach(function (btn) {
