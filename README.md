@@ -18,7 +18,10 @@
 
 <img src="bia_repo.png" alt="Telegram AI Bot Banner" width="100%" />
 
-**[English](#-english) | [Tiếng Việt](#-tiếng-việt)**
+[![English](https://img.shields.io/badge/🇬🇧-English-blue?style=for-the-badge)](#-english)
+[![Tiếng Việt](https://img.shields.io/badge/🇻🇳-Tiếng_Việt-red?style=for-the-badge)](#-tiếng-việt)
+
+*(Bấm vào nút trên để mở nhanh phần ngôn ngữ tương ứng — mỗi phần đang thu gọn, bấm tiêu đề để mở ra)*
 
 </div>
 
@@ -33,7 +36,8 @@ Một trợ lý AI **chạy hoàn toàn local, ưu tiên riêng tư** cho Telegr
 ---
 
 <a id="-english"></a>
-## 🇬🇧 English
+<details open>
+<summary><h2>🇬🇧 English — click to collapse</h2></summary>
 
 ### ✨ Key Features
 
@@ -157,10 +161,13 @@ Contributions are welcome! Please:
 
 Distributed under the **MIT License**. You are free to use, modify, and redistribute this project for personal, academic, or commercial purposes.
 
+</details>
+
 ---
 
 <a id="-tiếng-việt"></a>
-## 🇻🇳 Tiếng Việt
+<details>
+<summary><h2>🇻🇳 Tiếng Việt — bấm để mở rộng</h2></summary>
 
 ### ✨ Tính Năng Nổi Bật
 
@@ -283,6 +290,8 @@ Rất hoan nghênh mọi đóng góp! Vui lòng:
 ### 📄 Giấy Phép
 
 Dự án được phân phối dưới giấy phép **MIT License**. Bạn có toàn quyền sử dụng, sửa đổi và đóng góp mã nguồn vì mục đích học tập cũng như thương mại.
+
+</details>
 
 ---
 
