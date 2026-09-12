@@ -32,15 +32,6 @@
   --muted:#4a5b73;
   --dim:#7c8ba1;
 
-  --glass-tint:rgba(255,255,255,0.55);
-  --glass-tint-strong:rgba(255,255,255,0.75);
-  --glass-tint-soft:rgba(255,255,255,0.35);
-  --glass-border:rgba(255,255,255,0.9);
-  --glass-border-soft:rgba(255,255,255,0.6);
-  --glass-shadow:0 8px 32px rgba(31,50,90,0.10), 0 2px 8px rgba(31,50,90,0.06);
-  --glass-shadow-lg:0 24px 60px -12px rgba(31,50,90,0.22), 0 8px 20px -8px rgba(31,50,90,0.12);
-  --glass-inner:inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -1px 0 rgba(255,255,255,0.4);
-
   --code-bg:linear-gradient(160deg,#0f172a 0%,#0a101e 100%);
   --code-border:rgba(56,189,248,0.16);
   --code-glow:0 20px 50px -18px rgba(15,23,42,0.55), 0 0 0 1px rgba(56,189,248,0.10), inset 0 1px 0 rgba(255,255,255,0.06);
@@ -114,26 +105,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   z-index:0;pointer-events:none;opacity:.55;
   will-change:transform;
 }
-.blob-1{
-  width:680px;height:680px;top:-300px;left:-200px;
-  background:radial-gradient(circle at 30% 30%,#93c5fd,transparent 65%);
-  animation:blobFloat1 24s ease-in-out infinite;
-}
-.blob-2{
-  width:600px;height:600px;top:8%;right:-240px;
-  background:radial-gradient(circle at 60% 40%,#c4b5fd,transparent 65%);
-  animation:blobFloat2 28s ease-in-out infinite;
-}
-.blob-3{
-  width:560px;height:560px;bottom:-160px;left:38%;
-  background:radial-gradient(circle at 40% 50%,#6ee7b7,transparent 68%);
-  opacity:.35;animation:blobFloat3 32s ease-in-out infinite;
-}
-.blob-4{
-  width:520px;height:520px;top:55%;left:-180px;
-  background:radial-gradient(circle at 50% 50%,#fbcfe8,transparent 70%);
-  opacity:.3;animation:blobFloat2 26s ease-in-out infinite reverse;
-}
+.blob-1{width:680px;height:680px;top:-300px;left:-200px;background:radial-gradient(circle at 30% 30%,#93c5fd,transparent 65%);animation:blobFloat1 24s ease-in-out infinite;}
+.blob-2{width:600px;height:600px;top:8%;right:-240px;background:radial-gradient(circle at 60% 40%,#c4b5fd,transparent 65%);animation:blobFloat2 28s ease-in-out infinite;}
+.blob-3{width:560px;height:560px;bottom:-160px;left:38%;background:radial-gradient(circle at 40% 50%,#6ee7b7,transparent 68%);opacity:.35;animation:blobFloat3 32s ease-in-out infinite;}
+.blob-4{width:520px;height:520px;top:55%;left:-180px;background:radial-gradient(circle at 50% 50%,#fbcfe8,transparent 70%);opacity:.3;animation:blobFloat2 26s ease-in-out infinite reverse;}
 @keyframes blobFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(120px,90px) scale(1.15)}}
 @keyframes blobFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-100px,110px) scale(1.1)}}
 @keyframes blobFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,-90px) scale(1.18)}}
@@ -178,6 +153,11 @@ h2.sec-title{
   margin-bottom:18px;color:var(--text);
 }
 .sec-sub{color:var(--muted);font-size:17px;line-height:1.7}
+.sec-sub code{
+  font-family:var(--mono);font-size:.8em;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.18);
+  padding:2px 7px;border-radius:6px;color:var(--primary-dark);
+}
 
 .grad-text{
   background:linear-gradient(110deg,#2563eb 0%,#6366f1 30%,#0ea5e9 60%,#8b5cf6 90%,#2563eb 100%);
@@ -188,6 +168,9 @@ h2.sec-title{
 }
 @keyframes shine{to{background-position:250% center}}
 
+/* ============================================================
+   NAVBAR
+============================================================ */
 .nav{
   position:fixed;top:14px;left:50%;transform:translateX(-50%);
   z-index:100;width:calc(100% - 32px);max-width:var(--maxw);
@@ -209,11 +192,11 @@ h2.sec-title{
     inset 0 1px 0 rgba(255,255,255,.95),
     inset 0 -1px 0 rgba(255,255,255,.35);
 }
-.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
 
 .logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:700;font-size:16.5px;letter-spacing:-.02em;color:var(--text)}
 .logo-mark{
-  width:40px;height:40px;border-radius:13px;
+  width:42px;height:42px;border-radius:14px;
   display:grid;place-items:center;
   background:linear-gradient(140deg,#06b6d4,#2563eb 45%,#6366f1 75%,#8b5cf6);
   box-shadow:
@@ -227,9 +210,10 @@ h2.sec-title{
 .logo-mark::after{
   content:'';position:absolute;top:0;left:0;right:0;height:50%;
   background:linear-gradient(180deg,rgba(255,255,255,.4),transparent);
-  border-radius:13px 13px 50% 50%;
+  border-radius:14px 14px 50% 50%;
+  pointer-events:none;
 }
-.logo-mark svg{width:21px;height:21px;color:#fff;position:relative;z-index:1}
+.logo-mark svg{width:26px;height:26px;position:relative;z-index:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
 .logo-ver{
   font-family:var(--mono);font-size:10.5px;font-weight:600;
   padding:3px 8px;border-radius:7px;
@@ -253,6 +237,72 @@ h2.sec-title{
 
 .nav-cta{display:flex;align-items:center;gap:10px}
 
+/* ============================================================
+   LANGUAGE SWITCHER
+============================================================ */
+.lang-switcher{position:relative}
+.lang-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:10px 13px;border-radius:12px;
+  background:rgba(255,255,255,.75);
+  border:1px solid rgba(255,255,255,.95);
+  color:var(--text);
+  font-size:13px;font-weight:700;letter-spacing:.02em;
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:
+    0 4px 14px -4px rgba(31,50,90,.12),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  transition:all .3s var(--ease);
+}
+.lang-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 8px 20px -6px rgba(37,99,235,.25), inset 0 1px 0 rgba(255,255,255,1)}
+.lang-btn .globe{width:15px;height:15px;color:var(--primary)}
+.lang-btn .chev{width:11px;height:11px;color:var(--dim);transition:transform .3s var(--ease)}
+.lang-switcher.open .lang-btn .chev{transform:rotate(180deg)}
+.lang-switcher.open .lang-btn{background:#fff;border-color:rgba(37,99,235,.25)}
+
+.lang-menu{
+  position:absolute;top:calc(100% + 10px);right:0;
+  min-width:180px;padding:8px;
+  border-radius:16px;
+  background:rgba(255,255,255,.9);
+  backdrop-filter:blur(30px) saturate(190%);
+  -webkit-backdrop-filter:blur(30px) saturate(190%);
+  border:1px solid rgba(255,255,255,.95);
+  box-shadow:
+    0 24px 60px -16px rgba(31,50,90,.25),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  opacity:0;transform:translateY(-8px) scale(.96);
+  pointer-events:none;
+  transition:.3s var(--ease);
+  transform-origin:top right;
+  z-index:120;
+}
+.lang-switcher.open .lang-menu{opacity:1;transform:none;pointer-events:auto}
+.lang-opt{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:10px 12px;border-radius:10px;
+  font-size:13.5px;font-weight:500;color:var(--text);
+  text-align:left;transition:.25s var(--ease);
+}
+.lang-opt:hover{background:rgba(37,99,235,.08);color:var(--primary)}
+.lang-opt.active{
+  background:rgba(37,99,235,.1);color:var(--primary);font-weight:700;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+.lang-opt .flag{
+  font-size:15px;line-height:1;
+  width:22px;height:16px;border-radius:3px;
+  background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.12);
+  display:grid;place-items:center;flex-shrink:0;
+}
+.lang-opt .flag em{font-style:normal;font-size:12px;line-height:1}
+.lang-opt .check{width:14px;height:14px;margin-left:auto;color:var(--primary);opacity:0;transition:.2s}
+.lang-opt.active .check{opacity:1}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:9px;
   padding:11px 22px;border-radius:14px;
@@ -345,10 +395,11 @@ h2.sec-title{
 .mobile-menu a{padding:13px 16px;border-radius:12px;font-weight:500;color:var(--muted);transition:.25s}
 .mobile-menu a:hover{background:rgba(37,99,235,.08);color:var(--primary)}
 
+/* ============================================================
+   HERO
+============================================================ */
 .hero{padding-top:180px;padding-bottom:100px}
-.hero-grid{
-  display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;
-}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;}
 
 .hero h1{
   font-family:var(--display);
@@ -356,9 +407,7 @@ h2.sec-title{
   font-weight:700;line-height:1.05;letter-spacing:-.04em;
   margin-bottom:24px;color:var(--text);
 }
-.hero p.lead{
-  color:var(--muted);font-size:17.5px;line-height:1.75;max-width:570px;margin-bottom:36px;
-}
+.hero p.lead{color:var(--muted);font-size:17.5px;line-height:1.75;max-width:570px;margin-bottom:36px;}
 .hero p.lead strong{color:var(--text);font-weight:600}
 
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:28px}
@@ -510,6 +559,9 @@ h2.sec-title{
 .float-badge .fb-label{font-size:10.5px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-weight:700}
 .float-badge .fb-val{font-family:var(--mono);font-size:14px;color:var(--emerald);font-weight:600}
 
+/* ============================================================
+   STATS
+============================================================ */
 .stats{padding:0 0 50px}
 .stats-grid{
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -528,10 +580,7 @@ h2.sec-title{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,1),transparent);
 }
-.stat{
-  padding:38px 26px;text-align:center;position:relative;
-  transition:.4s var(--ease);
-}
+.stat{padding:38px 26px;text-align:center;position:relative;transition:.4s var(--ease);}
 .stat:not(:last-child)::after{
   content:'';position:absolute;right:0;top:24%;height:52%;width:1px;
   background:linear-gradient(180deg,transparent,rgba(148,163,184,.35),transparent);
@@ -543,9 +592,10 @@ h2.sec-title{
 }
 .stat-lbl{font-size:13px;color:var(--muted);font-weight:500}
 
-.features-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
-}
+/* ============================================================
+   FEATURES
+============================================================ */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
 .card{
   position:relative;padding:32px 30px;border-radius:var(--radius);
   background:rgba(255,255,255,.55);
@@ -621,9 +671,10 @@ h2.sec-title{
 .icon-box.amber{color:var(--amber);box-shadow:0 10px 22px -10px rgba(245,158,11,.45),inset 0 1px 0 rgba(255,255,255,1)}
 .icon-box.rose{color:var(--rose);box-shadow:0 10px 22px -10px rgba(244,63,94,.45),inset 0 1px 0 rgba(255,255,255,1)}
 
-.models-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-}
+/* ============================================================
+   MODELS
+============================================================ */
+.models-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 .model-chip{
   display:flex;align-items:center;gap:14px;
   padding:18px 20px;border-radius:18px;
@@ -665,6 +716,9 @@ h2.sec-title{
 .model-name{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--text);letter-spacing:-.01em}
 .model-meta{font-size:11.5px;color:var(--dim);font-weight:500}
 
+/* ============================================================
+   HOW IT WORKS
+============================================================ */
 .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 
 .steps{display:flex;flex-direction:column;gap:10px}
@@ -734,7 +788,7 @@ h2.sec-title{
   content:'';position:absolute;inset:0;border-radius:50%;
   background:linear-gradient(180deg,rgba(255,255,255,.35),transparent 55%);
 }
-.tg-avatar svg{width:22px;height:22px;color:#fff;position:relative;z-index:1}
+.tg-avatar svg{width:24px;height:24px;position:relative;z-index:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.2))}
 .tg-name{font-weight:600;font-size:15px;color:var(--text)}
 .tg-status{font-size:11.5px;color:var(--emerald);display:flex;align-items:center;gap:5px;font-weight:500}
 .tg-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px rgba(16,185,129,.7)}
@@ -768,6 +822,9 @@ h2.sec-title{
 .msg .typing-dots i:nth-child(3){animation-delay:.36s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-6px);opacity:1}}
 
+/* ============================================================
+   INSTALL
+============================================================ */
 .install-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .install-card{
   border-radius:var(--radius);overflow:hidden;
@@ -855,6 +912,9 @@ h2.sec-title{
   color:#34d399;
 }
 
+/* ============================================================
+   FAQ
+============================================================ */
 .faq-list{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
 .faq-item{
   border-radius:20px;
@@ -909,7 +969,7 @@ h2.sec-title{
   transition:max-height .5s var(--ease), padding .4s var(--ease);
   padding:0 26px;
 }
-.faq-item.open .faq-a{max-height:400px;padding-bottom:24px}
+.faq-item.open .faq-a{max-height:500px;padding-bottom:24px}
 .faq-a p{font-size:14.5px;color:var(--muted);line-height:1.78}
 .faq-a code{
   font-family:var(--mono);font-size:12.5px;
@@ -917,6 +977,9 @@ h2.sec-title{
   padding:1px 6px;border-radius:5px;color:var(--primary-dark);
 }
 
+/* ============================================================
+   CTA
+============================================================ */
 .cta-panel{
   position:relative;border-radius:36px;overflow:hidden;
   padding:80px 52px;text-align:center;
@@ -948,6 +1011,9 @@ h2.sec-title{
 .cta-panel p{color:var(--muted);font-size:17px;max-width:580px;margin:0 auto 38px;position:relative}
 .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
 
+/* ============================================================
+   FOOTER
+============================================================ */
 footer{
   position:relative;z-index:2;
   border-top:1px solid rgba(255,255,255,.7);
@@ -975,18 +1041,17 @@ footer{
 .footer-bottom .heart{color:#e11d48;display:inline-block;animation:heartbeat 1.4s ease-in-out infinite}
 @keyframes heartbeat{0%,100%{transform:scale(1)}15%,45%{transform:scale(1.2)}30%{transform:scale(1)}}
 
+/* ============================================================
+   REVEAL
+============================================================ */
 .reveal{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal.in{opacity:1;transform:none}
-
 .reveal-left{opacity:0;transform:translateX(-50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal-left.in{opacity:1;transform:none}
-
 .reveal-right{opacity:0;transform:translateX(50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal-right.in{opacity:1;transform:none}
-
 .reveal-scale{opacity:0;transform:scale(.92);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal-scale.in{opacity:1;transform:none}
-
 .stagger > *{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .stagger.in > *{opacity:1;transform:none}
 .stagger.in > *:nth-child(1){transition-delay:.05s}
@@ -997,9 +1062,11 @@ footer{
 .stagger.in > *:nth-child(6){transition-delay:.40s}
 .stagger.in > *:nth-child(7){transition-delay:.47s}
 .stagger.in > *:nth-child(8){transition-delay:.54s}
-
 .parallax{will-change:transform;transition:transform .15s linear}
 
+/* ============================================================
+   RESPONSIVE
+============================================================ */
 @media (max-width:1080px){
   .hero-grid{grid-template-columns:1fr;gap:60px}
   .hero{padding-top:150px}
@@ -1037,6 +1104,8 @@ footer{
   .stat:last-child{border-bottom:none}
   .cta-panel{padding:50px 22px;border-radius:28px}
   .card{padding:26px 24px}
+  .lang-btn .chev{display:none}
+  .lang-btn{padding:10px 11px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -1048,10 +1117,8 @@ footer{
 </head>
 <body>
 
-<!-- SCROLL PROGRESS -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- BACKGROUND -->
 <canvas id="bg-canvas"></canvas>
 <div class="liquid-blob blob-1"></div>
 <div class="liquid-blob blob-2"></div>
@@ -1067,9 +1134,18 @@ footer{
   <div class="nav-inner">
     <a href="#" class="logo">
       <span class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2 4 6v6c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V6l-8-4Z"/>
-          <path d="m9 12 2 2 4-4"/>
+        <!-- NEW LLAMA-BOT LOGO -->
+        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <!-- Ears -->
+          <path d="M11.5 12V7.5a3 3 0 0 1 6 0V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M28.5 12V7.5a3 3 0 0 0-6 0V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Head -->
+          <path d="M10 17c0-3.3 2.7-6 6-6h8c3.3 0 6 2.7 6 6v6c0 5.5-4.5 10-10 10s-10-4.5-10-10v-6Z" fill="#fff"/>
+          <!-- Eyes -->
+          <circle cx="16" cy="20" r="1.8" fill="#2563eb"/>
+          <circle cx="24" cy="20" r="1.8" fill="#2563eb"/>
+          <!-- Smile -->
+          <path d="M16.5 25.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </span>
       <span>Ollama<span style="color:var(--muted);font-weight:500"> Bot</span></span>
@@ -1077,20 +1153,45 @@ footer{
     </a>
 
     <nav class="nav-links" id="navLinks">
-      <a href="#features">Tính năng</a>
-      <a href="#models">Models</a>
-      <a href="#how">Cách hoạt động</a>
-      <a href="#install">Cài đặt</a>
-      <a href="#faq">FAQ</a>
+      <a href="#features" data-i18n="nav.features">Tính năng</a>
+      <a href="#models" data-i18n="nav.models">Models</a>
+      <a href="#how" data-i18n="nav.how">Cách hoạt động</a>
+      <a href="#install" data-i18n="nav.install">Cài đặt</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
     </nav>
 
     <div class="nav-cta">
+      <!-- LANGUAGE SWITCHER -->
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn" id="langBtn" aria-label="Language" aria-haspopup="true" aria-expanded="false">
+          <svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3 12h18"/>
+            <path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/>
+          </svg>
+          <span id="langCurrent">VI</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu" role="menu">
+          <button class="lang-opt active" data-lang="vi" role="menuitem">
+            <span class="flag"><em>🇻🇳</em></span>
+            <span>Tiếng Việt</span>
+            <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </button>
+          <button class="lang-opt" data-lang="en" role="menuitem">
+            <span class="flag"><em>🇬🇧</em></span>
+            <span>English</span>
+            <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </button>
+        </div>
+      </div>
+
       <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" class="btn btn-ghost">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
         <span>GitHub</span>
       </a>
       <a href="#install" class="btn btn-primary">
-        <span>Bắt đầu ngay</span>
+        <span data-i18n="nav.cta">Bắt đầu ngay</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <button class="burger" id="burger" aria-label="Menu"><span></span></button>
@@ -1098,11 +1199,11 @@ footer{
   </div>
 
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#features">Tính năng</a>
-    <a href="#models">Models</a>
-    <a href="#how">Cách hoạt động</a>
-    <a href="#install">Cài đặt</a>
-    <a href="#faq">FAQ</a>
+    <a href="#features" data-i18n="nav.features">Tính năng</a>
+    <a href="#models" data-i18n="nav.models">Models</a>
+    <a href="#how" data-i18n="nav.how">Cách hoạt động</a>
+    <a href="#install" data-i18n="nav.install">Cài đặt</a>
+    <a href="#faq" data-i18n="nav.faq">FAQ</a>
     <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600">GitHub →</a>
   </div>
 </header>
@@ -1115,15 +1216,15 @@ footer{
       <div class="hero-copy">
         <div class="eyebrow reveal">
           <span class="dot"></span>
-          v7.0 · Open Source · MIT License
+          <span data-i18n="hero.badge">v7.0 · Open Source · MIT License</span>
         </div>
 
-        <h1 class="reveal" style="transition-delay:.08s">
+        <h1 class="reveal" style="transition-delay:.08s" data-i18n-html="hero.title">
           LLM chạy <span class="grad-text">local</span>,<br>
           chat ngay trên <span class="grad-text">Telegram</span>.
         </h1>
 
-        <p class="lead reveal" style="transition-delay:.16s">
+        <p class="lead reveal" style="transition-delay:.16s" data-i18n-html="hero.lead">
           Kết nối <strong>Ollama</strong> với Telegram chỉ trong một lệnh duy nhất.
           Streaming realtime, Vision, Voice, RAG — tất cả chạy trên <strong>phần cứng của bạn</strong>.
           Không API key, không chi phí, không giới hạn.
@@ -1132,11 +1233,11 @@ footer{
         <div class="hero-actions reveal" style="transition-delay:.24s">
           <a href="#install" class="btn btn-primary btn-lg">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
-            <span>Cài đặt trong 60 giây</span>
+            <span data-i18n="hero.cta1">Cài đặt trong 60 giây</span>
           </a>
           <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
-            <span>Xem source code</span>
+            <span data-i18n="hero.cta2">Xem source code</span>
           </a>
         </div>
 
@@ -1153,19 +1254,18 @@ cd chatAi_bots
         </div>
 
         <div class="hero-tags reveal" style="transition-delay:.40s">
-          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>20+ model</span>
-          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Streaming realtime</span>
-          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Vision &amp; Voice</span>
-          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>1 lệnh cài đặt</span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.tag1">20+ model</span></span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.tag2">Streaming realtime</span></span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.tag3">Vision &amp; Voice</span></span>
+          <span class="tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.tag4">1 lệnh cài đặt</span></span>
         </div>
       </div>
 
-      <!-- Terminal -->
       <div class="terminal-wrap reveal-scale" style="transition-delay:.3s">
         <div class="terminal" id="terminal3D">
           <div class="term-bar">
             <div class="term-dots"><i></i><i></i><i></i></div>
-            <div class="term-title">ollama-telegram-bot — bash</div>
+            <div class="term-title" data-i18n="hero.termTitle">ollama-telegram-bot — bash</div>
           </div>
           <div class="term-body" id="termBody"></div>
         </div>
@@ -1173,7 +1273,7 @@ cd chatAi_bots
         <div class="float-badge">
           <span class="ping"></span>
           <div>
-            <div class="fb-label">Đang xử lý</div>
+            <div class="fb-label" data-i18n="hero.processing">Đang xử lý</div>
             <div class="fb-val" id="tpsVal">42.7 tok/s</div>
           </div>
         </div>
@@ -1189,19 +1289,19 @@ cd chatAi_bots
     <div class="stats-grid reveal" data-parallax="0.04">
       <div class="stat">
         <div class="stat-num grad-text"><span class="counter" data-target="14.2" data-dec="1">0</span>k</div>
-        <div class="stat-lbl">GitHub Stars</div>
+        <div class="stat-lbl" data-i18n="stats.stars">GitHub Stars</div>
       </div>
       <div class="stat">
         <div class="stat-num grad-text"><span class="counter" data-target="20">0</span>+</div>
-        <div class="stat-lbl">Model được hỗ trợ</div>
+        <div class="stat-lbl" data-i18n="stats.models">Model được hỗ trợ</div>
       </div>
       <div class="stat">
         <div class="stat-num grad-text"><span class="counter" data-target="60">0</span>s</div>
-        <div class="stat-lbl">Thời gian cài đặt</div>
+        <div class="stat-lbl" data-i18n="stats.time">Thời gian cài đặt</div>
       </div>
       <div class="stat">
         <div class="stat-num grad-text"><span class="counter" data-target="100">0</span>%</div>
-        <div class="stat-lbl">Local &amp; riêng tư</div>
+        <div class="stat-lbl" data-i18n="stats.local">Local &amp; riêng tư</div>
       </div>
     </div>
   </div>
@@ -1211,61 +1311,47 @@ cd chatAi_bots
 <section id="features">
   <div class="container">
     <div class="sec-head reveal">
-      <div class="eyebrow"><span class="dot"></span>Tính năng</div>
-      <h2 class="sec-title">Mọi thứ bạn cần, <span class="grad-text">không thứ nào bạn không</span></h2>
-      <p class="sec-sub">Được xây dựng cho người dùng thật — nhanh, gọn, bảo mật và mở rộng được.</p>
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="feat.eyebrow">Tính năng</span></div>
+      <h2 class="sec-title" data-i18n-html="feat.title">Mọi thứ bạn cần, <span class="grad-text">không thứ nào bạn không</span></h2>
+      <p class="sec-sub" data-i18n-html="feat.sub">Được xây dựng cho người dùng thật — nhanh, gọn, bảo mật và mở rộng được.</p>
     </div>
 
     <div class="features-grid stagger">
-
       <article class="card tilt">
-        <div class="icon-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 8h6l-3 12"/><path d="M3 12h4M17 12h4"/></svg>
-        </div>
-        <h3>Streaming Realtime</h3>
-        <p>Phản hồi hiển thị từng token ngay khi model sinh ra, kèm chỉnh sửa message mượt mà. Không còn cảnh chờ đợi màn hình trắng.</p>
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 8h6l-3 12"/><path d="M3 12h4M17 12h4"/></svg></div>
+        <h3 data-i18n="feat.1.t">Streaming Realtime</h3>
+        <p data-i18n-html="feat.1.d">Phản hồi hiển thị từng token ngay khi model sinh ra, kèm chỉnh sửa message mượt mà. Không còn cảnh chờ đợi màn hình trắng.</p>
       </article>
 
       <article class="card tilt">
-        <div class="icon-box indigo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        </div>
-        <h3>Đa Model Linh Hoạt</h3>
-        <p>Chuyển đổi giữa llama3.2, qwen2.5, mistral, gemma2, phi4 hay bất kỳ model nào trên Ollama chỉ với một dòng lệnh <code>/model</code>.</p>
+        <div class="icon-box indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3 data-i18n="feat.2.t">Đa Model Linh Hoạt</h3>
+        <p data-i18n-html="feat.2.d">Chuyển đổi giữa llama3.2, qwen2.5, mistral, gemma2, phi4 hay bất kỳ model nào trên Ollama chỉ với một dòng lệnh <code>/model</code>.</p>
       </article>
 
       <article class="card tilt">
-        <div class="icon-box emerald">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 21"/></svg>
-        </div>
-        <h3>Vision &amp; Phân tích ảnh</h3>
-        <p>Gửi ảnh trực tiếp trong chat, bot tự động nhận diện và phân tích bằng các model đa phương thức như LLaVA, Qwen2-VL hay Gemma3.</p>
+        <div class="icon-box emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 21"/></svg></div>
+        <h3 data-i18n="feat.3.t">Vision &amp; Phân tích ảnh</h3>
+        <p data-i18n-html="feat.3.d">Gửi ảnh trực tiếp trong chat, bot tự động nhận diện và phân tích bằng các model đa phương thức như LLaVA, Qwen2-VL hay Gemma3.</p>
       </article>
 
       <article class="card tilt">
-        <div class="icon-box violet">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>
-        </div>
-        <h3>Voice &amp; Speech-to-Text</h3>
-        <p>Nhắn tin thoại được chuyển thành văn bản tự động qua Whisper local, rồi trả lời bằng giọng nói với Piper TTS. Rảnh tay hoàn toàn.</p>
+        <div class="icon-box violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></div>
+        <h3 data-i18n="feat.4.t">Voice &amp; Speech-to-Text</h3>
+        <p data-i18n-html="feat.4.d">Nhắn tin thoại được chuyển thành văn bản tự động qua Whisper local, rồi trả lời bằng giọng nói với Piper TTS. Rảnh tay hoàn toàn.</p>
       </article>
 
       <article class="card tilt">
-        <div class="icon-box amber">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
-        </div>
-        <h3>RAG &amp; Knowledge Base</h3>
-        <p>Nhúng tài liệu PDF, Markdown, code vào vector store local (ChromaDB). Bot trả lời dựa trên chính dữ liệu của bạn, kèm trích dẫn nguồn.</p>
+        <div class="icon-box amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
+        <h3 data-i18n="feat.5.t">RAG &amp; Knowledge Base</h3>
+        <p data-i18n-html="feat.5.d">Nhúng tài liệu PDF, Markdown, code vào vector store local (ChromaDB). Bot trả lời dựa trên chính dữ liệu của bạn, kèm trích dẫn nguồn.</p>
       </article>
 
       <article class="card tilt">
-        <div class="icon-box rose">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
-        <h3>Bảo mật &amp; Riêng tư</h3>
-        <p>Whitelist user/group, rate limiting, mã hoá token. Toàn bộ hội thoại nằm trong SQLite của bạn — không một byte nào rời khỏi máy.</p>
+        <div class="icon-box rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3 data-i18n="feat.6.t">Bảo mật &amp; Riêng tư</h3>
+        <p data-i18n-html="feat.6.d">Whitelist user/group, rate limiting, mã hoá token. Toàn bộ hội thoại nằm trong SQLite của bạn — không một byte nào rời khỏi máy.</p>
       </article>
-
     </div>
   </div>
 </section>
@@ -1274,9 +1360,9 @@ cd chatAi_bots
 <section id="models">
   <div class="container">
     <div class="sec-head reveal">
-      <div class="eyebrow"><span class="dot"></span>Model Registry</div>
-      <h2 class="sec-title">Chơi với <span class="grad-text">mọi model</span> bạn thích</h2>
-      <p class="sec-sub">Bot tự động phát hiện model đã pull trên Ollama. Không cần cấu hình lại.</p>
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="models.eyebrow">Model Registry</span></div>
+      <h2 class="sec-title" data-i18n-html="models.title">Chơi với <span class="grad-text">mọi model</span> bạn thích</h2>
+      <p class="sec-sub" data-i18n="models.sub">Bot tự động phát hiện model đã pull trên Ollama. Không cần cấu hình lại.</p>
     </div>
 
     <div class="models-grid stagger">
@@ -1296,8 +1382,8 @@ cd chatAi_bots
 <section id="how">
   <div class="container">
     <div class="sec-head reveal">
-      <div class="eyebrow"><span class="dot"></span>Cách hoạt động</div>
-      <h2 class="sec-title">Ba bước. <span class="grad-text">Không hơn.</span></h2>
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="how.eyebrow">Cách hoạt động</span></div>
+      <h2 class="sec-title" data-i18n-html="how.title">Ba bước. <span class="grad-text">Không hơn.</span></h2>
     </div>
 
     <div class="demo-grid">
@@ -1305,22 +1391,22 @@ cd chatAi_bots
         <div class="step">
           <div class="step-num">01</div>
           <div>
-            <h4>Pull model về máy</h4>
-            <p>Chạy <code>ollama pull llama3.2</code> để tải model. Mọi thứ lưu local, không cần GPU đắt tiền — CPU cũng chạy tốt.</p>
+            <h4 data-i18n="how.1.t">Pull model về máy</h4>
+            <p data-i18n-html="how.1.d">Chạy <code>ollama pull llama3.2</code> để tải model. Mọi thứ lưu local, không cần GPU đắt tiền — CPU cũng chạy tốt.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">02</div>
           <div>
-            <h4>Khởi động bot</h4>
-            <p>Điền <code>TELEGRAM_TOKEN</code> và <code>OLLAMA_HOST</code> vào file <code>.env</code>, rồi chạy <code>./install.sh</code> (Linux/macOS) hoặc <code>.\install.ps1</code> (Windows).</p>
+            <h4 data-i18n="how.2.t">Khởi động bot</h4>
+            <p data-i18n-html="how.2.d">Điền <code>TELEGRAM_TOKEN</code> và <code>OLLAMA_HOST</code> vào file <code>.env</code>, rồi chạy <code>./install.sh</code> (Linux/macOS) hoặc <code>.\install.ps1</code> (Windows).</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">03</div>
           <div>
-            <h4>Chat &amp; tận hưởng</h4>
-            <p>Mở Telegram, gõ <code>/start</code>. Bot streaming phản hồi ngay lập tức — không latency cloud, không phí token.</p>
+            <h4 data-i18n="how.3.t">Chat &amp; tận hưởng</h4>
+            <p data-i18n-html="how.3.d">Mở Telegram, gõ <code>/start</code>. Bot streaming phản hồi ngay lập tức — không latency cloud, không phí token.</p>
           </div>
         </div>
       </div>
@@ -1328,9 +1414,13 @@ cd chatAi_bots
       <div class="tg-phone reveal-right" style="transition-delay:.15s">
         <div class="tg-head">
           <div class="tg-avatar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2 4 6v6c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V6l-8-4Z"/>
-              <path d="m9 12 2 2 4-4"/>
+            <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <path d="M11.5 12V7.5a3 3 0 0 1 6 0V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M28.5 12V7.5a3 3 0 0 0-6 0V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c0-3.3 2.7-6 6-6h8c3.3 0 6 2.7 6 6v6c0 5.5-4.5 10-10 10s-10-4.5-10-10v-6Z" fill="#fff"/>
+              <circle cx="16" cy="20" r="1.8" fill="#2563eb"/>
+              <circle cx="24" cy="20" r="1.8" fill="#2563eb"/>
+              <path d="M16.5 25.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
@@ -1340,13 +1430,13 @@ cd chatAi_bots
         </div>
 
         <div class="tg-body" id="tgBody">
-          <div class="msg user" style="animation-delay:.3s">Giải thích Docker layer caching trong 3 gạch đầu dòng</div>
-          <div class="msg bot" style="animation-delay:.9s">
+          <div class="msg user" style="animation-delay:.3s" data-i18n="tg.u1">Giải thích Docker layer caching trong 3 gạch đầu dòng</div>
+          <div class="msg bot" style="animation-delay:.9s" data-i18n-html="tg.b1">
             1. Mỗi lệnh trong Dockerfile tạo một <code>layer</code> riêng.<br>
             2. Layer không đổi được tái sử dụng từ cache.<br>
             3. Đặt lệnh ít thay đổi lên trên để tối đa cache hit.
           </div>
-          <div class="msg user" style="animation-delay:1.5s">So sánh với BuildKit luôn</div>
+          <div class="msg user" style="animation-delay:1.5s" data-i18n="tg.u2">So sánh với BuildKit luôn</div>
           <div class="msg bot" style="animation-delay:2s">
             <span class="typing-dots"><i></i><i></i><i></i></span>
           </div>
@@ -1360,22 +1450,19 @@ cd chatAi_bots
 <section id="install">
   <div class="container">
     <div class="sec-head reveal">
-      <div class="eyebrow"><span class="dot"></span>Cài đặt</div>
-      <h2 class="sec-title">Deploy trong <span class="grad-text">60 giây</span></h2>
-      <p class="sec-sub">Chọn cách phù hợp với bạn. Tất cả đều dùng chung một file cấu hình <code style="font-family:var(--mono);font-size:13px;color:var(--primary);background:rgba(37,99,235,.1);padding:2px 7px;border-radius:6px;border:1px solid rgba(37,99,235,.18)">.env</code>.</p>
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="install.eyebrow">Cài đặt</span></div>
+      <h2 class="sec-title" data-i18n-html="install.title">Deploy trong <span class="grad-text">60 giây</span></h2>
+      <p class="sec-sub" data-i18n-html="install.sub">Chọn cách phù hợp với bạn. Tất cả đều dùng chung một file cấu hình <code>.env</code>.</p>
     </div>
 
     <div class="install-grid stagger">
 
-      <!-- Linux / macOS -->
       <div class="install-card">
         <div class="install-card-head">
-          <div class="icon-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 10 11 4 5"/><path d="M12 19h8"/></svg>
-          </div>
+          <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 10 11 4 5"/><path d="M12 19h8"/></svg></div>
           <div>
-            <h3>Linux / macOS</h3>
-            <span>Khuyến nghị · install.sh</span>
+            <h3 data-i18n="install.1.h">Linux / macOS</h3>
+            <span data-i18n="install.1.s">Khuyến nghị · install.sh</span>
           </div>
         </div>
         <div class="code-block">
@@ -1397,15 +1484,12 @@ cd chatAi_bots
         </div>
       </div>
 
-      <!-- Windows -->
       <div class="install-card">
         <div class="install-card-head">
-          <div class="icon-box indigo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M12 3v18"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-          </div>
+          <div class="icon-box indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M12 3v18"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
           <div>
-            <h3>Windows</h3>
-            <span>PowerShell · install.ps1</span>
+            <h3 data-i18n="install.2.h">Windows</h3>
+            <span data-i18n="install.2.s">PowerShell · install.ps1</span>
           </div>
         </div>
         <div class="code-block">
@@ -1427,15 +1511,12 @@ cd chatAi_bots
         </div>
       </div>
 
-      <!-- Cấu hình .env -->
       <div class="install-card">
         <div class="install-card-head">
-          <div class="icon-box emerald">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
-          </div>
+          <div class="icon-box emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg></div>
           <div>
-            <h3>Cấu hình .env</h3>
-            <span>Bắt buộc</span>
+            <h3 data-i18n="install.3.h">Cấu hình .env</h3>
+            <span data-i18n="install.3.s">Bắt buộc</span>
           </div>
         </div>
         <div class="code-block">
@@ -1464,60 +1545,58 @@ VISION_ENABLED=true">
 <section id="faq">
   <div class="container">
     <div class="sec-head reveal">
-      <div class="eyebrow"><span class="dot"></span>FAQ</div>
-      <h2 class="sec-title">Câu hỏi <span class="grad-text">thường gặp</span></h2>
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="faq.eyebrow">FAQ</span></div>
+      <h2 class="sec-title" data-i18n-html="faq.title">Câu hỏi <span class="grad-text">thường gặp</span></h2>
     </div>
 
     <div class="faq-list stagger">
-
       <div class="faq-item">
         <button class="faq-q">
-          Ollama Telegram Bot v7.0 là gì?
+          <span data-i18n="faq.q1">Ollama Telegram Bot v7.0 là gì?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
-        <div class="faq-a"><p>Đây là một bot Telegram mã nguồn mở, hoạt động như cầu nối giữa Telegram và Ollama — runtime LLM chạy hoàn toàn trên máy của bạn. Bạn có thể chat, gửi ảnh, gửi voice và nhận phản hồi từ các model AI mạnh mẽ mà không cần bất kỳ API trả phí nào.</p></div>
+        <div class="faq-a"><p data-i18n-html="faq.a1">Đây là một bot Telegram mã nguồn mở, hoạt động như cầu nối giữa Telegram và Ollama — runtime LLM chạy hoàn toàn trên máy của bạn. Bạn có thể chat, gửi ảnh, gửi voice và nhận phản hồi từ các model AI mạnh mẽ mà không cần bất kỳ API trả phí nào.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q">
-          Cần cấu hình máy như thế nào?
+          <span data-i18n="faq.q2">Cần cấu hình máy như thế nào?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
-        <div class="faq-a"><p>Tối thiểu <strong>8GB RAM</strong> để chạy model 3B–7B (llama3.2, qwen2.5:7b). Với model 13B–14B nên có 16GB RAM. Nếu có GPU NVIDIA từ 8GB VRAM trở lên, tốc độ sẽ nhanh hơn đáng kể. Bot cũng chạy tốt trên VPS CPU-only với model lượng tử hoá Q4.</p></div>
+        <div class="faq-a"><p data-i18n-html="faq.a2">Tối thiểu <strong>8GB RAM</strong> để chạy model 3B–7B (llama3.2, qwen2.5:7b). Với model 13B–14B nên có 16GB RAM. Nếu có GPU NVIDIA từ 8GB VRAM trở lên, tốc độ sẽ nhanh hơn đáng kể. Bot cũng chạy tốt trên VPS CPU-only với model lượng tử hoá Q4.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q">
-          Bot có hỗ trợ chat nhóm (group) không?
+          <span data-i18n="faq.q3">Bot có hỗ trợ chat nhóm (group) không?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
-        <div class="faq-a"><p>Có. Bot hoạt động trong cả private chat và group. Trong group, bạn có thể cấu hình bot chỉ trả lời khi được mention (<code>MENTION_ONLY=true</code>), giới hạn người dùng bằng <code>ALLOWED_USERS</code>, và đặt rate limit để tránh spam.</p></div>
+        <div class="faq-a"><p data-i18n-html="faq.a3">Có. Bot hoạt động trong cả private chat và group. Trong group, bạn có thể cấu hình bot chỉ trả lời khi được mention (<code>MENTION_ONLY=true</code>), giới hạn người dùng bằng <code>ALLOWED_USERS</code>, và đặt rate limit để tránh spam.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q">
-          Dữ liệu của tôi có bị gửi lên cloud không?
+          <span data-i18n="faq.q4">Dữ liệu của tôi có bị gửi lên cloud không?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
-        <div class="faq-a"><p>Không. Toàn bộ quá trình suy luận diễn ra trên máy bạn thông qua Ollama. Lịch sử hội thoại lưu trong SQLite local. Bot chỉ giao tiếp với Telegram API để nhận/gửi tin nhắn — nội dung không đi qua bất kỳ server AI trung gian nào.</p></div>
+        <div class="faq-a"><p data-i18n-html="faq.a4">Không. Toàn bộ quá trình suy luận diễn ra trên máy bạn thông qua Ollama. Lịch sử hội thoại lưu trong SQLite local. Bot chỉ giao tiếp với Telegram API để nhận/gửi tin nhắn — nội dung không đi qua bất kỳ server AI trung gian nào.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q">
-          Có hỗ trợ model vision và voice không?
+          <span data-i18n="faq.q5">Có hỗ trợ model vision và voice không?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
-        <div class="faq-a"><p>Có, từ v6.0. Vision sử dụng các model đa phương thức như <code>llava</code>, <code>qwen2-vl</code>, <code>gemma3</code>. Voice dùng <code>whisper</code> cho speech-to-text và <code>piper</code> cho text-to-speech — tất cả đều chạy local, bật/tắt qua biến môi trường.</p></div>
+        <div class="faq-a"><p data-i18n-html="faq.a5">Có, từ v6.0. Vision sử dụng các model đa phương thức như <code>llava</code>, <code>qwen2-vl</code>, <code>gemma3</code>. Voice dùng <code>whisper</code> cho speech-to-text và <code>piper</code> cho text-to-speech — tất cả đều chạy local, bật/tắt qua biến môi trường.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-q">
-          Giấy phép là gì? Có miễn phí không?
+          <span data-i18n="faq.q6">Giấy phép là gì? Có miễn phí không?</span>
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
-        <div class="faq-a"><p>Hoàn toàn miễn phí và mã nguồn mở dưới giấy phép <strong>MIT License</strong>. Bạn được phép sử dụng, sửa đổi, phân phối và dùng cho cả mục đích thương mại. Đóng góp PR luôn được chào đón trên GitHub.</p></div>
+        <div class="faq-a"><p data-i18n-html="faq.a6">Hoàn toàn miễn phí và mã nguồn mở dưới giấy phép <strong>MIT License</strong>. Bạn được phép sử dụng, sửa đổi, phân phối và dùng cho cả mục đích thương mại. Đóng góp PR luôn được chào đón trên GitHub.</p></div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1526,16 +1605,16 @@ VISION_ENABLED=true">
 <section style="padding-top:20px;padding-bottom:90px">
   <div class="container">
     <div class="cta-panel reveal-scale">
-      <h2>Sẵn sàng có <span class="grad-text">AI riêng</span> của bạn?</h2>
-      <p>Một lệnh. Sáu mươi giây. Không API key, không hoá đơn hàng tháng, không giới hạn token.</p>
+      <h2 data-i18n-html="cta.title">Sẵn sàng có <span class="grad-text">AI riêng</span> của bạn?</h2>
+      <p data-i18n="cta.sub">Một lệnh. Sáu mươi giây. Không API key, không hoá đơn hàng tháng, không giới hạn token.</p>
       <div class="cta-actions">
         <a href="#install" class="btn btn-primary btn-lg">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg>
-          <span>Bắt đầu miễn phí</span>
+          <span data-i18n="cta.b1">Bắt đầu miễn phí</span>
         </a>
         <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
-          <span>Star on GitHub</span>
+          <span data-i18n="cta.b2">Star on GitHub</span>
         </a>
       </div>
     </div>
@@ -1549,54 +1628,55 @@ VISION_ENABLED=true">
       <div class="footer-brand">
         <a href="#" class="logo">
           <span class="logo-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2 4 6v6c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V6l-8-4Z"/>
-              <path d="m9 12 2 2 4-4"/>
+            <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <path d="M11.5 12V7.5a3 3 0 0 1 6 0V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M28.5 12V7.5a3 3 0 0 0-6 0V10" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 17c0-3.3 2.7-6 6-6h8c3.3 0 6 2.7 6 6v6c0 5.5-4.5 10-10 10s-10-4.5-10-10v-6Z" fill="#fff"/>
+              <circle cx="16" cy="20" r="1.8" fill="#2563eb"/>
+              <circle cx="24" cy="20" r="1.8" fill="#2563eb"/>
+              <path d="M16.5 25.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
           </span>
           <span>Ollama<span style="color:var(--muted);font-weight:500"> Bot</span></span>
           <span class="logo-ver">v7.0</span>
         </a>
-        <p>Mang LLM chạy local đến gần bạn hơn — qua ứng dụng nhắn tin bạn dùng mỗi ngày.</p>
+        <p data-i18n="footer.brand">Mang LLM chạy local đến gần bạn hơn — qua ứng dụng nhắn tin bạn dùng mỗi ngày.</p>
       </div>
 
       <div class="footer-col">
-        <h4>Sản phẩm</h4>
-        <a href="#features">Tính năng</a>
-        <a href="#models">Models</a>
-        <a href="#install">Cài đặt</a>
-        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Changelog v7.0</a>
+        <h4 data-i18n="footer.product">Sản phẩm</h4>
+        <a href="#features" data-i18n="footer.feat">Tính năng</a>
+        <a href="#models" data-i18n="footer.models">Models</a>
+        <a href="#install" data-i18n="footer.install">Cài đặt</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" data-i18n="footer.changelog">Changelog v7.0</a>
       </div>
 
       <div class="footer-col">
-        <h4>Tài nguyên</h4>
-        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Documentation</a>
-        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">API Reference</a>
-        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Examples</a>
-        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Blog</a>
+        <h4 data-i18n="footer.resources">Tài nguyên</h4>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" data-i18n="footer.docs">Documentation</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" data-i18n="footer.api">API Reference</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" data-i18n="footer.examples">Examples</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" data-i18n="footer.blog">Blog</a>
       </div>
 
       <div class="footer-col">
-        <h4>Cộng đồng</h4>
+        <h4 data-i18n="footer.community">Cộng đồng</h4>
         <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">GitHub</a>
         <a href="#">Discord</a>
         <a href="#">Telegram Group</a>
-        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener">Đóng góp</a>
+        <a href="https://github.com/cuongng09/my_bot_restructured" target="_blank" rel="noopener" data-i18n="footer.contribute">Đóng góp</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>© 2026 Ollama Telegram Bot · MIT License</span>
-      <span>Made with <span class="heart">♥</span> and local LLMs</span>
+      <span data-i18n="footer.copy">© 2026 Ollama Telegram Bot · MIT License</span>
+      <span data-i18n-html="footer.made">Made with <span class="heart">♥</span> and local LLMs</span>
     </div>
   </div>
 </footer>
 
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
 <script>
 (function () {
   'use strict';
@@ -1604,7 +1684,260 @@ VISION_ENABLED=true">
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* =========================================================
-     1. SCROLL PROGRESS BAR
+     I18N TRANSLATIONS
+  ========================================================= */
+  const I18N = {
+    vi: {
+      'page.title':'Ollama Telegram Bot v7.0 — AI Local, Chat Không Giới Hạn',
+      'nav.features':'Tính năng',
+      'nav.models':'Models',
+      'nav.how':'Cách hoạt động',
+      'nav.install':'Cài đặt',
+      'nav.faq':'FAQ',
+      'nav.cta':'Bắt đầu ngay',
+
+      'hero.badge':'v7.0 · Open Source · MIT License',
+      'hero.title':'LLM chạy <span class="grad-text">local</span>,<br>chat ngay trên <span class="grad-text">Telegram</span>.',
+      'hero.lead':'Kết nối <strong>Ollama</strong> với Telegram chỉ trong một lệnh duy nhất. Streaming realtime, Vision, Voice, RAG — tất cả chạy trên <strong>phần cứng của bạn</strong>. Không API key, không chi phí, không giới hạn.',
+      'hero.cta1':'Cài đặt trong 60 giây',
+      'hero.cta2':'Xem source code',
+      'hero.tag1':'20+ model',
+      'hero.tag2':'Streaming realtime',
+      'hero.tag3':'Vision &amp; Voice',
+      'hero.tag4':'1 lệnh cài đặt',
+      'hero.processing':'Đang xử lý',
+      'hero.termTitle':'ollama-telegram-bot — bash',
+
+      'stats.stars':'GitHub Stars',
+      'stats.models':'Model được hỗ trợ',
+      'stats.time':'Thời gian cài đặt',
+      'stats.local':'Local & riêng tư',
+
+      'feat.eyebrow':'Tính năng',
+      'feat.title':'Mọi thứ bạn cần, <span class="grad-text">không thứ nào bạn không</span>',
+      'feat.sub':'Được xây dựng cho người dùng thật — nhanh, gọn, bảo mật và mở rộng được.',
+      'feat.1.t':'Streaming Realtime',
+      'feat.1.d':'Phản hồi hiển thị từng token ngay khi model sinh ra, kèm chỉnh sửa message mượt mà. Không còn cảnh chờ đợi màn hình trắng.',
+      'feat.2.t':'Đa Model Linh Hoạt',
+      'feat.2.d':'Chuyển đổi giữa llama3.2, qwen2.5, mistral, gemma2, phi4 hay bất kỳ model nào trên Ollama chỉ với một dòng lệnh <code>/model</code>.',
+      'feat.3.t':'Vision & Phân tích ảnh',
+      'feat.3.d':'Gửi ảnh trực tiếp trong chat, bot tự động nhận diện và phân tích bằng các model đa phương thức như LLaVA, Qwen2-VL hay Gemma3.',
+      'feat.4.t':'Voice & Speech-to-Text',
+      'feat.4.d':'Nhắn tin thoại được chuyển thành văn bản tự động qua Whisper local, rồi trả lời bằng giọng nói với Piper TTS. Rảnh tay hoàn toàn.',
+      'feat.5.t':'RAG & Knowledge Base',
+      'feat.5.d':'Nhúng tài liệu PDF, Markdown, code vào vector store local (ChromaDB). Bot trả lời dựa trên chính dữ liệu của bạn, kèm trích dẫn nguồn.',
+      'feat.6.t':'Bảo mật & Riêng tư',
+      'feat.6.d':'Whitelist user/group, rate limiting, mã hoá token. Toàn bộ hội thoại nằm trong SQLite của bạn — không một byte nào rời khỏi máy.',
+
+      'models.eyebrow':'Model Registry',
+      'models.title':'Chơi với <span class="grad-text">mọi model</span> bạn thích',
+      'models.sub':'Bot tự động phát hiện model đã pull trên Ollama. Không cần cấu hình lại.',
+
+      'how.eyebrow':'Cách hoạt động',
+      'how.title':'Ba bước. <span class="grad-text">Không hơn.</span>',
+      'how.1.t':'Pull model về máy',
+      'how.1.d':'Chạy <code>ollama pull llama3.2</code> để tải model. Mọi thứ lưu local, không cần GPU đắt tiền — CPU cũng chạy tốt.',
+      'how.2.t':'Khởi động bot',
+      'how.2.d':'Điền <code>TELEGRAM_TOKEN</code> và <code>OLLAMA_HOST</code> vào file <code>.env</code>, rồi chạy <code>./install.sh</code> (Linux/macOS) hoặc <code>.\\install.ps1</code> (Windows).',
+      'how.3.t':'Chat & tận hưởng',
+      'how.3.d':'Mở Telegram, gõ <code>/start</code>. Bot streaming phản hồi ngay lập tức — không latency cloud, không phí token.',
+
+      'install.eyebrow':'Cài đặt',
+      'install.title':'Deploy trong <span class="grad-text">60 giây</span>',
+      'install.sub':'Chọn cách phù hợp với bạn. Tất cả đều dùng chung một file cấu hình <code>.env</code>.',
+      'install.1.h':'Linux / macOS',
+      'install.1.s':'Khuyến nghị · install.sh',
+      'install.2.h':'Windows',
+      'install.2.s':'PowerShell · install.ps1',
+      'install.3.h':'Cấu hình .env',
+      'install.3.s':'Bắt buộc',
+
+      'faq.eyebrow':'FAQ',
+      'faq.title':'Câu hỏi <span class="grad-text">thường gặp</span>',
+      'faq.q1':'Ollama Telegram Bot v7.0 là gì?',
+      'faq.a1':'Đây là một bot Telegram mã nguồn mở, hoạt động như cầu nối giữa Telegram và Ollama — runtime LLM chạy hoàn toàn trên máy của bạn. Bạn có thể chat, gửi ảnh, gửi voice và nhận phản hồi từ các model AI mạnh mẽ mà không cần bất kỳ API trả phí nào.',
+      'faq.q2':'Cần cấu hình máy như thế nào?',
+      'faq.a2':'Tối thiểu <strong>8GB RAM</strong> để chạy model 3B–7B (llama3.2, qwen2.5:7b). Với model 13B–14B nên có 16GB RAM. Nếu có GPU NVIDIA từ 8GB VRAM trở lên, tốc độ sẽ nhanh hơn đáng kể. Bot cũng chạy tốt trên VPS CPU-only với model lượng tử hoá Q4.',
+      'faq.q3':'Bot có hỗ trợ chat nhóm (group) không?',
+      'faq.a3':'Có. Bot hoạt động trong cả private chat và group. Trong group, bạn có thể cấu hình bot chỉ trả lời khi được mention (<code>MENTION_ONLY=true</code>), giới hạn người dùng bằng <code>ALLOWED_USERS</code>, và đặt rate limit để tránh spam.',
+      'faq.q4':'Dữ liệu của tôi có bị gửi lên cloud không?',
+      'faq.a4':'Không. Toàn bộ quá trình suy luận diễn ra trên máy bạn thông qua Ollama. Lịch sử hội thoại lưu trong SQLite local. Bot chỉ giao tiếp với Telegram API để nhận/gửi tin nhắn — nội dung không đi qua bất kỳ server AI trung gian nào.',
+      'faq.q5':'Có hỗ trợ model vision và voice không?',
+      'faq.a5':'Có, từ v6.0. Vision sử dụng các model đa phương thức như <code>llava</code>, <code>qwen2-vl</code>, <code>gemma3</code>. Voice dùng <code>whisper</code> cho speech-to-text và <code>piper</code> cho text-to-speech — tất cả đều chạy local, bật/tắt qua biến môi trường.',
+      'faq.q6':'Giấy phép là gì? Có miễn phí không?',
+      'faq.a6':'Hoàn toàn miễn phí và mã nguồn mở dưới giấy phép <strong>MIT License</strong>. Bạn được phép sử dụng, sửa đổi, phân phối và dùng cho cả mục đích thương mại. Đóng góp PR luôn được chào đón trên GitHub.',
+
+      'cta.title':'Sẵn sàng có <span class="grad-text">AI riêng</span> của bạn?',
+      'cta.sub':'Một lệnh. Sáu mươi giây. Không API key, không hoá đơn hàng tháng, không giới hạn token.',
+      'cta.b1':'Bắt đầu miễn phí',
+      'cta.b2':'Star on GitHub',
+
+      'footer.brand':'Mang LLM chạy local đến gần bạn hơn — qua ứng dụng nhắn tin bạn dùng mỗi ngày.',
+      'footer.product':'Sản phẩm',
+      'footer.resources':'Tài nguyên',
+      'footer.community':'Cộng đồng',
+      'footer.feat':'Tính năng',
+      'footer.models':'Models',
+      'footer.install':'Cài đặt',
+      'footer.changelog':'Changelog v7.0',
+      'footer.docs':'Documentation',
+      'footer.api':'API Reference',
+      'footer.examples':'Examples',
+      'footer.blog':'Blog',
+      'footer.contribute':'Đóng góp',
+      'footer.copy':'© 2026 Ollama Telegram Bot · MIT License',
+      'footer.made':'Made with <span class="heart">♥</span> and local LLMs',
+
+      'tg.u1':'Giải thích Docker layer caching trong 3 gạch đầu dòng',
+      'tg.b1':'1. Mỗi lệnh trong Dockerfile tạo một <code>layer</code> riêng.<br>2. Layer không đổi được tái sử dụng từ cache.<br>3. Đặt lệnh ít thay đổi lên trên để tối đa cache hit.',
+      'tg.u2':'So sánh với BuildKit luôn'
+    },
+    en: {
+      'page.title':'Ollama Telegram Bot v7.0 — Local AI, Unlimited Chat',
+      'nav.features':'Features',
+      'nav.models':'Models',
+      'nav.how':'How it works',
+      'nav.install':'Install',
+      'nav.faq':'FAQ',
+      'nav.cta':'Get started',
+
+      'hero.badge':'v7.0 · Open Source · MIT License',
+      'hero.title':'LLMs run <span class="grad-text">locally</span>,<br>chat right in <span class="grad-text">Telegram</span>.',
+      'hero.lead':'Connect <strong>Ollama</strong> to Telegram with a single command. Real-time streaming, Vision, Voice, RAG — all running on <strong>your hardware</strong>. No API keys, no costs, no limits.',
+      'hero.cta1':'Install in 60 seconds',
+      'hero.cta2':'View source code',
+      'hero.tag1':'20+ models',
+      'hero.tag2':'Real-time streaming',
+      'hero.tag3':'Vision &amp; Voice',
+      'hero.tag4':'One-line install',
+      'hero.processing':'Processing',
+      'hero.termTitle':'ollama-telegram-bot — bash',
+
+      'stats.stars':'GitHub Stars',
+      'stats.models':'Supported models',
+      'stats.time':'Install time',
+      'stats.local':'Local & private',
+
+      'feat.eyebrow':'Features',
+      'feat.title':'Everything you need, <span class="grad-text">nothing you don\'t</span>',
+      'feat.sub':'Built for real users — fast, lean, secure and extensible.',
+      'feat.1.t':'Real-time Streaming',
+      'feat.1.d':'Responses appear token-by-token as the model generates them, with smooth message editing. No more staring at a blank screen.',
+      'feat.2.t':'Flexible Multi-Model',
+      'feat.2.d':'Switch between llama3.2, qwen2.5, mistral, gemma2, phi4 or any Ollama model with a single <code>/model</code> command.',
+      'feat.3.t':'Vision & Image Analysis',
+      'feat.3.d':'Send images right in the chat — the bot auto-detects and analyzes them with multimodal models like LLaVA, Qwen2-VL or Gemma3.',
+      'feat.4.t':'Voice & Speech-to-Text',
+      'feat.4.d':'Voice notes are transcribed automatically via local Whisper, then answered with Piper TTS. Completely hands-free.',
+      'feat.5.t':'RAG & Knowledge Base',
+      'feat.5.d':'Embed PDFs, Markdown and code into a local vector store (ChromaDB). The bot answers from your own data, with source citations.',
+      'feat.6.t':'Security & Privacy',
+      'feat.6.d':'User/group whitelist, rate limiting, token encryption. All conversations live in your SQLite — not a single byte leaves your machine.',
+
+      'models.eyebrow':'Model Registry',
+      'models.title':'Play with <span class="grad-text">any model</span> you like',
+      'models.sub':'The bot auto-detects models pulled in Ollama. No reconfiguration needed.',
+
+      'how.eyebrow':'How it works',
+      'how.title':'Three steps. <span class="grad-text">No more.</span>',
+      'how.1.t':'Pull a model',
+      'how.1.d':'Run <code>ollama pull llama3.2</code> to download a model. Everything is stored locally — no expensive GPU needed, CPU works fine too.',
+      'how.2.t':'Start the bot',
+      'how.2.d':'Fill <code>TELEGRAM_TOKEN</code> and <code>OLLAMA_HOST</code> in your <code>.env</code> file, then run <code>./install.sh</code> (Linux/macOS) or <code>.\\install.ps1</code> (Windows).',
+      'how.3.t':'Chat & enjoy',
+      'how.3.d':'Open Telegram, type <code>/start</code>. The bot streams a response instantly — no cloud latency, no token fees.',
+
+      'install.eyebrow':'Install',
+      'install.title':'Deploy in <span class="grad-text">60 seconds</span>',
+      'install.sub':'Pick the option that suits you. All share the same <code>.env</code> config file.',
+      'install.1.h':'Linux / macOS',
+      'install.1.s':'Recommended · install.sh',
+      'install.2.h':'Windows',
+      'install.2.s':'PowerShell · install.ps1',
+      'install.3.h':'Configure .env',
+      'install.3.s':'Required',
+
+      'faq.eyebrow':'FAQ',
+      'faq.title':'Frequently asked <span class="grad-text">questions</span>',
+      'faq.q1':'What is Ollama Telegram Bot v7.0?',
+      'faq.a1':'An open-source Telegram bot that bridges Telegram and Ollama — an LLM runtime that runs entirely on your machine. Chat, send images, send voice notes and get responses from powerful AI models without any paid API.',
+      'faq.q2':'What hardware do I need?',
+      'faq.a2':'Minimum <strong>8GB RAM</strong> for 3B–7B models (llama3.2, qwen2.5:7b). For 13B–14B models, 16GB RAM is recommended. An NVIDIA GPU with 8GB+ VRAM makes it significantly faster. It also runs well on CPU-only VPS with Q4 quantized models.',
+      'faq.q3':'Does the bot support group chats?',
+      'faq.a3':'Yes. The bot works in both private chats and groups. In groups you can configure it to reply only when mentioned (<code>MENTION_ONLY=true</code>), restrict users with <code>ALLOWED_USERS</code>, and set a rate limit to prevent spam.',
+      'faq.q4':'Is my data sent to the cloud?',
+      'faq.a4':'No. All inference runs on your machine via Ollama. Chat history is stored in local SQLite. The bot only talks to the Telegram API to receive/send messages — content never passes through any third-party AI server.',
+      'faq.q5':'Does it support vision and voice models?',
+      'faq.a5':'Yes, since v6.0. Vision uses multimodal models like <code>llava</code>, <code>qwen2-vl</code>, <code>gemma3</code>. Voice uses <code>whisper</code> for speech-to-text and <code>piper</code> for text-to-speech — all local, toggled via environment variables.',
+      'faq.q6':'What is the license? Is it free?',
+      'faq.a6':'Completely free and open-source under the <strong>MIT License</strong>. You may use, modify, distribute and use it commercially. PRs are always welcome on GitHub.',
+
+      'cta.title':'Ready to own <span class="grad-text">your own AI</span>?',
+      'cta.sub':'One command. Sixty seconds. No API keys, no monthly bills, no token limits.',
+      'cta.b1':'Start for free',
+      'cta.b2':'Star on GitHub',
+
+      'footer.brand':'Bringing local LLMs closer to you — through the messaging app you use every day.',
+      'footer.product':'Product',
+      'footer.resources':'Resources',
+      'footer.community':'Community',
+      'footer.feat':'Features',
+      'footer.models':'Models',
+      'footer.install':'Install',
+      'footer.changelog':'Changelog v7.0',
+      'footer.docs':'Documentation',
+      'footer.api':'API Reference',
+      'footer.examples':'Examples',
+      'footer.blog':'Blog',
+      'footer.contribute':'Contribute',
+      'footer.copy':'© 2026 Ollama Telegram Bot · MIT License',
+      'footer.made':'Made with <span class="heart">♥</span> and local LLMs',
+
+      'tg.u1':'Explain Docker layer caching in 3 bullet points',
+      'tg.b1':'1. Each Dockerfile instruction creates its own <code>layer</code>.<br>2. Unchanged layers are reused from cache.<br>3. Put rarely-changing commands on top for maximum cache hits.',
+      'tg.u2':'Compare with BuildKit too'
+    }
+  };
+
+  let currentLang = 'vi';
+
+  function applyLang(lang) {
+    if (!I18N[lang]) return;
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    // Text content
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      const key = el.getAttribute('data-i18n');
+      const val = I18N[lang][key];
+      if (val !== undefined) el.textContent = val;
+    });
+
+    // HTML content
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      const key = el.getAttribute('data-i18n-html');
+      const val = I18N[lang][key];
+      if (val !== undefined) el.innerHTML = val;
+    });
+
+    // Page title
+    if (I18N[lang]['page.title']) document.title = I18N[lang]['page.title'];
+
+    // Switcher label
+    const label = document.getElementById('langCurrent');
+    if (label) label.textContent = lang.toUpperCase();
+    document.querySelectorAll('.lang-opt').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+
+    try { localStorage.setItem('otb-lang', lang); } catch (e) {}
+
+    // Restart terminal with new language
+    if (typeof window.__restartTerminal === 'function') window.__restartTerminal();
+  }
+
+  /* =========================================================
+     SCROLL PROGRESS
   ========================================================= */
   const progress = document.getElementById('scrollProgress');
   function updateProgress() {
@@ -1614,7 +1947,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     2. PARTICLE NETWORK BACKGROUND
+     PARTICLE BACKGROUND
   ========================================================= */
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
@@ -1624,12 +1957,9 @@ VISION_ENABLED=true">
   const mouse = { x: -9999, y: -9999 };
 
   function initCanvas() {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = W * DPR;
-    canvas.height = H * DPR;
-    canvas.style.width = W + 'px';
-    canvas.style.height = H + 'px';
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
     const count = Math.min(Math.floor((W * H) / 24000), 80);
@@ -1652,22 +1982,18 @@ VISION_ENABLED=true">
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-
+      p.x += p.vx; p.y += p.vy;
       if (p.x < -20) p.x = W + 20;
       if (p.x > W + 20) p.x = -20;
       if (p.y < -20) p.y = H + 20;
       if (p.y > H + 20) p.y = -20;
 
-      const mdx = p.x - mouse.x;
-      const mdy = p.y - mouse.y;
+      const mdx = p.x - mouse.x, mdy = p.y - mouse.y;
       const md = Math.sqrt(mdx * mdx + mdy * mdy);
       if (md < 140 && md > 0.01) {
         p.x += (mdx / md) * 0.5;
         p.y += (mdy / md) * 0.5;
       }
-
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(' + p.hue + ',0.42)';
@@ -1702,8 +2028,7 @@ VISION_ENABLED=true">
       resizeTimer = setTimeout(initCanvas, 180);
     });
     window.addEventListener('mousemove', function (e) {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      mouse.x = e.clientX; mouse.y = e.clientY;
     });
     window.addEventListener('mouseleave', function () {
       mouse.x = -9999; mouse.y = -9999;
@@ -1711,7 +2036,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     3. NAVBAR + ACTIVE LINK + PROGRESS
+     NAVBAR + ACTIVE LINK
   ========================================================= */
   const nav = document.getElementById('nav');
   const navLinks = document.querySelectorAll('#navLinks a');
@@ -1723,7 +2048,6 @@ VISION_ENABLED=true">
     ticking = true;
     requestAnimationFrame(function () {
       updateProgress();
-
       if (window.scrollY > 24) nav.classList.add('scrolled');
       else nav.classList.remove('scrolled');
 
@@ -1735,7 +2059,6 @@ VISION_ENABLED=true">
       navLinks.forEach(function (a) {
         a.classList.toggle('active', a.getAttribute('href') === '#' + current);
       });
-
       ticking = false;
     });
   }
@@ -1743,7 +2066,7 @@ VISION_ENABLED=true">
   onScroll();
 
   /* =========================================================
-     4. MOBILE MENU
+     MOBILE MENU
   ========================================================= */
   const burger = document.getElementById('burger');
   const mobileMenu = document.getElementById('mobileMenu');
@@ -1759,7 +2082,47 @@ VISION_ENABLED=true">
   });
 
   /* =========================================================
-     5. SCROLL REVEAL
+     LANGUAGE SWITCHER
+  ========================================================= */
+  const langSwitcher = document.getElementById('langSwitcher');
+  const langBtn = document.getElementById('langBtn');
+  const langMenu = document.getElementById('langMenu');
+
+  langBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const open = langSwitcher.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  document.querySelectorAll('.lang-opt').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      applyLang(btn.dataset.lang);
+      langSwitcher.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!langSwitcher.contains(e.target)) {
+      langSwitcher.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      langSwitcher.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Init language
+  let savedLang = 'vi';
+  try { savedLang = localStorage.getItem('otb-lang') || 'vi'; } catch (e) {}
+  applyLang(savedLang);
+
+  /* =========================================================
+     SCROLL REVEAL
   ========================================================= */
   const allReveal = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger');
   if ('IntersectionObserver' in window && !reduceMotion) {
@@ -1777,30 +2140,25 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     6. 3D TILT ON CARDS
+     3D TILT
   ========================================================= */
   if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
     document.querySelectorAll('.tilt').forEach(function (card) {
       let raf = null;
-
       card.addEventListener('mousemove', function (e) {
         const rect = card.getBoundingClientRect();
         const px = (e.clientX - rect.left) / rect.width;
         const py = (e.clientY - rect.top) / rect.height;
-
         card.style.setProperty('--mx', (px * 100) + '%');
         card.style.setProperty('--my', (py * 100) + '%');
-
         if (raf) return;
         raf = requestAnimationFrame(function () {
           const rx = (0.5 - py) * 7;
           const ry = (px - 0.5) * 7;
-          card.style.transform =
-            'perspective(1000px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-8px)';
+          card.style.transform = 'perspective(1000px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-8px)';
           raf = null;
         });
       });
-
       card.addEventListener('mouseleave', function () {
         card.style.transform = '';
       });
@@ -1825,7 +2183,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     7. PARALLAX ON SCROLL
+     PARALLAX
   ========================================================= */
   const parallaxEls = document.querySelectorAll('[data-parallax]');
   if (!reduceMotion && parallaxEls.length) {
@@ -1840,17 +2198,14 @@ VISION_ENABLED=true">
       });
       pRaf = null;
     }
-    function onP() {
-      if (pRaf) return;
-      pRaf = requestAnimationFrame(updateParallax);
-    }
+    function onP() { if (pRaf) return; pRaf = requestAnimationFrame(updateParallax); }
     window.addEventListener('scroll', onP, { passive: true });
     window.addEventListener('resize', onP);
     updateParallax();
   }
 
   /* =========================================================
-     8. ANIMATED COUNTERS
+     COUNTERS
   ========================================================= */
   const counters = document.querySelectorAll('.counter');
   function animateCounter(el) {
@@ -1858,7 +2213,6 @@ VISION_ENABLED=true">
     const dec = parseInt(el.dataset.dec || '0', 10);
     const duration = 1800;
     const start = performance.now();
-
     function tick(now) {
       const p = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - p, 4);
@@ -1869,14 +2223,10 @@ VISION_ENABLED=true">
     }
     requestAnimationFrame(tick);
   }
-
   if ('IntersectionObserver' in window) {
     const cio = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          cio.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { animateCounter(entry.target); cio.unobserve(entry.target); }
       });
     }, { threshold: 0.5 });
     counters.forEach(function (c) { cio.observe(c); });
@@ -1888,33 +2238,56 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     9. TERMINAL TYPING (script install.sh / install.ps1)
+     TERMINAL TYPING
   ========================================================= */
   const termBody = document.getElementById('termBody');
-  const termLines = [
-    { type: 'cmd',  text: 'curl -fsSL https://ollama.com/install.sh | sh' },
-    { type: 'out',  text: '>>> Ollama installed successfully.' },
-    { type: 'cmd',  text: 'ollama pull llama3.2' },
-    { type: 'out',  text: 'pulling manifest ... 100% ▕████████▏ 2.0 GB' },
-    { type: 'cmd',  text: 'git clone https://github.com/cuongng09/my_bot_restructured.git' },
-    { type: 'cmd',  text: 'cd my_bot_restructured/chatAi_bots' },
-    { type: 'cmd',  text: 'chmod +x install.sh && ./install.sh' },
-    { type: 'info', text: '✔ Đã cài Python venv + dependencies' },
-    { type: 'info', text: '✔ Đã cấu hình Ollama service' },
-    { type: 'info', text: '✔ Container otb-bot      Started' },
-    { type: 'ok',   text: '✔ Bot @YourOllamaBot đang chạy · polling 200 OK' },
-    { type: 'ok',   text: '→ Sẵn sàng nhận tin nhắn. Thử /start trên Telegram!' }
-  ];
+  let termToken = 0;
+
+  function getTermLines() {
+    if (currentLang === 'en') {
+      return [
+        { type: 'cmd',  text: 'curl -fsSL https://ollama.com/install.sh | sh' },
+        { type: 'out',  text: '>>> Ollama installed successfully.' },
+        { type: 'cmd',  text: 'ollama pull llama3.2' },
+        { type: 'out',  text: 'pulling manifest ... 100% ▕████████▏ 2.0 GB' },
+        { type: 'cmd',  text: 'git clone https://github.com/cuongng09/my_bot_restructured.git' },
+        { type: 'cmd',  text: 'cd my_bot_restructured/chatAi_bots' },
+        { type: 'cmd',  text: 'chmod +x install.sh && ./install.sh' },
+        { type: 'info', text: '✔ Python venv + dependencies installed' },
+        { type: 'info', text: '✔ Ollama service configured' },
+        { type: 'info', text: '✔ Container otb-bot      Started' },
+        { type: 'ok',   text: '✔ Bot @YourOllamaBot running · polling 200 OK' },
+        { type: 'ok',   text: '→ Ready to receive messages. Try /start on Telegram!' }
+      ];
+    }
+    return [
+      { type: 'cmd',  text: 'curl -fsSL https://ollama.com/install.sh | sh' },
+      { type: 'out',  text: '>>> Ollama installed successfully.' },
+      { type: 'cmd',  text: 'ollama pull llama3.2' },
+      { type: 'out',  text: 'pulling manifest ... 100% ▕████████▏ 2.0 GB' },
+      { type: 'cmd',  text: 'git clone https://github.com/cuongng09/my_bot_restructured.git' },
+      { type: 'cmd',  text: 'cd my_bot_restructured/chatAi_bots' },
+      { type: 'cmd',  text: 'chmod +x install.sh && ./install.sh' },
+      { type: 'info', text: '✔ Đã cài Python venv + dependencies' },
+      { type: 'info', text: '✔ Đã cấu hình Ollama service' },
+      { type: 'info', text: '✔ Container otb-bot      Started' },
+      { type: 'ok',   text: '✔ Bot @YourOllamaBot đang chạy · polling 200 OK' },
+      { type: 'ok',   text: '→ Sẵn sàng nhận tin nhắn. Thử /start trên Telegram!' }
+    ];
+  }
 
   function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
   async function runTerminal() {
     if (!termBody) return;
+    const myToken = ++termToken;
+    const termLines = getTermLines();
     termBody.innerHTML = '';
     const cursor = document.createElement('span');
     cursor.className = 'cursor';
 
     for (let i = 0; i < termLines.length; i++) {
+      if (myToken !== termToken) return;
       const line = termLines[i];
       const row = document.createElement('div');
       row.className = 'term-line ' + line.type + ' visible';
@@ -1936,6 +2309,7 @@ VISION_ENABLED=true">
       } else {
         const speed = line.type === 'cmd' ? 20 : 8;
         for (let c = 0; c < line.text.length; c++) {
+          if (myToken !== termToken) return;
           txt.textContent += line.text[c];
           await sleep(speed);
         }
@@ -1943,19 +2317,22 @@ VISION_ENABLED=true">
 
       termBody.appendChild(cursor);
       await sleep(reduceMotion ? 30 : (line.type === 'cmd' ? 280 : 140));
+      if (myToken !== termToken) return;
 
       while (termBody.children.length > 8) {
         termBody.removeChild(termBody.firstChild);
       }
     }
     await sleep(5400);
+    if (myToken !== termToken) return;
     runTerminal();
   }
 
+  window.__restartTerminal = runTerminal;
   setTimeout(runTerminal, 800);
 
   /* =========================================================
-     10. TOKENS/SEC BADGE
+     TOKENS/SEC BADGE
   ========================================================= */
   const tpsEl = document.getElementById('tpsVal');
   if (tpsEl && !reduceMotion) {
@@ -1966,7 +2343,7 @@ VISION_ENABLED=true">
   }
 
   /* =========================================================
-     11. COPY TO CLIPBOARD
+     COPY TO CLIPBOARD
   ========================================================= */
   const copyIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
   const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
@@ -2000,7 +2377,7 @@ VISION_ENABLED=true">
   });
 
   /* =========================================================
-     12. FAQ ACCORDION
+     FAQ
   ========================================================= */
   document.querySelectorAll('.faq-item').forEach(function (item) {
     const q = item.querySelector('.faq-q');
@@ -2016,7 +2393,7 @@ VISION_ENABLED=true">
   if (firstFaq) firstFaq.classList.add('open');
 
   /* =========================================================
-     13. SMOOTH ANCHOR OFFSET
+     SMOOTH ANCHOR
   ========================================================= */
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
@@ -2031,7 +2408,7 @@ VISION_ENABLED=true">
   });
 
   /* =========================================================
-     14. MAGNETIC BUTTONS
+     MAGNETIC BUTTONS
   ========================================================= */
   if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
     document.querySelectorAll('.btn-primary').forEach(function (btn) {
@@ -2041,9 +2418,7 @@ VISION_ENABLED=true">
         const y = e.clientY - rect.top - rect.height / 2;
         btn.style.transform = 'translate(' + (x * 0.08) + 'px,' + (y * 0.14 - 3) + 'px)';
       });
-      btn.addEventListener('mouseleave', function () {
-        btn.style.transform = '';
-      });
+      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
     });
   }
 

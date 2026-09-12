@@ -496,3 +496,8 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2026-09-11 21:16:14,342 | INFO | my_bot | 🚀 Bot đang khởi động...
 2026-09-11 21:16:15,042 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
 2026-09-11 21:16:15,261 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-11 22:49:23,152 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-09-12 18:22:02,667 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-12 18:22:07,110 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-12 18:22:07,334 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-12 18:22:07,335 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
