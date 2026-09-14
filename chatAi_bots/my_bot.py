@@ -64,9 +64,11 @@ async def post_init(application: Application):
 
     # Inject HTTP client dùng chung vào các module cần gọi ra internet
     llm_engine.set_http_client(http_client)
-    web_search_skill.set_http_client(http_client)
+    from skills import default_registry
+    default_registry.set_http_client(http_client)
     weather_skill.set_http_client(http_client)
     news_skill.set_http_client(http_client)
+    web_search_skill.set_http_client(http_client)
     dashboard_skill.set_http_client(http_client)
     application.bot_data["http_client"] = http_client  # giữ tham chiếu để đóng lúc shutdown
 
@@ -196,6 +198,39 @@ def main():
     app.add_handler(CommandHandler("autoweb", cmd_autoweb))
     app.add_handler(CommandHandler("shutdown", cmd_shutdown))
     app.add_handler(CommandHandler("reboot", cmd_reboot))
+
+    # Tự động liên kết các lệnh Telegram cho các skill được nạp động từ thư mục skills/
+    from skills import default_registry
+    from telegram.constants import ChatAction
+
+    async def _dynamic_skill_dispatcher(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+        uid = update.effective_user.id
+        if not utils.is_allowed(uid) or not utils.is_addressed_in_group(update):
+            return
+        if await utils.is_rate_limited(uid):
+            return await utils.notify_rate_limited(update)
+
+        raw_text = update.effective_message.text or ""
+        cmd_name = raw_text.split()[0].lstrip("/").split("@")[0].lower()
+        matched_skill = default_registry.get_by_command(cmd_name)
+        if not matched_skill:
+            return
+
+        await update.effective_chat.send_action(ChatAction.TYPING)
+        query_str = " ".join(ctx.args).strip() if ctx.args else ""
+        res = await matched_skill.execute(query=query_str)
+        if res.text:
+            await utils.safe_reply(update, res.text)
+
+    _explicit_cmds = {
+        "start", "help", "ui", "reset", "resetmemory", "stop", "export",
+        "nickname", "persona", "voice", "stt", "ttsmode", "ping",
+        "weather", "news", "autoweb", "shutdown", "reboot",
+    }
+    for skill_obj in default_registry.list_all():
+        if skill_obj.command and skill_obj.command.lower() not in _explicit_cmds:
+            app.add_handler(CommandHandler(skill_obj.command.lower(), _dynamic_skill_dispatcher))
+            logger.info(f"🔗 Tự động liên kết lệnh /{skill_obj.command.lower()} -> Skill '{skill_obj.name}'")
 
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     app.add_handler(MessageHandler(filters.VOICE | filters.AUDIO, handle_voice))

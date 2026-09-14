@@ -501,3 +501,73 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2026-09-12 18:22:07,110 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
 2026-09-12 18:22:07,334 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
 2026-09-12 18:22:07,335 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-13 14:53:44,387 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-13 14:53:48,850 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-13 14:53:49,075 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-13 14:53:49,076 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-14 20:38:00,521 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-14 20:38:04,980 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-14 20:38:05,196 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-14 20:38:05,197 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-14 20:52:45,720 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-14 20:52:50,169 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-14 20:52:50,394 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-14 20:52:50,395 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-14 21:21:41,930 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:21:42,113 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:21:42,205 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:23:47,177 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:23:47,309 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:23:47,395 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:23:47,399 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:23:47,403 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:23:47,404 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:23:47,406 | INFO | my_bot | 📊 Context Budget: total_in=1908 (sys=817, web=0, hist=442, user=649), remain=6284/8192, hist_truncated=0
+2026-09-14 21:23:51,033 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:23:51,199 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:23:51,271 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:26:49,239 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:26:49,240 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:26:49,536 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:26:49,660 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:26:49,671 | INFO | my_bot | 🔗 Tự động liên kết lệnh /crypto -> Skill 'crypto'
+2026-09-14 21:26:49,671 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-14 21:26:54,109 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-14 21:26:54,323 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-14 21:26:54,324 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-14 21:28:16,266 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:28:16,266 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:28:16,396 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:28:16,461 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:28:16,469 | INFO | my_bot | 🔗 Tự động liên kết lệnh /crypto -> Skill 'crypto'
+2026-09-14 21:28:16,469 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-14 21:28:17,179 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-14 21:28:17,401 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-14 21:29:52,641 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:29:52,642 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:29:52,777 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:29:52,861 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:30:01,844 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:30:01,844 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:30:01,972 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:30:02,059 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:30:02,061 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:30:02,066 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:30:02,066 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:30:02,070 | INFO | my_bot | 📊 Context Budget: total_in=1908 (sys=817, web=0, hist=442, user=649), remain=6284/8192, hist_truncated=0
+2026-09-14 21:30:14,691 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:30:14,691 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:30:14,820 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:30:14,901 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:30:20,917 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:30:20,918 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:30:21,103 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:30:21,189 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:30:38,941 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-14 21:30:38,942 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-14 21:30:39,073 | WARNING | my_bot | ⚠️ Lỗi khi nạp plugin từ module 'pdf_report': No module named 'reportlab'
+2026-09-14 21:30:39,139 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-14 21:30:39,148 | INFO | my_bot | 🔗 Tự động liên kết lệnh /crypto -> Skill 'crypto'
+2026-09-14 21:30:39,148 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-14 21:30:39,853 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-14 21:30:40,079 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot

@@ -18,6 +18,7 @@ from config import (
     OLLAMA_BASE_URL, OLLAMA_TIMEOUT_SEC, OLLAMA_RETRY_ATTEMPTS, OLLAMA_CONTEXT_SIZE,
     COMPARISON_TRIGGER_KEYWORDS, should_trigger_web_search,
 )
+from context_manager import default_context_manager, estimate_tokens, estimate_messages_tokens
 
 
 def get_vietnam_time_str() -> str:
@@ -243,8 +244,6 @@ def build_grounded_messages(
     Xây dựng danh sách messages chuẩn bị gửi cho Ollama.
     Tách biệt: Lịch sử hội thoại / Ngữ cảnh Web thời gian thực / Câu hỏi hiện tại.
     """
-    messages = _trim_history_for_context(messages)
-    web_context = _truncate_for_context(web_context)
     current_time_str = get_vietnam_time_str()
     system_prompt = reasoning.get_persona_prompt(persona) + (
         f"\n\n🕒 MỐC THỜI GIAN THỰC HIỆN TẠI CỦA HỆ THỐNG: {current_time_str}.\n"
@@ -271,10 +270,8 @@ def build_grounded_messages(
     if not messages:
         return [{"role": "system", "content": system_prompt}]
 
-    formatted = [{"role": "system", "content": system_prompt}]
-    formatted.extend(messages[:-1])
-
     last_msg = messages[-1]
+    history_messages = messages[:-1]
     user_query = last_msg.get("content", "")
 
     is_comparison = any(kw in user_query.lower() for kw in COMPARISON_TRIGGER_KEYWORDS)
@@ -285,14 +282,20 @@ def build_grounded_messages(
         if is_comparison else ""
     )
 
+    formatted_user_query = user_query
     if web_context and last_msg.get("role") == "user":
         concise_instruction = (
             "\n⚠️ ĐẶC BIỆT: Yêu cầu trả lời CỰC KỲ NGẮN GỌN (tối đa 3-4 câu), đi thẳng vào số liệu/sự việc chính."
             if force_concise else ""
         )
-        grounded_user_content = (
+        clean_web = default_context_manager.trim_text_by_tokens(
+            web_context,
+            max_tokens=default_context_manager.max_web_budget,
+            truncation_marker="\n...[Dữ liệu web đã được cắt ngắn để vừa ngữ cảnh]",
+        )
+        formatted_user_query = (
             f"--- DỮ LIỆU INTERNET THỜI GIAN THỰC (Ghi nhận lúc: {current_time_str}) ---\n"
-            f"{web_context}\n"
+            f"{clean_web}\n"
             f"--- KẾT THÚC DỮ LIỆU ---\n\n"
             f"Nhiệm vụ: Dựa vào DỮ LIỆU INTERNET ở trên và câu hỏi của bạn mình, hãy phản hồi một cách tự nhiên, hữu ích và cập nhật theo thời gian thực:\n"
             f"👉 \"{user_query}\"\n\n"
@@ -306,13 +309,28 @@ def build_grounded_messages(
             f"{concise_instruction}"
             f"{table_instruction}\n"
         )
-        formatted.append({"role": "user", "content": grounded_user_content})
     elif is_comparison and last_msg.get("role") == "user":
-        formatted.append({"role": "user", "content": f"{user_query}\n{table_instruction}"})
-    else:
-        formatted.append(last_msg)
+        formatted_user_query = f"{user_query}\n{table_instruction}"
 
-    _log_payload_debug(formatted, web_context)
+    formatted, stats = default_context_manager.allocate_and_build(
+        system_prompt=system_prompt,
+        history_messages=history_messages,
+        web_context="",
+        user_query_override=formatted_user_query if last_msg.get("role") == "user" else None,
+    )
+
+    logger.info(
+        "📊 Context Budget: total_in=%d (sys=%d, web=%d, hist=%d, user=%d), remain=%d/%d, hist_truncated=%d",
+        stats["total_input_tokens"],
+        stats["system_tokens"],
+        stats["web_tokens"],
+        stats["history_tokens"],
+        stats["user_tokens"],
+        stats["estimated_remaining"],
+        stats["total_budget"],
+        stats["was_history_truncated"],
+    )
+
     return formatted
 
 
