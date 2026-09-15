@@ -23,15 +23,33 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Optional
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.units import cm
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, ListFlowable, ListItem,
-)
+try:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import ParagraphStyle
+    from reportlab.lib.units import cm
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    from reportlab.platypus import (
+        SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, ListFlowable, ListItem, PageBreak,
+    )
+    REPORTLAB_AVAILABLE = True
+except ImportError:
+    REPORTLAB_AVAILABLE = False
+    colors = None
+    A4 = None
+    ParagraphStyle = None
+    cm = None
+    pdfmetrics = None
+    TTFont = None
+    SimpleDocTemplate = None
+    Paragraph = None
+    Spacer = None
+    Table = None
+    TableStyle = None
+    ListFlowable = None
+    ListItem = None
+    PageBreak = None
 
 from bot_logger import logger
 from config import (
@@ -42,6 +60,9 @@ from config import (
 from llm_engine import chat_with_llm
 
 Path(PDF_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
+
+if not REPORTLAB_AVAILABLE:
+    logger.warning("⚠️ Thư viện 'reportlab' chưa được cài — tính năng xuất báo cáo PDF bị tạm tắt. Cài đặt bằng: pip install reportlab")
 
 groq_client = None
 if GROQ_API_KEY:
@@ -364,6 +385,9 @@ def _safe_filename(text: str) -> str:
 async def generate_pdf_report(topic: str, model: str = DEFAULT_MODEL, uid: int = 0) -> Path:
     """Pipeline đầy đủ: tìm web → lập dàn ý (Groq/Ollama) → mở rộng chi tiết (Ollama) → render PDF.
     Trả về Path tới file PDF đã tạo trong PDF_OUTPUT_DIR."""
+    if not REPORTLAB_AVAILABLE:
+        raise RuntimeError("Thư viện 'reportlab' chưa được cài đặt. Vui lòng cài đặt bằng: pip install reportlab")
+
     web_context = await deep_search_web(topic)
     outline = await generate_outline(topic, web_context, model)
     report_title = outline.get("report_title") or topic
