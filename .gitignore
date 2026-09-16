@@ -1,17 +1,64 @@
-.env
-__pycache__/
-*.pyc
+# .gitignore — my_bot_restructured
 
-# Bỏ qua dữ liệu SQLite và log trong thư mục chatAi_bots
-chatAi_bots/data/*.db
-chatAi_bots/data/*.db-*
+# ── Python ─────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+src/*.egg-info/
+src/my_bot.egg-info/
+
+# ── Virtual environments ────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+chatAi_bots/venv/
+
+# ── Environment / secrets ───────────────────────────────────────────────────────
+.env
+.env.local
+*.env
+
+# ── Logs ────────────────────────────────────────────────────────────────────────
+logs/
+*.log
+bot.log*
 chatAi_bots/logs/*.log*
 
-# Bỏ qua file giọng nói, model và môi trường ảo
+# ── Data & runtime dirs ─────────────────────────────────────────────────────────
+data/
+voices/
+fonts/
+pdf_output/
+exports/
+chatAi_bots/data/*.db
+chatAi_bots/data/*.db-*
 chatAi_bots/voices/*.onnx
 chatAi_bots/voices/*.onnx.json
 chatAi_bots/models/
-chatAi_bots/venv/
 chatAi_bots/voicebox/
 chatAi_bots/data/reports/
-venv/
+
+# ── IDE / editor ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ───────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Docker ───────────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ── Test cache ────────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/

@@ -1,0 +1,251 @@
+"""
+my_bot.py — Trợ lý AI đa năng trên Telegram (chạy LLM cục bộ qua Ollama).
+             ENTRYPOINT DUY NHẤT — chỉ khởi tạo & nối các module lại, không chứa logic nghiệp vụ.
+
+Tính năng (xem chi tiết trong từng module ở skills/ và handlers/):
+  💬 Chat AI streaming (Ollama, giữ ngữ cảnh hội thoại)          → llm_engine.py, handlers/text_handler.py
+  🌐 Tự tra cứu web thời gian thực (RAG)                         → skills/web_search.py
+  🌤️ Thời tiết + chất lượng không khí                            → skills/weather.py
+  📰 Tin tức nhanh từ 5 nguồn báo                                → skills/news.py
+  🖼️ OCR ảnh/PDF + dịch hai chiều Anh↔Việt                       → skills/ocr.py, handlers/media_handler.py
+  🎙️ Voice: STT (Voicebox Docker/Groq) + TTS (Piper/gTTS)       → skills/voice.py, handlers/voice_handler.py
+  🧠 Suy luận ẩn + trí nhớ dài hạn + persona                      → reasoning.py
+  🛠️ Dashboard nút bấm (inline keyboard)                         → handlers/dashboard_handler.py
+  🖥️ Lệnh quản trị server (chỉ ADMIN)                            → skills/dashboard.py
+  🗂️ Xuất lịch sử hội thoại, /stop, /ping, ...                    → handlers/commands.py
+
+Chạy: python my_bot.py   (cần .env — xem .env.example)
+"""
+
+from __future__ import annotations
+
+import httpx
+from telegram import Update
+from telegram.error import NetworkError
+from telegram.ext import (
+    Application, CommandHandler, MessageHandler, CallbackQueryHandler,
+    ContextTypes, filters,
+)
+from telegram.request import HTTPXRequest
+
+from core import database as db
+from core import reasoning     # noqa: F401  (nạp trước để SYSTEM_PROMPT_BASE fallback sẵn sàng)
+from core import local_voice    # noqa: F401
+
+from core.logger import logger
+from config import (
+    TELEGRAM_TOKEN, OLLAMA_BASE_URL, DEFAULT_MODEL, DB_PATH, ALLOWED_IDS, ADMIN_IDS,
+    TELEGRAM_CONNECT_TIMEOUT, TELEGRAM_READ_TIMEOUT,
+)
+
+from core import llm_engine
+from core import utils
+from skills import web_search as web_search_skill
+from skills import weather as weather_skill
+from skills import news as news_skill
+from skills import dashboard as dashboard_skill
+from skills.registry import default_registry
+
+from handlers.text_handler import handle_text
+from handlers.voice_handler import handle_voice
+from handlers.media_handler import handle_media
+from handlers.dashboard_handler import cmd_ui, handle_callback_query
+from handlers.commands import (
+    cmd_start, cmd_help, cmd_reset, cmd_resetmemory, cmd_stop, cmd_export,
+    cmd_nickname, cmd_persona, cmd_voice, cmd_stt, cmd_ttsmode,
+    cmd_ping, cmd_weather, cmd_news, cmd_autoweb, cmd_shutdown, cmd_reboot,
+)
+
+
+# ═══════════════════════════════════════════════════════════════
+# 🚀  Main Setup
+# ═══════════════════════════════════════════════════════════════
+async def post_init(application: Application):
+    http_client = httpx.AsyncClient(follow_redirects=True)
+
+    # Inject HTTP client dùng chung vào các module cần gọi ra internet
+    llm_engine.set_http_client(http_client)
+    default_registry.set_http_client(http_client)
+    weather_skill.set_http_client(http_client)
+    news_skill.set_http_client(http_client)
+    web_search_skill.set_http_client(http_client)
+    dashboard_skill.set_http_client(http_client)
+    application.bot_data["http_client"] = http_client  # giữ tham chiếu để đóng lúc shutdown
+
+    await db.init_db(DB_PATH)
+    logger.info(f"🗄️  SQLite sẵn sàng tại: {DB_PATH}")
+
+    try:
+        me = await application.bot.get_me()
+        utils.BOT_USERNAME = me.username
+        logger.info(f"🤖 Bot khởi động với username: @{utils.BOT_USERNAME}")
+    except Exception as e:
+        logger.warning(f"⚠️ Không lấy được username của bot: {e}")
+
+    models = await llm_engine.get_ollama_models(force=True)
+    if not models:
+        logger.warning(
+            f"⚠️ Không kết nối được Ollama tại {OLLAMA_BASE_URL} — bot vẫn chạy nhưng chat AI sẽ lỗi "
+            f"cho tới khi Ollama sẵn sàng."
+        )
+    elif DEFAULT_MODEL not in models:
+        logger.warning(f"⚠️ Model mặc định '{DEFAULT_MODEL}' chưa được cài trong Ollama. Model hiện có: {models}")
+
+    if not ALLOWED_IDS:
+        logger.warning(
+            "🔓 ALLOWED_USERS đang để TRỐNG — bất kỳ ai trên Telegram cũng dùng được bot này. "
+            "Nếu đây không phải chủ đích, hãy khai báo ALLOWED_USERS trong .env."
+        )
+    if not ADMIN_IDS:
+        logger.info("ℹ️ ADMIN_USER_IDS đang để trống — không ai dùng được lệnh quản trị server.")
+
+    from telegram import BotCommand, BotCommandScopeChat, BotCommandScopeDefault
+
+    # Danh sách gợi ý khi gõ "/" trong Telegram. Đây chỉ là GỢI Ý HIỂN THỊ — mọi lệnh
+    # (kể cả không nằm trong danh sách, vd /weather, /news, /stt...) vẫn hoạt động bình
+    # thường khi gõ tay. Rút gọn còn các lệnh cốt lõi vì /ui giờ đã có nút bấm cho hầu hết
+    # thao tác (mô hình, tính cách, giọng nói, thời tiết, tin tức, dịch...) — liệt kê
+    # thêm ở đây chỉ gây rối, không thêm chức năng.
+    default_commands = [
+        BotCommand("start",    "Khởi động bot"),
+        BotCommand("ui",       "🏮 Mở Trạm Điều Khiển — trung tâm điều khiển bot"),
+        BotCommand("help",     "📖 Xem hướng dẫn sử dụng đầy đủ"),
+        BotCommand("nickname", "👤 Đặt tên gọi riêng"),
+        BotCommand("stop",     "🚫 Dừng phản hồi đang tạo"),
+        BotCommand("reset",    "♻ Xóa lịch sử hội thoại"),
+        BotCommand("resetmemory", "🧠 Xóa hồ sơ trí nhớ dài hạn"),
+    ]
+    await application.bot.set_my_commands(default_commands, scope=BotCommandScopeDefault())
+
+    # Admin thấy thêm 3 lệnh quản trị trong menu CỦA RIÊNG HỌ — người dùng thường không
+    # thấy các lệnh này nữa (trước đây ai cũng thấy "Tắt nguồn server" dù không có quyền
+    # dùng, vừa rối vừa lộ thông tin không cần thiết).
+    admin_commands = default_commands + [
+        BotCommand("ping",     "🏓 Kiểm tra kết nối Ollama"),
+        BotCommand("shutdown", "🛑 Tắt nguồn server (cần xác nhận)"),
+        BotCommand("reboot",   "🔁 Khởi động lại server (cần xác nhận)"),
+    ]
+    for admin_id in ADMIN_IDS:
+        try:
+            await application.bot.set_my_commands(admin_commands, scope=BotCommandScopeChat(chat_id=admin_id))
+        except Exception as e:
+            logger.warning(f"⚠️ Không đặt được menu lệnh riêng cho admin {admin_id}: {e}")
+
+
+async def post_shutdown(application: Application):
+    http_client = application.bot_data.get("http_client")
+    if http_client is not None:
+        await http_client.aclose()
+    await db.close_db()
+    web_search_skill.shutdown_executor()
+
+
+async def global_error_handler(update: object, ctx: ContextTypes.DEFAULT_TYPE):
+    logger.error(f"⚠️ Lỗi không xử lý được: {ctx.error}", exc_info=ctx.error)
+    try:
+        if isinstance(update, Update) and update.effective_message:
+            await update.effective_message.reply_text(
+                "⚠️ Đã có lỗi xảy ra khi xử lý yêu cầu. Vui lòng thử lại hoặc đổi cách hỏi khác."
+            )
+    except Exception:
+        pass
+
+
+def main():
+    # request: timeout dài hơn mặc định (5s) — tránh TimedOut khi mạng tới
+    # api.telegram.org chậm/không ổn định.
+    request_kwargs = dict(
+        connect_timeout=TELEGRAM_CONNECT_TIMEOUT,
+        read_timeout=TELEGRAM_READ_TIMEOUT,
+        write_timeout=TELEGRAM_READ_TIMEOUT,
+        pool_timeout=TELEGRAM_CONNECT_TIMEOUT,
+    )
+    # PTB khuyến nghị dùng 2 instance HTTPXRequest riêng cho API thường vs long-polling
+    # (get_updates cần pool_timeout dài hơn do giữ connection lâu).
+    telegram_request = HTTPXRequest(**request_kwargs)
+    updates_request = HTTPXRequest(**{**request_kwargs, "pool_timeout": TELEGRAM_READ_TIMEOUT})
+
+    # concurrent_updates(True): mỗi update chạy trong 1 Task riêng (song song), cần thiết để
+    # /stop hoạt động đúng trong lúc bot đang stream câu trả lời cho update khác.
+    app = (
+        Application.builder()
+        .token(TELEGRAM_TOKEN)
+        .request(telegram_request)
+        .get_updates_request(updates_request)
+        .concurrent_updates(True)
+        .post_init(post_init)
+        .post_shutdown(post_shutdown)
+        .build()
+    )
+    app.add_error_handler(global_error_handler)
+
+    app.add_handler(CallbackQueryHandler(handle_callback_query))
+    app.add_handler(CommandHandler("start", cmd_start))
+    app.add_handler(CommandHandler("help", cmd_help))
+    app.add_handler(CommandHandler("ui", cmd_ui))
+    app.add_handler(CommandHandler("reset", cmd_reset))
+    app.add_handler(CommandHandler("resetmemory", cmd_resetmemory))
+    app.add_handler(CommandHandler("stop", cmd_stop))
+    app.add_handler(CommandHandler("export", cmd_export))
+    app.add_handler(CommandHandler("nickname", cmd_nickname))
+    app.add_handler(CommandHandler("persona", cmd_persona))
+    app.add_handler(CommandHandler("voice", cmd_voice))
+    app.add_handler(CommandHandler("stt", cmd_stt))
+    app.add_handler(CommandHandler("ttsmode", cmd_ttsmode))
+    app.add_handler(CommandHandler("ping", cmd_ping))
+    app.add_handler(CommandHandler("weather", cmd_weather))
+    app.add_handler(CommandHandler("news", cmd_news))
+    app.add_handler(CommandHandler("autoweb", cmd_autoweb))
+    app.add_handler(CommandHandler("shutdown", cmd_shutdown))
+    app.add_handler(CommandHandler("reboot", cmd_reboot))
+
+    # Tự động liên kết các lệnh Telegram cho các skill được nạp động từ thư mục skills/
+    from skills.registry import default_registry
+    from telegram.constants import ChatAction
+
+    async def _dynamic_skill_dispatcher(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+        uid = update.effective_user.id
+        if not utils.is_allowed(uid) or not utils.is_addressed_in_group(update):
+            return
+        if await utils.is_rate_limited(uid):
+            return await utils.notify_rate_limited(update)
+
+        raw_text = update.effective_message.text or ""
+        cmd_name = raw_text.split()[0].lstrip("/").split("@")[0].lower()
+        matched_skill = default_registry.get_by_command(cmd_name)
+        if not matched_skill:
+            return
+
+        await update.effective_chat.send_action(ChatAction.TYPING)
+        query_str = " ".join(ctx.args).strip() if ctx.args else ""
+        res = await matched_skill.execute(query=query_str)
+        if res.text:
+            await utils.safe_reply(update, res.text)
+
+    _explicit_cmds = {
+        "start", "help", "ui", "reset", "resetmemory", "stop", "export",
+        "nickname", "persona", "voice", "stt", "ttsmode", "ping",
+        "weather", "news", "autoweb", "shutdown", "reboot",
+    }
+    for skill_obj in default_registry.list_all():
+        if skill_obj.command and skill_obj.command.lower() not in _explicit_cmds:
+            app.add_handler(CommandHandler(skill_obj.command.lower(), _dynamic_skill_dispatcher))
+            logger.info(f"🔗 Tự động liên kết lệnh /{skill_obj.command.lower()} -> Skill '{skill_obj.name}'")
+
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
+    app.add_handler(MessageHandler(filters.VOICE | filters.AUDIO, handle_voice))
+    app.add_handler(MessageHandler(filters.Document.ALL | filters.PHOTO, handle_media))
+
+    logger.info("🚀 Bot đang khởi động...")
+    try:
+        app.run_polling(drop_pending_updates=True, bootstrap_retries=3)
+    except NetworkError as e:
+        logger.error(
+            f"❌ Không kết nối được tới Telegram API sau nhiều lần thử: {e}\n\n"
+            f"💡 Đây là lỗi MẠNG, không phải lỗi code — kiểm tra kết nối internet rồi chạy lại "
+            f"(nếu mạng của bạn chặn api.telegram.org, cần dùng VPN ở cấp hệ thống)."
+        )
+
+
+if __name__ == "__main__":
+    main()

@@ -75,13 +75,15 @@ sudo apt-get install -y tesseract-ocr tesseract-ocr-vie
 
 > 🎙️ After installing `requirements.txt` (next step), download the Vietnamese Piper voice model (one-time setup) from [`rhasspy/piper-voices`](https://huggingface.co/rhasspy/piper-voices) and place it in `./voices/` — see details in [`UPGRADE_GUIDE.md`](./UPGRADE_GUIDE.md#0-cài-thêm-thư-viện).
 
-3. Create and activate a virtual environment, install dependencies, and test:
+3. Create and activate a virtual environment, install the package in editable mode:
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -e ".[dev]"    # installs package + all dependencies
 ```
+
+> **Alternative (without installing):** `PYTHONPATH=src python -m main`
 
 4. Create the `.env` configuration file from the template and fill in the required variables (at minimum `TELEGRAM_TOKEN`):
 
@@ -93,7 +95,11 @@ nano .env   # fill in TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS, etc.
 5. Run the bot to test it (Ctrl+C to stop; see [Running the Bot](#-running-the-bot) for background/auto-start setup):
 
 ```bash
-python3 my_bot.py
+# After pip install -e .
+my-bot
+
+# OR without installing (dev mode)
+PYTHONPATH=src python -m main
 deactivate
 ```
 
@@ -119,7 +125,7 @@ python -m venv venv
 Set-ExecutionPolicy Unrestricted -Scope Process
 .\venv\Scripts\Activate.ps1
 python.exe -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -e ".[dev]"
 ```
 
 3. Create the `.env` configuration file from the template and fill in the required variables (at minimum `TELEGRAM_TOKEN`):
@@ -132,7 +138,10 @@ notepad .env   # fill in TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS, etc.
 4. Launch the bot:
 
 ```powershell
-python my_bot.py
+my-bot
+
+# OR without installing
+$env:PYTHONPATH = "src"; python -m main
 ```
 
 ---
@@ -141,7 +150,7 @@ python my_bot.py
 
 This repo ships with a browser-based admin dashboard (`webapp/`), built with FastAPI + Uvicorn.
 The required libraries (`fastapi`, `uvicorn`) are **already included in `requirements.txt`** —
-no extra installation is needed if you already ran `pip install -r requirements.txt` above.
+no extra installation is needed if you already ran `pip install -e ".[dev]"` above.
 
 1. (Optional) configuration in `.env` — sensible defaults are already provided:
 
@@ -179,7 +188,10 @@ running it automatically at system startup.
 # Activate the venv if not already active
 source venv/bin/activate  # Linux/macOS
 # Launch the bot
-python my_bot.py
+my-bot
+
+# OR without installing
+$env:PYTHONPATH = "src"; python -m main
 ```
 
 ### 2. Run as a Systemd Service (Linux — Recommended)
@@ -267,13 +279,19 @@ cd C:\Users\<your-username>\...\my_bot_restructured\chatAi_bots
 ```
 
 The script will automatically:
-- Create the **MyBotTelegram** (`python my_bot.py`) and **MyBotWebapp** (`python -m webapp.main`) services.
+- Create the **MyBotTelegram** (`my-bot
+
+# OR without installing
+$env:PYTHONPATH = "src"; python -m main`) and **MyBotWebapp** (`python -m webapp.main`) services.
 - Point them to the correct `venv\Scripts\python.exe` and set the project folder as `AppDirectory`.
 - Enable auto-start with Windows (`SERVICE_AUTO_START`) and auto-restart on crash.
 - Write rotating logs to `logs\MyBotTelegram.out.log` / `logs\MyBotWebapp.out.log`.
 - Automatically start both services immediately after installation.
 
-> ⚠️ Once the service is installed, **do not manually run** `python my_bot.py` again — Telegram
+> ⚠️ Once the service is installed, **do not manually run** `my-bot
+
+# OR without installing
+$env:PYTHONPATH = "src"; python -m main` again — Telegram
 > will report a Conflict error since two processes would be polling the same token. Use the NSSM
 > commands to stop the service first if you need to run it manually.
 
@@ -323,41 +341,74 @@ To remove all services when no longer needed:
 ## 🏗️ Project Structure
 
 ```text
-chatAi_bots/
-├── my_bot.py                 # 🚀 Entry point — initializes the Application & wires up handlers
-├── config.py                  # ⚙️ Loads environment variables (.env) & system constants
-├── bot_logger.py               # 📝 Centralized rotating log management
-├── utils.py                     # 🧰 Shared utilities: permissions, rate limiting, locks...
-├── llm_engine.py                 # 🧠 LLM handling: streaming, grounded RAG, real-time clock
-├── database.py                    # 🗄️ SQLite database management (history, settings, profiles)
-├── reasoning.py                     # 💡 Question classification, hidden reasoning, long-term memory summarization
-├── local_voice.py                    # 🎙️ Manages the local faster-whisper and Piper TTS engines
+my_bot_restructured/
+├── src/
+│   ├── __init__.py            # Package metadata & version
+│   ├── __main__.py            # python -m main entry point
+│   ├── main.py                # 🚀 Entry point — initializes Application & wires handlers
+│   ├── config.py              # ⚙️ Loads .env & system constants
+│   ├── bot_logger.py          # 📝 Centralized rotating log alias
+│   │
+│   ├── core/                  # 🧠 Core logic (no Telegram dependency)
+│   │   ├── logger.py          #    Centralized rotating log management
+│   │   ├── database.py        #    SQLite management (history, settings, profiles)
+│   │   ├── llm_engine.py      #    LLM streaming, grounded RAG, real-time clock
+│   │   ├── context_manager.py #    Per-user conversation context
+│   │   ├── reasoning.py       #    Question classification, hidden reasoning, memory
+│   │   ├── local_voice.py     #    faster-whisper & Piper TTS engines
+│   │   ├── tencent_memory.py  #    Long-term memory (Tencent-style summarization)
+│   │   └── utils.py           #    Shared utilities: permissions, rate limiting, locks
+│   │
+│   ├── skills/                # 🔧 Independent business-logic plugins
+│   │   ├── registry.py        #    Auto-discovers & loads skill plugins
+│   │   ├── base.py            #    BaseSkill abstract class
+│   │   ├── web_search.py      #    Multi-tier search, query cleanup
+│   │   ├── ocr.py             #    OCR text extraction & image/PDF translation
+│   │   ├── voice.py           #    Orchestrates STT (Local/Groq) & voice-reply
+│   │   ├── weather.py         #    Weather & AQI lookups (Open-Meteo)
+│   │   ├── news.py            #    RSS reader for major news outlets
+│   │   ├── pdf_report.py      #    Generates PDF research reports
+│   │   ├── dashboard.py       #    Hardware resource monitoring
+│   │   ├── document_exporter.py #  Exports history to .docx/.xlsx
+│   │   ├── voicebox_client.py #    Voicebox Docker client
+│   │   └── skills_module/     #    Thư mục chứa các module kỹ năng mở rộng
+│   │       ├── __init__.py
+│   │       └── crypto.py      #    Crypto price lookups (Binance)
+│   │
+│   ├── handlers/              # 📨 Telegram update event handlers
+│   │   ├── commands.py        #    All /command handlers
+│   │   ├── text_handler.py    #    Text chat, Smart Auto-Web
+│   │   ├── voice_handler.py   #    Incoming voice messages
+│   │   ├── media_handler.py   #    Images & PDF documents
+│   │   └── dashboard_handler.py #  Inline keyboard interface (/ui)
+│   │
+│   └── webapp/                # 🏮 Web Control Station (browser dashboard)
+│       ├── main.py            #    FastAPI app — read-only monitoring API
+│       └── static/            #    Lacquer-styled UI (HTML, CSS, JS)
 │
-├── skills/                            # 🔧 Independent business-logic modules (no Telegram dependency)
-│   ├── web_search.py                  #    🔍 Multi-tier search, query cleanup, core-keyword extraction
-│   ├── ocr.py                         #    🖼️ OCR text extraction and image/PDF translation
-│   ├── voice.py                       #    🗣️ Orchestrates STT (Local/Groq) and voice-reply generation
-│   ├── weather.py                     #    🌤️ Weather & AQI lookups (Open-Meteo API)
-│   ├── news.py                        #    📰 RSS reader for major news outlets
-│   ├── pdf_report.py                  #    📄 Generates professional PDF research reports
-│   └── dashboard.py                   #    🖥️ Hardware resource monitoring (CPU/RAM/Disk)
+├── tests/                         # 🧪 Automated tests
+│   ├── conftest.py                #    pytest fixtures & sys.path setup
+│   ├── test_package_structure.py  #    Package integrity tests
+│   └── test_p1_upgrades.py        #    Feature regression tests
 │
-├── handlers/                          # 📨 Receives & routes Telegram update events
-│   ├── text_handler.py                #    Handles text chat, triggers Smart Auto-Web
-│   ├── voice_handler.py               #    Handles incoming voice messages
-│   ├── media_handler.py               #    Handles images and PDF documents
-│   ├── commands.py                    #    Handles all /command inputs
-│   └── dashboard_handler.py           #    Handles the inline keyboard interface (/ui)
+├── docs/                          # 📚 Documentation
+│   ├── architecture.md
+│   ├── configuration.md
+│   └── deployment.md
 │
-├── webapp/                            # 🏮 Web Control Station (browser dashboard)
-│   ├── main.py                        #    FastAPI app — provides a read-only monitoring API
-│   └── static/                        #    Lacquer-styled UI (plain HTML, CSS, JS)
+├── scripts/                       # 🔧 Install / uninstall scripts
+│   ├── install.sh                 #    Linux auto-install
+│   ├── uninstall.sh               #    Linux uninstall
+│   ├── install.ps1                #    Windows auto-install
+│   ├── uninstall.ps1              #    Windows uninstall
+│   ├── systemd/my_bot.service     #    Systemd unit file
+│   └── nssm/                      #    Windows NSSM service scripts
 │
-├── data/                              # Stores bot_data.db (created automatically)
-├── voices/                            # Stores Piper voice models (.onnx)
-├── logs/                              # Stores rotating log files
-├── requirements.txt                   # List of Python dependencies
-└── .env.example                       # Environment configuration template
+├── pyproject.toml                 # 📋 PEP 621 build config & dependencies
+├── Dockerfile                     # 🐳 Container image
+├── docker-compose.yml             # 🐳 Multi-service compose
+├── .env.example                   # 🔑 Environment config template
+└── README.md
 ```
 
 ---

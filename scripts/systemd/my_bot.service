@@ -1,0 +1,19 @@
+[Unit]
+Description=Telegram AI Bot (my_bot) Service
+After=network.target ollama.service
+
+[Service]
+Type=simple
+User=%I
+WorkingDirectory=/opt/my_bot
+EnvironmentFile=/opt/my_bot/.env
+Environment=PYTHONPATH=/opt/my_bot/src
+ExecStart=/opt/my_bot/.venv/bin/python -m main
+Restart=always
+RestartSec=5
+StandardOutput=append:/opt/my_bot/logs/bot.log
+StandardError=append:/opt/my_bot/logs/bot.log
+
+[Install]
+WantedBy=multi-user.target
+
