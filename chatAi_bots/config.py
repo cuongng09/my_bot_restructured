@@ -58,10 +58,18 @@ REPORTS_OUTPUT_DIR = os.getenv("REPORTS_OUTPUT_DIR", "data/reports")
 
 
 # ── Voice / STT Configuration ───────────────────────────────────────────────
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")   # dùng cho engine STT Groq Whisper (/stt groq)
-VOICEBOX_URL = os.getenv("VOICEBOX_URL", "http://127.0.0.1:17600")
-VOICEBOX_MODEL = os.getenv("VOICEBOX_MODEL", "small")
+GROQ_API_KEY   = os.getenv("GROQ_API_KEY", "")   # dùng cho engine STT Groq Whisper (/stt groq)
+GROQ_MODEL     = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")  # model Groq cho lập dàn ý PDF
+VOICEBOX_URL      = os.getenv("VOICEBOX_URL", "http://127.0.0.1:17600")
+VOICEBOX_MODEL    = os.getenv("VOICEBOX_MODEL", "small")
 VOICEBOX_LANGUAGE = os.getenv("VOICEBOX_LANGUAGE", "vi")
+
+# ── PDF Report (skills/pdf_report.py) ────────────────────────────────────────
+PDF_OUTPUT_DIR    = os.getenv("PDF_OUTPUT_DIR", "data/pdf_reports")
+PDF_FONT_PATH     = os.getenv("PDF_FONT_PATH", "fonts/NotoSans-Regular.ttf")
+PDF_FONT_BOLD_PATH = os.getenv("PDF_FONT_BOLD_PATH", "fonts/NotoSans-Bold.ttf")
+PDF_MAX_SECTIONS  = int(os.getenv("PDF_MAX_SECTIONS", "10"))
+PDF_NUM_WEB_RESULTS = int(os.getenv("PDF_NUM_WEB_RESULTS", "12"))
 
 # ── Trạm Điều Khiển Web (webapp/) ───────────────────────────────────────────────
 WEBAPP_HOST = os.getenv("WEBAPP_HOST", "0.0.0.0")

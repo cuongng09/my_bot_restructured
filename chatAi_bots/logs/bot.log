@@ -4,3 +4,177 @@
 2026-09-15 21:08:31,893 | INFO | my_bot | 🔎 Search query: 'giá mazda 3 cũ 2019'
 2026-09-15 21:08:32,620 | INFO | my_bot | 🔎 Kết quả search (method=searxng, 5 kết quả, 0 nguồn ưu tín): [mua bán xe Mazda 3 2019 cũ giá rẻ 09/2026 - Bonbanh.com](https://bonbanh.com/oto/mazda-3-nam-2019) | [49 xe Mazda 3 2019 Toàn quốc 09/2026](https://xe.chotot.com/mua-ban-oto-mazda-3-2019-sdcb7cm268mf2019) | [mua bán xe Mazda 3 2019 cũ giá rẻ 09/2026 - Hà Nội - Bonbanh](https://bonbanh.com/ha-noi/oto/mazda-3-nam-2019) | [Mua bán xe ô tô Mazda 3 2019 cũ - Oto.com](https://oto.com.vn/mua-ban-xe-mazda-3-nam-2019) | [Kinh nghiệm chọn mua Mazda 3 cũ: Phiên bản nào đáng mua nhất](https://saigonmazda.vn/kinh-nghiem-chon-mua-mazda-3-cu-phien-ban-nao-dang-mua-nhat/)
 2026-09-15 21:08:34,605 | INFO | my_bot | 📊 Context Budget: total_in=3294 (sys=701, web=0, hist=61, user=2532), remain=4898/8192, hist_truncated=0
+2026-09-15 21:19:01,499 | ERROR | my_bot | ⚠️ Lỗi không xử lý được: httpx.ReadError: 
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 279, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 161, in network_retry_loop
+    await do_action()
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_utils/networkloop.py", line 154, in do_action
+    action_cb_task.result()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_updater.py", line 340, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 680, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 4767, in get_updates
+    await self._post(
+    ^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    ),
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 712, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/ext/_extbot.py", line 378, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/_bot.py", line 741, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 198, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_baserequest.py", line 305, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/home/cwng/Documents/GitHub/my_bot_restructured/chatAi_bots/venv/lib/python3.14/site-packages/telegram/request/_httpxrequest.py", line 303, in do_request
+    raise NetworkError(f"httpx.{err.__class__.__name__}: {err}") from err
+telegram.error.NetworkError: httpx.ReadError: 
+2026-09-15 21:24:51,945 | INFO | my_bot | 🔎 Search query: 'giá vf3'
+2026-09-15 21:24:52,840 | INFO | my_bot | 🔎 Kết quả search (method=searxng, 5 kết quả, 0 nguồn ưu tín): [VinFast VF3: Bảng giá xe, chương trình khuyến mãi & thông số](https://vinfast-vn.vn/san-pham/vinfast-vf3/) | [Giá Lăn Bánh VinFast VF3 Eco & Plus: Ưu Đãi Khủng Tháng 09/2](https://vinfastev.com.vn/vinfast-vf3/) | [Vinfast VF3 2026 - Bảng Giá Xe Lăn Bánh, Trả Góp Ưu Đãi](https://vinfastgiare.vn/Vinfast-VF3/) | [VinFast VF3: Giá Bán Tháng 09/2026 Chỉ Từ 285.000.000 đ](https://www.vinfastmiennam.vn/vinfast-vf3-ca10) | [VinFast VF3 2026 - VinFast Hà Nội](https://vinfastauto-hanoi.com.vn/vinfast-vf3-2024-1463847.html)
+2026-09-15 21:24:54,994 | INFO | my_bot | 📊 Context Budget: total_in=3285 (sys=701, web=0, hist=121, user=2463), remain=4907/8192, hist_truncated=0
+2026-09-15 21:34:34,139 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-15 21:34:34,140 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-15 21:34:34,305 | WARNING | my_bot | ⚠️ Thư viện 'reportlab' chưa được cài — tính năng xuất báo cáo PDF bị tạm tắt. Cài đặt bằng: pip install reportlab
+2026-09-15 21:34:34,388 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-15 21:34:34,396 | INFO | my_bot | 🔗 Tự động liên kết lệnh /crypto -> Skill 'crypto'
+2026-09-15 21:34:34,397 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-15 21:34:35,164 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-15 21:34:35,407 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-15 21:51:23,302 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-09-15 21:52:20,369 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-09-15 21:53:26,117 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-15 21:53:26,118 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-15 21:53:26,428 | WARNING | my_bot | ⚠️ Thư viện 'reportlab' chưa được cài — tính năng xuất báo cáo PDF bị tạm tắt. Cài đặt bằng: pip install reportlab
+2026-09-15 21:53:26,560 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-15 21:53:26,571 | INFO | my_bot | 🔗 Tự động liên kết lệnh /crypto -> Skill 'crypto'
+2026-09-15 21:53:26,571 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-15 21:53:31,060 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-15 21:53:31,278 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
+2026-09-15 21:53:31,279 | WARNING | my_bot | ⚠️ Không kết nối được Ollama tại http://localhost:11434 — bot vẫn chạy nhưng chat AI sẽ lỗi cho tới khi Ollama sẵn sàng.
+2026-09-15 22:10:14,942 | WARNING | my_bot | 🛑 SYSTEM ACTION 'shutdown' được xác nhận bởi uid=6470089171 (@N/A)
+2026-09-16 19:31:06,289 | INFO | my_bot | 🧩 Đã nạp Skill: 'crypto' (Lệnh: /crypto, Enabled: True)
+2026-09-16 19:31:06,290 | INFO | my_bot | 🧩 Đã nạp Skill: 'news' (Lệnh: /news, Enabled: True)
+2026-09-16 19:31:06,589 | WARNING | my_bot | ⚠️ Thư viện 'reportlab' chưa được cài — tính năng xuất báo cáo PDF bị tạm tắt. Cài đặt bằng: pip install reportlab
+2026-09-16 19:31:06,747 | INFO | my_bot | 🧩 Đã nạp Skill: 'weather' (Lệnh: /weather, Enabled: True)
+2026-09-16 19:31:06,758 | INFO | my_bot | 🔗 Tự động liên kết lệnh /crypto -> Skill 'crypto'
+2026-09-16 19:31:06,758 | INFO | my_bot | 🚀 Bot đang khởi động...
+2026-09-16 19:31:13,114 | INFO | my_bot | 🗄️  SQLite sẵn sàng tại: data/bot_data.db
+2026-09-16 19:31:13,330 | INFO | my_bot | 🤖 Bot khởi động với username: @Cwngbot
