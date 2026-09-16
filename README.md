@@ -50,20 +50,12 @@ To keep this README concise, detailed guides have been moved to the `docs/` dire
 # 1. Clone the repository
 git clone https://github.com/cuongng09/my_bot_restructured.git
 cd my_bot_restructured
+cd scripts
+./install.sh 
 
-# 2. Setup virtual environment & install dependencies
-python3 -m venv venv
-source venv/bin/activate
-pip install -e ".[dev]"
+```
 
-# 3. Configure environment variables
-cp .env.example .env
-nano .env  # Fill in TELEGRAM_TOKEN at minimum
-
-# 4. Run the bot
-my-bot
-
-💡 Windows Users: Please refer to the Deployment Guide for PowerShell installation commands and NSSM service setup.
+> 💡 Windows Users: Please refer to the Deployment Guide for PowerShell installation commands and NSSM service setup.
 
 📂 Project Structure
 my_bot_restructured/
@@ -78,7 +70,6 @@ my_bot_restructured/
 ├── pyproject.toml        # PEP 621 build config
 └── docker-compose.yml    # Multi-service Docker orchestration
 
-For a deeper dive into the directory tree and data flow, see docs/architecture.md.
+> For a deeper dive into the directory tree and data flow, see docs/architecture.md.
 
-📄 License
-This project is distributed under the MIT License. You are free to use, modify, and contribute to the source code for both personal/educational and commercial purposes.
+> 📄 License This project is distributed under the MIT License. You are free to use, modify, and contribute to the source code for both personal/educational and commercial purposes.
