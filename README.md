@@ -70,6 +70,4 @@ my_bot_restructured/
 ├── pyproject.toml        # PEP 621 build config
 └── docker-compose.yml    # Multi-service Docker orchestration
 
-> For a deeper dive into the directory tree and data flow, see docs/architecture.md.
-
 > 📄 License This project is distributed under the MIT License. You are free to use, modify, and contribute to the source code for both personal/educational and commercial purposes.
