@@ -87,7 +87,7 @@ async def _stream_reply(
                         pass
                 last_edit = now
     except asyncio.CancelledError:
-        from llm_engine import clean_model_generated_sources
+        from core.llm_engine import clean_model_generated_sources
         from skills.document_exporter import split_core_and_detail, has_tabular_or_detailed_content
         full_text += think_filter.flush()
         full_text = clean_model_generated_sources(full_text)
@@ -111,7 +111,7 @@ async def _stream_reply(
         return full_text
 
     full_text += think_filter.flush()
-    from llm_engine import clean_model_generated_sources
+    from core.llm_engine import clean_model_generated_sources
     from skills.document_exporter import split_core_and_detail, has_tabular_or_detailed_content
     full_text = clean_model_generated_sources(full_text)
 

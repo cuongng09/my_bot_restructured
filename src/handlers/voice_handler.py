@@ -58,7 +58,7 @@ async def _process_voice_reply(
         history, model, web_context, force_concise=False,
         nickname=nickname, persona=persona, profile_summary=profile_summary,
     )
-    from llm_engine import clean_model_generated_sources
+    from core.llm_engine import clean_model_generated_sources
     reply = clean_model_generated_sources(reply)
     if sources_footer:
         reply += sources_footer
