@@ -124,8 +124,9 @@ def _is_safe_url_sync(url: str) -> bool:
     if not hostname:
         return False
     lowered = hostname.lower()
-    if lowered in ("localhost", "0.0.0.0") or lowered.endswith(".local"):
-        return False
+    # Allow host.docker.internal for intra‑container access to services on the host
+    if lowered in ("localhost", "0.0.0.0", "host.docker.internal") or lowered.endswith(".local"):
+        return True
     try:
         infos = socket.getaddrinfo(hostname, None)
     except socket.gaierror:

@@ -20,6 +20,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - RUNNING_IN_DOCKER=1
+      - SEARXNG_URL=${SEARXNG_URL:-http://host.docker.internal:8081}
 
   webapp:
     build:
@@ -46,3 +47,16 @@ services:
       - RUNNING_IN_DOCKER=1
       - WEBAPP_HOST=0.0.0.0
       - WEBAPP_PORT=${WEBAPP_PORT:-8080}
+
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./searxng:/etc/searxng
+    environment:
+      - BASE_URL=http://localhost:8081
+    # Ensure JSON format enabled in settings.yml inside the volume
+    # You may need to create ./searxng/settings.yml with appropriate configuration
