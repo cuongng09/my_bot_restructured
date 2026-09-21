@@ -31,7 +31,14 @@ def _require_env(name: str) -> str:
 TELEGRAM_TOKEN   = _require_env("TELEGRAM_TOKEN")
 TELEGRAM_CONNECT_TIMEOUT = float(os.getenv("TELEGRAM_CONNECT_TIMEOUT", "15"))
 TELEGRAM_READ_TIMEOUT    = float(os.getenv("TELEGRAM_READ_TIMEOUT", "30"))
-OLLAMA_BASE_URL  = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+
+_raw_ollama_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+# Khi chạy trong Docker, nếu Ollama URL trỏ tới localhost/127.0.0.1 thì tự động chuyển sang host.docker.internal để kết nối Ollama trên máy host
+if (os.path.exists("/.dockerenv") or os.getenv("RUNNING_IN_DOCKER")) and ("localhost" in _raw_ollama_url or "127.0.0.1" in _raw_ollama_url):
+    OLLAMA_BASE_URL = _raw_ollama_url.replace("localhost", "host.docker.internal").replace("127.0.0.1", "host.docker.internal")
+else:
+    OLLAMA_BASE_URL = _raw_ollama_url
+
 DEFAULT_MODEL    = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
 OLLAMA_TIMEOUT_SEC    = int(os.getenv("OLLAMA_TIMEOUT_SEC", "240"))
 OLLAMA_RETRY_ATTEMPTS = int(os.getenv("OLLAMA_RETRY_ATTEMPTS", "2"))

@@ -17,8 +17,10 @@ gTTS>=2.5
 faster-whisper>=1.0
 piper-tts>=1.2
 
-# Dashboard /sys stats (skills/dashboard.py) — tùy chọn
+# Dashboard /sys stats (skills/dashboard.py) & webapp — tùy chọn
 psutil>=5.9
+fastapi>=0.110
+uvicorn[standard]>=0.29
 
 # Xuất tệp Word / Excel / PDF báo cáo
 python-docx>=1.1.0
