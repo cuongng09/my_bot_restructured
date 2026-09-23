@@ -20,7 +20,6 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - RUNNING_IN_DOCKER=1
-      - SEARXNG_URL=${SEARXNG_URL:-http://host.docker.internal:8081}
 
   webapp:
     build:
@@ -60,3 +59,15 @@ services:
       - BASE_URL=http://localhost:8081
     # Ensure JSON format enabled in settings.yml inside the volume
     # You may need to create ./searxng/settings.yml with appropriate configuration
+
+  voicebox:
+    image: ghcr.io/jamiepine/voicebox:latest
+    container_name: voicebox
+    restart: unless-stopped
+    ports:
+      - "17493:8000"
+    environment:
+      - VOICEBOX_MODEL=medium
+      - WHISPER_MODEL=medium
+    # API endpoint will be http://localhost:17493
+    # Ensure .env defines VOICEBOX_URL accordingly

@@ -71,6 +71,13 @@ VOICEBOX_URL      = os.getenv("VOICEBOX_URL", "http://127.0.0.1:17600")
 VOICEBOX_MODEL    = os.getenv("VOICEBOX_MODEL", "small")
 VOICEBOX_LANGUAGE = os.getenv("VOICEBOX_LANGUAGE", "vi")
 
+# Adjust VOICEBOX_URL for Docker environment – map localhost/127.0.0.1 or outdated port 17493 to internal service URL
+if (os.path.exists("/.dockerenv") or os.getenv("RUNNING_IN_DOCKER")):
+    if "localhost" in VOICEBOX_URL or "127.0.0.1" in VOICEBOX_URL or "17493" in VOICEBOX_URL:
+        VOICEBOX_URL = "http://voicebox:8000"
+
+
+
 # ── PDF Report (skills/pdf_report.py) ────────────────────────────────────────
 PDF_OUTPUT_DIR    = os.getenv("PDF_OUTPUT_DIR", "data/pdf_reports")
 PDF_FONT_PATH     = os.getenv("PDF_FONT_PATH", "fonts/NotoSans-Regular.ttf")

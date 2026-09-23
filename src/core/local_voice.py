@@ -58,15 +58,24 @@ def transcribe_audio_local(ogg_path: str) -> str:
                 if VOICEBOX_MODEL:
                     data["model"] = VOICEBOX_MODEL
 
-            with httpx.Client(timeout=60.0) as client:
-                res = client.post(url, files=files, data=data)
+            # Increased timeout and simple retry to handle occasional disconnects
+            for attempt in range(2):
+                try:
+                    with httpx.Client(timeout=120.0) as client:
+                        res = client.post(url, files=files, data=data)
+                    break
+                except httpx.HTTPError as e:
+                    logger.debug(f"Voicebox request attempt {attempt + 1} failed: {e}")
+                    if attempt == 1:
+                        raise
+
 
         if res.status_code == 200:
             result = res.json()
             text = result.get("text", "").strip()
             return text or "[Lỗi âm thanh: không nhận diện được nội dung]"
-        elif res.status_code == 202:
-            return "[Lỗi âm thanh: Voicebox đang tải model Whisper lần đầu, vui lòng thử lại sau]"
+        elif res.status_code == 202 or "downloading" in res.text.lower() or "is being downloaded" in res.text.lower():
+            return "[Lỗi âm thanh: Voicebox đang tải model Whisper, vui lòng đợi trong giây lát rồi thử lại]"
         else:
             return f"[Lỗi âm thanh: Voicebox HTTP {res.status_code} - {res.text}]"
 
