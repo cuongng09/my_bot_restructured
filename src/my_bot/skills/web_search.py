@@ -524,7 +524,7 @@ async def raw_search_data(query: str) -> list[dict]:
     loop = asyncio.get_event_loop()
 
     def _ddg(q: str):
-        from duckduckgo_search import DDGS
+        from ddgs import DDGS
         with DDGS() as ddgs:
             return [
                 {"title": r.get("title", ""), "body": r.get("body", ""), "href": r.get("href", "")}

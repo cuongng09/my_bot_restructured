@@ -61,6 +61,17 @@ docker compose up -d --build
 docker compose logs -f bot
 ```
 
+Trong Docker Compose, bot kết nối tới SearXNG bằng địa chỉ nội bộ
+`http://searxng:8080`; không dùng `localhost:8081` từ bên trong container.
+Port `8081` chỉ dành cho truy cập SearXNG từ máy host.
+
+Nếu log vẫn báo lỗi kết nối SearXNG, kiểm tra container dịch vụ:
+
+```bash
+docker compose ps searxng
+docker compose logs --tail=100 searxng
+```
+
 ---
 
 ## 3. Chạy Dưới Dạng Dịch Vụ Hệ Thống (Linux Systemd)

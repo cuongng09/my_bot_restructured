@@ -3,54 +3,131 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>my_bot · Text Dashboard</title>
+  <meta name="color-scheme" content="light">
+  <title>my_bot · Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
+  <div class="orb orb-a" aria-hidden="true"></div>
+  <div class="orb orb-b" aria-hidden="true"></div>
+
   <main class="shell">
-    <header class="topbar">
-      <div>
-        <span class="kicker">SELF-HOSTED TELEGRAM ASSISTANT</span>
-        <h1>my_bot <span>· text console</span></h1>
+    <header class="topbar glass" data-animate style="--i:0">
+      <div class="brand">
+        <span class="kicker">Self-hosted · Text console</span>
+        <h1>my_bot <span>liquid glass</span></h1>
       </div>
-      <div id="connection" class="status">Đang kiểm tra…</div>
+      <div id="connection" class="status" role="status" aria-live="polite">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="connection-text">Đang kiểm tra…</span>
+      </div>
     </header>
-    <section class="metrics">
-      <article><small>Ollama</small><strong id="model">—</strong><span id="ollama">—</span></article>
-      <article><small>Người dùng</small><strong id="users">—</strong><span id="active">— hoạt động hôm nay</span></article>
-      <article><small>Tin nhắn</small><strong id="messages">—</strong><span>lưu trong SQLite WAL</span></article>
-      <article><small>Quyền truy cập</small><strong id="allowlist">—</strong><span id="admins">— admin</span></article>
+
+    <div id="banner" class="banner" role="status" hidden></div>
+
+    <section class="metrics" aria-label="Chỉ số tổng quan">
+      <article class="metric glass" data-animate style="--i:1">
+        <small>Ollama</small>
+        <strong id="model" class="skel">——————</strong>
+        <span id="ollama" class="skel">——————</span>
+      </article>
+      <article class="metric glass" data-animate style="--i:2">
+        <small>Người dùng</small>
+        <strong id="users" class="skel">000</strong>
+        <span id="active" class="skel">——————</span>
+      </article>
+      <article class="metric glass" data-animate style="--i:3">
+        <small>Tin nhắn</small>
+        <strong id="messages" class="skel">0000</strong>
+        <span>lưu trong SQLite WAL</span>
+      </article>
+      <article class="metric glass" data-animate style="--i:4">
+        <small>Quyền truy cập</small>
+        <strong id="allowlist" class="skel">———</strong>
+        <span id="admins" class="skel">——— admin</span>
+      </article>
     </section>
+
     <section class="grid">
-      <article class="panel panel-wide">
-        <div class="panel-head"><h2>Người dùng Telegram</h2><button id="refresh">Làm mới</button></div>
+      <article class="panel glass" data-animate style="--i:5">
+        <div class="panel-head">
+          <h2>Người dùng Telegram</h2>
+          <button id="refresh" type="button" class="btn-primary">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-label">Làm mới</span>
+          </button>
+        </div>
         <div class="table-wrap">
-          <table><thead><tr><th>UID</th><th>Nickname</th><th>Model</th><th>Persona</th><th>Web</th><th>Tin nhắn</th><th>Hoạt động</th></tr></thead>
-          <tbody id="user-table"><tr><td colspan="7">Đang tải…</td></tr></tbody></table>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">UID</th>
+                <th scope="col">Nickname</th>
+                <th scope="col">Model</th>
+                <th scope="col">Persona</th>
+                <th scope="col">Web</th>
+                <th scope="col">Tin nhắn</th>
+                <th scope="col">Hoạt động</th>
+              </tr>
+            </thead>
+            <tbody id="user-table">
+              <tr class="skel-row"><td colspan="7"><span class="skel-bar"></span></td></tr>
+              <tr class="skel-row"><td colspan="7"><span class="skel-bar"></span></td></tr>
+              <tr class="skel-row"><td colspan="7"><span class="skel-bar"></span></td></tr>
+            </tbody>
+          </table>
         </div>
       </article>
-      <article class="panel">
-        <h2>Phạm vi tính năng</h2>
-        <ul class="feature-list">
-          <li>✓ Chat text streaming với Ollama</li>
-          <li>✓ Ngữ cảnh, persona, nickname</li>
-          <li>✓ RAG SearXNG → DuckDuckGo</li>
-          <li>✓ Weather · News · Crypto</li>
-          <li>✓ SQLite read-only dashboard</li>
-        </ul>
-      </article>
-      <article class="panel">
-        <h2>Đã loại bỏ theo spec</h2>
-        <ul class="feature-list muted">
-          <li>Voice / STT / TTS / Voicebox</li>
-          <li>Ảnh / OCR / Tesseract</li>
-          <li>Word / Excel / PDF export</li>
-          <li>FFmpeg và cloud voice APIs</li>
-        </ul>
-      </article>
+
+      <div class="side">
+        <article class="panel glass" data-animate style="--i:6">
+          <h2>Phạm vi tính năng</h2>
+          <ul class="feature-list">
+            <li>Chat text streaming với Ollama</li>
+            <li>Ngữ cảnh, persona, nickname</li>
+            <li>RAG SearXNG → DuckDuckGo</li>
+            <li>Weather · News · Crypto</li>
+            <li>SQLite read-only dashboard</li>
+          </ul>
+          <h3 class="sub-head">Đã loại bỏ theo spec</h3>
+          <ul class="feature-list muted">
+            <li>Voice / STT / TTS / Voicebox</li>
+            <li>Ảnh / OCR / Tesseract</li>
+            <li>Word / Excel / PDF export</li>
+            <li>FFmpeg và cloud voice APIs</li>
+          </ul>
+        </article>
+
+        <article class="panel glass" data-animate style="--i:7">
+          <h2>Nhật ký</h2>
+          <div id="logs" class="logs">
+            <p class="muted">Chưa có log hiển thị.</p>
+          </div>
+        </article>
+      </div>
     </section>
-    <footer>Read-only · cập nhật mỗi 10 giây · <span id="updated">—</span></footer>
+
+    <footer>Read-only · làm mới mỗi 10 giây · <span id="updated">—</span></footer>
   </main>
+
+  <div id="token-modal" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-card glass" role="dialog" aria-modal="true" aria-labelledby="token-title">
+      <h2 id="token-title">Truy cập bảng điều khiển</h2>
+      <p class="modal-desc">Nhập <code>WEBAPP_TOKEN</code> để xem dữ liệu.</p>
+      <form id="token-form" novalidate>
+        <label class="sr-only" for="token-input">WEBAPP_TOKEN</label>
+        <input id="token-input" type="password" autocomplete="current-password"
+               placeholder="WEBAPP_TOKEN" spellcheck="false">
+        <p id="token-error" class="modal-error" role="alert"></p>
+        <button type="submit" class="btn-primary btn-block">Vào</button>
+      </form>
+    </div>
+  </div>
+
   <script src="/assets/app.js"></script>
 </body>
 </html>

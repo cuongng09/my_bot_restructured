@@ -35,6 +35,7 @@ To keep this README concise, detailed guides have been moved to the `docs/` dire
 | **[🏗️ Kiến trúc hệ thống](./docs/architecture.md)** | Sơ đồ luồng dữ liệu (Mermaid), cấu trúc thư mục `src/`, và cơ chế Plug & Play của Skills. |
 | **[⚙️ Hướng dẫn Cấu hình](./docs/configuration.md)** | Giải thích chi tiết các biến môi trường (`.env`), phân quyền, Ollama, Voice Pipeline, và Web App. |
 | **[🚀 Hướng dẫn Triển khai](./docs/deployment.md)** | Cài đặt Local, Docker Compose, chạy dưới dạng Systemd (Linux), và Windows Service (NSSM). |
+| **[🪟 WebApp Liquid Glass](./docs/webapp-liquid-glass.md)** | Thiết kế dashboard trắng–xanh, kính mờ, chuyển động mượt (không ảnh raster). |
 
 ---
 

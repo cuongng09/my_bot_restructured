@@ -17,6 +17,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - RUNNING_IN_DOCKER=1
+      - SEARXNG_URL=http://searxng:8080
 
   webapp:
     build:
