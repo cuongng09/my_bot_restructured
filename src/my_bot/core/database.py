@@ -1,0 +1,404 @@
+"""
+🗄️ database.py — Lớp lưu trữ SQLite bất đồng bộ cho Ollama Telegram Bot
+==========================================================================
+🆕 (nâng cấp "tư duy trả lời" + bộ nhớ dài hạn): thêm các cột persona,
+   profile_summary, turns_since_summary vào bảng settings — tự động ALTER TABLE cho DB cũ,
+   giống cách nickname đã được thêm trước đó, nên KHÔNG cần xóa/migrate DB thủ công.
+"""
+
+from __future__ import annotations
+
+import json
+import asyncio
+from datetime import datetime, timezone
+from typing import Optional
+
+import aiosqlite
+
+from my_bot.config import DB_PATH
+
+_SCHEMA = """
+CREATE TABLE IF NOT EXISTS history (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    uid     INTEGER NOT NULL,
+    role    TEXT NOT NULL,
+    content TEXT NOT NULL,
+    ts      TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_history_uid ON history(uid);
+
+CREATE TABLE IF NOT EXISTS settings (
+    uid                  INTEGER PRIMARY KEY,
+    model                TEXT,
+    auto_web             INTEGER DEFAULT 0,
+    nickname             TEXT,
+    persona              TEXT DEFAULT 'ban_than',
+    profile_summary      TEXT DEFAULT '',
+    turns_since_summary  INTEGER DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS rate_limit (
+    uid       INTEGER PRIMARY KEY,
+    last_ts   TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_chat_status_logs (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    TEXT,
+    chat_id    TEXT,
+    module     TEXT NOT NULL,
+    duration   INTEGER NOT NULL DEFAULT 0,
+    error_code TEXT NOT NULL DEFAULT 'OK',
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_user_chat_status_logs_created_at
+    ON user_chat_status_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_user_chat_status_logs_module
+    ON user_chat_status_logs(module);
+
+-- 🆕 Cache kết quả web search (SearXNG/DDGS + nội dung đã cào) để giảm số lần
+-- gọi search engine / cào trang lặp lại cho cùng 1 câu hỏi trong khoảng TTL.
+CREATE TABLE IF NOT EXISTS search_cache (
+    query_hash TEXT PRIMARY KEY,
+    query      TEXT NOT NULL,
+    results    TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_search_cache_created_at
+    ON search_cache(created_at DESC);
+"""
+
+# 🆕 Danh sách cột có thể thiếu ở DB cũ + định nghĩa ALTER TABLE tương ứng.
+# Cứ thêm tính năng mới là thêm 1 dòng ở đây — không cần xóa DB cũ để nâng cấp.
+_OPTIONAL_COLUMNS = {
+    "nickname": "ALTER TABLE settings ADD COLUMN nickname TEXT;",
+    "persona": "ALTER TABLE settings ADD COLUMN persona TEXT DEFAULT 'ban_than';",
+    "profile_summary": "ALTER TABLE settings ADD COLUMN profile_summary TEXT DEFAULT '';",
+    "turns_since_summary": "ALTER TABLE settings ADD COLUMN turns_since_summary INTEGER DEFAULT 0;",
+}
+
+_conn: Optional[aiosqlite.Connection] = None
+_lock = asyncio.Lock()
+
+
+async def init_db(db_path: str = DB_PATH) -> None:
+    """Khởi tạo kết nối SQLite + tạo bảng nếu chưa có. Tự động nâng cấp schema nếu thiếu cột."""
+    global _conn
+    _conn = await aiosqlite.connect(db_path)
+    await _conn.execute("PRAGMA journal_mode = WAL;")
+    await _conn.execute("PRAGMA busy_timeout = 5000;")
+    await _conn.executescript(_SCHEMA)
+
+    # Bổ sung các cột còn thiếu cho các CSDL cũ tạo trước đó (idempotent, an toàn khi chạy lại)
+    async with _conn.execute("PRAGMA table_info(settings)") as cur:
+        columns = [row[1] for row in await cur.fetchall()]
+    for col_name, alter_sql in _OPTIONAL_COLUMNS.items():
+        if col_name not in columns:
+            await _conn.execute(alter_sql)
+
+    await _conn.commit()
+
+
+async def close_db() -> None:
+    global _conn
+    if _conn is not None:
+        await _conn.close()
+        _conn = None
+
+
+def _require_conn() -> aiosqlite.Connection:
+    if _conn is None:
+        raise RuntimeError("DB chưa được khởi tạo — hãy gọi init_db() trước.")
+    return _conn
+
+
+# ─────────────────────────────────────────────
+# 📜 History
+# ─────────────────────────────────────────────
+async def add_message(uid: int, role: str, content: str, max_history_pairs: int = 25) -> None:
+    conn = _require_conn()
+    async with _lock:
+        await conn.execute(
+            "INSERT INTO history (uid, role, content, ts) VALUES (?, ?, ?, ?)",
+            (uid, role, content, datetime.now(timezone.utc).isoformat()),
+        )
+        await conn.execute(
+            """
+            DELETE FROM history WHERE id IN (
+                SELECT id FROM history WHERE uid = ?
+                ORDER BY id DESC LIMIT -1 OFFSET ?
+            )
+            """,
+            (uid, max_history_pairs * 2),
+        )
+        await conn.commit()
+
+
+async def get_history(uid: int) -> list[dict]:
+    conn = _require_conn()
+    async with conn.execute(
+        "SELECT role, content FROM history WHERE uid = ? ORDER BY id ASC", (uid,)
+    ) as cur:
+        rows = await cur.fetchall()
+    return [{"role": r[0], "content": r[1]} for r in rows]
+
+
+async def get_recent_messages(uid: int, limit_pairs: int = 10) -> list[dict]:
+    """🆕 Lấy N cặp tin nhắn gần nhất (dùng để tóm tắt hồ sơ trí nhớ dài hạn),
+    tách riêng khỏi get_history() vì không cần lấy toàn bộ lịch sử để tóm tắt."""
+    conn = _require_conn()
+    async with conn.execute(
+        "SELECT role, content FROM history WHERE uid = ? ORDER BY id DESC LIMIT ?",
+        (uid, limit_pairs * 2),
+    ) as cur:
+        rows = await cur.fetchall()
+    return [{"role": r[0], "content": r[1]} for r in reversed(rows)]
+
+
+async def clear_history(uid: int) -> None:
+    conn = _require_conn()
+    async with _lock:
+        await conn.execute("DELETE FROM history WHERE uid = ?", (uid,))
+        await conn.commit()
+
+
+# ─────────────────────────────────────────────
+# ⚙️ Settings
+# ─────────────────────────────────────────────
+async def _ensure_settings_row(uid: int) -> None:
+    conn = _require_conn()
+    await conn.execute("INSERT OR IGNORE INTO settings (uid) VALUES (?)", (uid,))
+
+
+async def get_settings(uid: int) -> dict:
+    conn = _require_conn()
+    async with conn.execute(
+        "SELECT model, auto_web, nickname, persona, profile_summary, turns_since_summary "
+        "FROM settings WHERE uid = ?",
+        (uid,),
+    ) as cur:
+        row = await cur.fetchone()
+    if row is None:
+        return {
+            "model": None, "auto_web": False, "nickname": None,
+            "persona": "ban_than", "profile_summary": "", "turns_since_summary": 0,
+        }
+    return {
+        "model": row[0],
+        "auto_web": bool(row[1]),
+        "nickname": row[2],
+        "persona": row[3] or "ban_than",
+        "profile_summary": row[4] or "",
+        "turns_since_summary": row[5] or 0,
+    }
+
+
+async def set_setting(uid: int, **fields) -> None:
+    if not fields:
+        return
+    conn = _require_conn()
+    async with _lock:
+        await _ensure_settings_row(uid)
+        cols = ", ".join(f"{k} = ?" for k in fields)
+        values = list(fields.values())
+        values = [int(v) if isinstance(v, bool) else v for v in values]
+        await conn.execute(f"UPDATE settings SET {cols} WHERE uid = ?", (*values, uid))
+        await conn.commit()
+
+
+# ─────────────────────────────────────────────
+# 📊 User / chat / module status logs
+# ─────────────────────────────────────────────
+async def log_user_chat_status(
+    user_id: object,
+    chat_id: object,
+    module: str,
+    duration_ms: int | float,
+    error_code: str = "OK",
+) -> None:
+    """Ghi sự kiện theo mẫu: user_id, chat_id, module, duration, error_code."""
+    conn = _require_conn()
+    async with _lock:
+        await conn.execute(
+            """
+            INSERT INTO user_chat_status_logs (user_id, chat_id, module, duration, error_code, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                str(user_id) if user_id is not None else "",
+                str(chat_id) if chat_id is not None else "",
+                module or "unknown",
+                int(duration_ms),
+                error_code or "OK",
+                datetime.now(timezone.utc).isoformat(),
+            ),
+        )
+        await conn.commit()
+
+
+async def get_recent_status_logs(limit: int = 100) -> list[dict]:
+    conn = _require_conn()
+    async with conn.execute(
+        """
+        SELECT user_id, chat_id, module, duration, error_code, created_at
+        FROM user_chat_status_logs
+        ORDER BY id DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ) as cur:
+        rows = await cur.fetchall()
+    return [
+        {
+            "user_id": row[0],
+            "chat_id": row[1],
+            "module": row[2],
+            "duration": row[3],
+            "error_code": row[4],
+            "created_at": row[5],
+        }
+        for row in rows
+    ]
+
+
+async def get_status_summary(limit: int = 20) -> list[dict]:
+    conn = _require_conn()
+    async with conn.execute(
+        """
+        SELECT error_code, COUNT(*) AS count, AVG(duration) AS avg_duration,
+               MAX(created_at) AS last_seen
+        FROM user_chat_status_logs
+        GROUP BY error_code
+        ORDER BY count DESC, last_seen DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ) as cur:
+        rows = await cur.fetchall()
+    return [
+        {
+            "error_code": row[0],
+            "count": row[1],
+            "avg_duration": round(float(row[2] or 0), 2),
+            "last_seen": row[3],
+        }
+        for row in rows
+    ]
+
+
+# ─────────────────────────────────────────────
+# 🧠 Trí nhớ dài hạn / Persona  (🆕)
+# ─────────────────────────────────────────────
+async def bump_turn_and_should_summarize(uid: int, every_n_turns: int = 10) -> bool:
+    """Tăng bộ đếm lượt chat kể từ lần tóm tắt hồ sơ gần nhất; trả về True khi đã đến lúc
+    tóm tắt lại (gọi summarize_for_long_term_memory() trong reasoning.py rồi lưu bằng
+    set_profile_summary() để reset bộ đếm về 0)."""
+    conn = _require_conn()
+    async with _lock:
+        await _ensure_settings_row(uid)
+        await conn.execute(
+            "UPDATE settings SET turns_since_summary = turns_since_summary + 1 WHERE uid = ?", (uid,)
+        )
+        await conn.commit()
+        async with conn.execute(
+            "SELECT turns_since_summary FROM settings WHERE uid = ?", (uid,)
+        ) as cur:
+            row = await cur.fetchone()
+        return bool(row and row[0] >= every_n_turns)
+
+
+async def set_profile_summary(uid: int, summary: str) -> None:
+    """Lưu hồ sơ trí nhớ dài hạn mới + reset bộ đếm lượt chat về 0."""
+    conn = _require_conn()
+    async with _lock:
+        await _ensure_settings_row(uid)
+        await conn.execute(
+            "UPDATE settings SET profile_summary = ?, turns_since_summary = 0 WHERE uid = ?",
+            (summary, uid),
+        )
+        await conn.commit()
+
+
+async def clear_profile(uid: int) -> None:
+    """Xóa hồ sơ trí nhớ dài hạn (vd khi user muốn bot 'quên' hết, tách biệt với /reset lịch sử chat)."""
+    await set_setting(uid, profile_summary="", turns_since_summary=0)
+
+
+# ─────────────────────────────────────────────
+# ⏱️ Rate limit
+# ─────────────────────────────────────────────
+async def check_and_set_rate_limit(uid: int, limit_sec: int) -> bool:
+    conn = _require_conn()
+    async with _lock:
+        async with conn.execute("SELECT last_ts FROM rate_limit WHERE uid = ?", (uid,)) as cur:
+            row = await cur.fetchone()
+        now = datetime.now(timezone.utc)
+        if row:
+            last = datetime.fromisoformat(row[0])
+            if (now - last).total_seconds() < limit_sec:
+                return True
+        await conn.execute(
+            "INSERT INTO rate_limit (uid, last_ts) VALUES (?, ?) "
+            "ON CONFLICT(uid) DO UPDATE SET last_ts = excluded.last_ts",
+            (uid, now.isoformat()),
+        )
+        await conn.commit()
+        return False
+
+
+# ─────────────────────────────────────────────
+# 🔎 Search cache  (🆕)
+# ─────────────────────────────────────────────
+async def get_cached_search(query_hash: str, ttl_sec: int) -> Optional[list[dict]]:
+    """Trả về kết quả search đã cache nếu còn trong TTL, ngược lại trả về None
+    (bao gồm cả trường hợp cache hết hạn hoặc chưa từng có)."""
+    conn = _require_conn()
+    async with conn.execute(
+        "SELECT results, created_at FROM search_cache WHERE query_hash = ?", (query_hash,)
+    ) as cur:
+        row = await cur.fetchone()
+    if row is None:
+        return None
+    results_json, created_at = row
+    try:
+        created = datetime.fromisoformat(created_at)
+        age_sec = (datetime.now(timezone.utc) - created).total_seconds()
+    except Exception:
+        return None
+    if age_sec > ttl_sec:
+        return None
+    try:
+        return json.loads(results_json)
+    except Exception:
+        return None
+
+
+async def set_cached_search(query_hash: str, query: str, results: list[dict]) -> None:
+    """Lưu/ghi đè kết quả search vào cache, kèm timestamp hiện tại."""
+    conn = _require_conn()
+    async with _lock:
+        await conn.execute(
+            """
+            INSERT INTO search_cache (query_hash, query, results, created_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(query_hash) DO UPDATE SET
+                query = excluded.query,
+                results = excluded.results,
+                created_at = excluded.created_at
+            """,
+            (query_hash, query, json.dumps(results, ensure_ascii=False), datetime.now(timezone.utc).isoformat()),
+        )
+        await conn.commit()
+
+
+async def purge_old_search_cache(max_age_sec: int = 86400) -> int:
+    """Dọn các bản ghi cache cũ hơn max_age_sec (mặc định 24h) — nên gọi định kỳ
+    từ một background task để bảng search_cache không phình to vô hạn.
+    Trả về số dòng đã xóa."""
+    conn = _require_conn()
+    cutoff_iso = (datetime.now(timezone.utc).timestamp() - max_age_sec)
+    cutoff_iso = datetime.fromtimestamp(cutoff_iso, tz=timezone.utc).isoformat()
+    async with _lock:
+        cur = await conn.execute("DELETE FROM search_cache WHERE created_at < ?", (cutoff_iso,))
+        await conn.commit()
+        return cur.rowcount if cur.rowcount is not None else 0

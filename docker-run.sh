@@ -17,7 +17,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # 2. Tạo các thư mục cần thiết
-mkdir -p data logs fonts voices
+mkdir -p data logs
 
 # 3. Kiểm tra .env
 if [ ! -f .env ]; then

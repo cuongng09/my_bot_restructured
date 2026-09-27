@@ -54,20 +54,35 @@ cd scripts
 ./install.sh 
 
 ```
+### 3. (sau khi làm lại xong)
 
-> 💡 Windows Users: Please refer to the Deployment Guide for PowerShell installation commands and NSSM service setup.
+```bash
+git clone <repo>
+cd my_bot_restructured
+chmod +x scripts/install.sh
+./scripts/install.sh          # Linux/macOS — wizard đầy đủ
 
-📂 Project Structure
-my_bot_restructured/
-├── src/                  # Main source code (src layout)
-│   ├── core/             # LLM engine, database, reasoning, voice
-│   ├── handlers/         # Telegram update handlers
-│   ├── skills/           # Plug & Play skill modules (weather, news, OCR...)
-│   └── webapp/           # FastAPI Web Control Station
-├── tests/                # Automated pytest suite
-├── docs/                 # Detailed documentation (Architecture, Config, Deployment)
-├── scripts/              # Install/uninstall scripts (Systemd, NSSM)
-├── pyproject.toml        # PEP 621 build config
-└── docker-compose.yml    # Multi-service Docker orchestration
+# hoặc thủ công
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
+cp .env.example .env          # TELEGRAM_TOKEN, ALLOWED_USERS, ADMIN_USER_IDS
+ollama pull qwen2.5:7b
+my-bot
+```
 
-> 📄 License This project is distributed under the MIT License. You are free to use, modify, and contribute to the source code for both personal/educational and commercial purposes.
+Docker:
+
+```bash
+docker compose up -d --build
+docker compose logs -f bot
+```
+
+---
+
+## 18. Giấy phép
+
+MIT. Xem `LICENSE`.
+
+---
+
+*Spec phản ánh hành vi hệ thống hiện có (Ollama Telegram bot, RAG SearXNG/DDG, voice, OCR, dual UI) và chuẩn hóa lại cài đặt, package layout, cấu hình cho bản làm lại chuyên nghiệp.*

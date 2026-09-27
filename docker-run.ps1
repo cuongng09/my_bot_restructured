@@ -19,7 +19,7 @@ if (-not $dockerCmd) {
 }
 
 # 2. Tu dong tao cac thu muc can thiet truoc khi mount volume
-$folders = @("data", "logs", "fonts", "voices")
+$folders = @("data", "logs")
 foreach ($folder in $folders) {
     if (-not (Test-Path $folder)) {
         New-Item -ItemType Directory -Path $folder -Force | Out-Null

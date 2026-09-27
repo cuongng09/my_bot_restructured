@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>my_bot · Text Dashboard</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <span class="kicker">SELF-HOSTED TELEGRAM ASSISTANT</span>
+        <h1>my_bot <span>· text console</span></h1>
+      </div>
+      <div id="connection" class="status">Đang kiểm tra…</div>
+    </header>
+    <section class="metrics">
+      <article><small>Ollama</small><strong id="model">—</strong><span id="ollama">—</span></article>
+      <article><small>Người dùng</small><strong id="users">—</strong><span id="active">— hoạt động hôm nay</span></article>
+      <article><small>Tin nhắn</small><strong id="messages">—</strong><span>lưu trong SQLite WAL</span></article>
+      <article><small>Quyền truy cập</small><strong id="allowlist">—</strong><span id="admins">— admin</span></article>
+    </section>
+    <section class="grid">
+      <article class="panel panel-wide">
+        <div class="panel-head"><h2>Người dùng Telegram</h2><button id="refresh">Làm mới</button></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>UID</th><th>Nickname</th><th>Model</th><th>Persona</th><th>Web</th><th>Tin nhắn</th><th>Hoạt động</th></tr></thead>
+          <tbody id="user-table"><tr><td colspan="7">Đang tải…</td></tr></tbody></table>
+        </div>
+      </article>
+      <article class="panel">
+        <h2>Phạm vi tính năng</h2>
+        <ul class="feature-list">
+          <li>✓ Chat text streaming với Ollama</li>
+          <li>✓ Ngữ cảnh, persona, nickname</li>
+          <li>✓ RAG SearXNG → DuckDuckGo</li>
+          <li>✓ Weather · News · Crypto</li>
+          <li>✓ SQLite read-only dashboard</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Đã loại bỏ theo spec</h2>
+        <ul class="feature-list muted">
+          <li>Voice / STT / TTS / Voicebox</li>
+          <li>Ảnh / OCR / Tesseract</li>
+          <li>Word / Excel / PDF export</li>
+          <li>FFmpeg và cloud voice APIs</li>
+        </ul>
+      </article>
+    </section>
+    <footer>Read-only · cập nhật mỗi 10 giây · <span id="updated">—</span></footer>
+  </main>
+  <script src="/assets/app.js"></script>
+</body>
+</html>

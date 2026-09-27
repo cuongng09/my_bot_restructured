@@ -10,14 +10,14 @@ from typing import Optional
 
 import httpx
 
-from skills.base import BaseSkill, SkillResult
-from skills.registry import SkillRegistry, default_registry
-from skills.weather import WeatherSkill, skill_weather
-from skills.news import NewsSkill, skill_news
-from core.context_manager import (
+from my_bot.skills.base import BaseSkill, SkillResult
+from my_bot.skills.registry import SkillRegistry, default_registry
+from my_bot.skills.weather import WeatherSkill, skill_weather
+from my_bot.skills.news import NewsSkill, skill_news
+from my_bot.core.context_manager import (
     estimate_tokens, estimate_messages_tokens, ContextBudgetManager, default_context_manager
 )
-from core.llm_engine import build_grounded_messages
+from my_bot.core.llm_engine import build_grounded_messages
 
 
 class TestModularSkillsSystem(unittest.TestCase):

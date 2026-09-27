@@ -3,15 +3,9 @@ FROM python:3.11-slim
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONPATH=/app/src
+    PYTHONDONTWRITEBYTECODE=1
 
-# Cài đặt các gói hệ thống cần thiết (Tesseract OCR, FFmpeg cho audio processing)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    tesseract-ocr \
-    tesseract-ocr-vie \
-    ffmpeg \
-    curl \
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Cài đặt Python dependencies trước để tận dụng triệt để Docker layer cache
@@ -26,8 +20,8 @@ COPY src/ /app/src/
 # Cài đặt package cục bộ
 RUN pip install --no-cache-dir -e .
 
-RUN mkdir -p /app/data /app/logs /app/fonts /app/voices
+RUN mkdir -p /app/data /app/logs
 
 EXPOSE 8080
 
-CMD ["python", "-m", "main"]
+CMD ["python", "-m", "my_bot"]

@@ -6,55 +6,92 @@
 
 ## 2. Cấu Trúc Thư Mục Chuẩn (`src/` Layout)
 
+
 ```text
-my_bot_restructured/
-├── src/
-│   ├── __init__.py          # Package metadata & version
-│   ├── __main__.py          # Hỗ trợ chạy: python -m main
-│   ├── main.py              # Entrypoint khởi tạo bot & đăng ký handlers
-│   ├── config.py            # Quản lý cấu hình & biến môi trường
-│   ├── core/                # Các thành phần lõi
-│   │   ├── logger.py        # Logging xoay vòng tập trung
-│   │   ├── database.py      # SQLite async storage (aiosqlite)
-│   │   ├── llm_engine.py    # Giao tiếp Ollama, streaming, intent filter
-│   │   ├── reasoning.py     # Suy luận ẩn, personas, long-term memory
-│   │   ├── context_manager.py # Quản lý Token budget & sliding window
-│   │   ├── tencent_memory.py  # Bộ nhớ đa tầng TencentDB Agent Memory
-│   │   ├── local_voice.py   # Voicebox STT & Piper TTS
-│   │   └── utils.py         # Phân quyền, rate limit, locks
-│   ├── handlers/            # Tiếp nhận & điều phối Telegram Updates
-│   │   ├── commands.py      # Lệnh /start, /help, /weather, /news...
-│   │   ├── text_handler.py  # Chat văn bản & RAG streaming
-│   │   ├── voice_handler.py # Xử lý voice note & phản hồi giọng nói
-│   │   ├── media_handler.py # OCR trích chữ & dịch thuật ảnh/PDF
-│   │   └── dashboard_handler.py # Giao diện nút bấm /ui
-│   ├── skills/              # Hệ thống tính năng Plug & Play (BaseSkill)
-│   │   ├── base.py          # Lớp cơ sở BaseSkill & SkillResult
-│   │   ├── registry.py      # Tự động nạp (auto-discover) skills
-│   │   ├── weather.py       # Thời tiết & AQI (Open-Meteo)
-│   │   ├── news.py          # Tin tức RSS
-│   │   ├── web_search.py    # Tìm kiếm internet đa tầng (SearXNG / DDG)
-│   │   ├── ocr.py           # OCR & dịch thuật
-│   │   ├── voice.py         # Điều phối STT/TTS
-│   │   ├── voicebox_client.py # Client kết nối Voicebox Docker
-│   │   ├── dashboard.py     # Giám sát tài nguyên phần cứng
-│   │   ├── document_exporter.py # Xuất tệp Excel & Word
-│   │   ├── pdf_report.py    # Tạo báo cáo nghiên cứu AI PDF (ReportLab)
-│   │   └── skills_module/   # Thư mục chứa các module kỹ năng mở rộng (crypto...)
-│   │       ├── __init__.py
-│   │       └── crypto.py    # Tra cứu giá tiền mã hoá (Binance)
-│   └── webapp/              # Trạm Điều Khiển Web (FastAPI)
-│       ├── main.py          # API & Web dashboard read-only
-│       └── static/          # Frontend giao diện người dùng
-├── tests/                   # Bộ kiểm thử tự động
-├── docs/                    # Tài liệu hướng dẫn
-├── scripts/                 # Script dịch vụ systemd & Windows NSSM
-├── pyproject.toml           # Cấu hình gói và dependencies chuẩn PEP 621
-├── Dockerfile               # Docker build container
-└── docker-compose.yml       # Điều phối đa dịch vụ
+my_bot/
+├── README.md
+├── LICENSE
+├── pyproject.toml              # PEP 621, package my_bot, CLI my-bot / my-bot-web
+├── requirements.txt            # đồng bộ với pyproject dependencies
+├── .env.example
+├── .gitignore
+├── Dockerfile                  # python:3.11-slim + tesseract + ffmpeg
+├── Dockerfile.webapp           # image nhẹ hơn nếu tách; hoặc cùng image khác CMD
+├── docker-compose.yml          # bot + webapp + searxng + voicebox
+├── docker-compose.webapp.yml   # webapp độc lập (Linux host network)
+├── src/my_bot/
+│   ├── __init__.py             # __version__
+│   ├── __main__.py             # python -m my_bot
+│   ├── main.py                 # PTB Application
+│   ├── config.py
+│   ├── core/
+│   │   ├── logger.py
+│   │   ├── database.py
+│   │   ├── llm_engine.py
+│   │   ├── reasoning.py
+│   │   ├── context_manager.py
+│   │   ├── tencent_memory.py   # optional cloud memory; tắt nếu thiếu env
+│   │   ├── local_voice.py
+│   │   └── utils.py
+│   ├── handlers/
+│   │   ├── commands.py
+│   │   ├── text_handler.py
+│   │   ├── voice_handler.py
+│   │   ├── media_handler.py
+│   │   └── dashboard_handler.py
+│   ├── skills/
+│   │   ├── base.py
+│   │   ├── registry.py
+│   │   ├── weather.py
+│   │   ├── news.py
+│   │   ├── web_search.py
+│   │   ├── ocr.py
+│   │   ├── voice.py
+│   │   ├── voicebox_client.py
+│   │   ├── dashboard.py
+│   │   ├── document_exporter.py
+│   │   ├── pdf_report.py
+│   │   └── extra/
+│   │       └── crypto.py
+│   └── webapp/
+│       ├── main.py
+│       └── static/
+│           ├── index.html
+│           ├── app.js
+│           └── style.css
+├── tests/
+├── scripts/
+│   ├── install.sh              # ROOT=$(cd ..) từ scripts, hoặc ROOT=$(git rev-parse)
+│   ├── uninstall.sh
+│   └── systemd/my_bot.service
+├── searxng/
+│   └── settings.yml            # bắt buộc formats: [html, json]
+├── data/                       # runtime, gitkeep
+├── logs/
+├── fonts/                      # NotoSans Regular + Bold cho PDF tiếng Việt
+└── voices/                     # Piper .onnx + .onnx.json
 ```
 
-## 3. Luồng Xử Lý Dữ Liệu (Data Flow)
+## 3. Kiến trúc mục tiêu
+
+```text
+                    ┌─────────────┐     ┌──────────────┐
+  Telegram User ───►│ Bot process │────►│ Ollama :11434│
+                    │  (PTB)      │     └──────────────┘
+                    │             │     ┌──────────────┐
+                    │  handlers ──┼────►│ SearXNG :8081│
+                    │  skills ────┼────►│ Voicebox STT │
+                    │  core/llm ──┤     └──────────────┘
+                    │             │     ┌──────────────┐
+                    └──────┬──────┘     │ SQLite WAL   │
+                           │            │ data/bot.db  │
+                    ┌──────▼──────┐     └──────────────┘
+                    │ WebApp      │  read-only, process riêng
+                    │ FastAPI     │  :8080
+                    └─────────────┘
+```
+
+## 4. Luồng Xử Lý Dữ Liệu (Data Flow)
 
 ```mermaid
 flowchart TD

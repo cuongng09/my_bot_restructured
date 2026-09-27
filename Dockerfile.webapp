@@ -10,8 +10,7 @@ WORKDIR /app
 # Biến môi trường cơ bản cho Python
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    RUNNING_WEBAPP=1 \
-    PYTHONPATH=/app/src
+    RUNNING_WEBAPP=1
 
 # Cài đặt các thư viện cần thiết cho WebApp
 RUN pip install --no-cache-dir \
@@ -22,13 +21,14 @@ RUN pip install --no-cache-dir \
     "psutil>=5.9" \
     "python-dotenv>=1.0"
 
-# Copy mã nguồn WebApp và file config từ src/
-COPY src/config.py /app/src/config.py
-COPY src/webapp /app/src/webapp
+# Cài package chuẩn để webapp dùng cùng namespace với bot.
+COPY pyproject.toml README.md /app/
+COPY src/ /app/src/
+RUN pip install --no-cache-dir -e .
 
 # Tạo sẵn thư mục mount dữ liệu và nhật ký
 RUN mkdir -p /app/data /app/logs
 
 EXPOSE 8080
 
-CMD ["python", "-m", "webapp.main"]
+CMD ["python", "-m", "my_bot.webapp.main"]

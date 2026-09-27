@@ -6,14 +6,12 @@ services:
     image: telegram-ai-bot:latest
     container_name: telegram-ai-bot
     restart: unless-stopped
-    command: ["python", "-m", "main"]
+    command: ["python", "-m", "my_bot"]
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
-      - ./fonts:/app/fonts:ro
-      - ./voices:/app/voices:ro
     env_file:
       - path: .env
         required: false
@@ -28,7 +26,7 @@ services:
     image: telegram-ai-bot:latest
     container_name: telegram-bot-webapp
     restart: unless-stopped
-    command: ["python", "-m", "webapp.main"]
+    command: ["python", "-m", "my_bot.webapp.main"]
     ports:
       - "${WEBAPP_PORT:-8080}:8080"
     extra_hosts:
@@ -36,8 +34,6 @@ services:
     volumes:
       - ./data:/app/data:ro
       - ./logs:/app/logs:ro
-      - ./fonts:/app/fonts:ro
-      - ./voices:/app/voices:ro
     env_file:
       - path: .env
         required: false
@@ -59,15 +55,3 @@ services:
       - BASE_URL=http://localhost:8081
     # Ensure JSON format enabled in settings.yml inside the volume
     # You may need to create ./searxng/settings.yml with appropriate configuration
-
-  voicebox:
-    image: ghcr.io/jamiepine/voicebox:latest
-    container_name: voicebox
-    restart: unless-stopped
-    ports:
-      - "17493:8000"
-    environment:
-      - VOICEBOX_MODEL=medium
-      - WHISPER_MODEL=medium
-    # API endpoint will be http://localhost:17493
-    # Ensure .env defines VOICEBOX_URL accordingly
