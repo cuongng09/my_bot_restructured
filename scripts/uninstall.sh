@@ -16,7 +16,11 @@ if command -v systemctl >/dev/null 2>&1; then
 fi
 
 if command -v docker >/dev/null 2>&1; then
-  docker compose down 2>/dev/null || true
+  if docker compose version >/dev/null 2>&1; then
+    docker compose down 2>/dev/null || true
+  elif command -v docker-compose >/dev/null 2>&1; then
+    docker-compose down 2>/dev/null || true
+  fi
 fi
 
 read -r -p "Xóa môi trường .venv? [y/N] " remove_venv || true

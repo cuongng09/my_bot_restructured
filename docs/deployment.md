@@ -36,6 +36,23 @@ my-bot-web
 
 ## 2. Triển Khai Bằng Docker & Docker Compose
 
+Kiểm tra Compose trước khi chạy:
+
+```bash
+docker compose version
+```
+
+Nếu lệnh trên báo `unknown shorthand flag`, máy đang thiếu Compose plugin.
+Cài Docker Compose plugin theo tài liệu Docker hoặc dùng binary tương thích cũ:
+
+```bash
+docker-compose version
+docker-compose up -d --build
+docker-compose logs -f bot
+```
+
+Khi đã cài Compose plugin, dùng cú pháp hiện đại:
+
 ```bash
 # Khởi chạy toàn bộ hệ sinh thái (Bot + Web Dashboard)
 docker compose up -d --build
@@ -75,4 +92,3 @@ Mở PowerShell với quyền Administrator:
 # Gỡ bỏ service khi không dùng
 .\scripts\nssm\uninstall_nssm_service.ps1
 ```
-

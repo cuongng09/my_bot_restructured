@@ -13,8 +13,7 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
     env_file:
-      - path: .env
-        required: false
+      - .env
     environment:
       - PYTHONUNBUFFERED=1
       - RUNNING_IN_DOCKER=1
@@ -35,8 +34,7 @@ services:
       - ./data:/app/data:ro
       - ./logs:/app/logs:ro
     env_file:
-      - path: .env
-        required: false
+      - .env
     environment:
       - RUNNING_WEBAPP=1
       - RUNNING_IN_DOCKER=1

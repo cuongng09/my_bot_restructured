@@ -18,6 +18,17 @@ if (-not $dockerCmd) {
     exit 1
 }
 
+$composeArgs = @()
+& docker compose version *> $null
+if ($LASTEXITCODE -eq 0) {
+    $composeCommand = "docker compose"
+} elseif (Get-Command docker-compose -ErrorAction SilentlyContinue) {
+    $composeCommand = "docker-compose"
+} else {
+    Write-Host "[LOI] Chua co Docker Compose plugin hoac docker-compose!" -ForegroundColor Red
+    exit 1
+}
+
 # 2. Tu dong tao cac thu muc can thiet truoc khi mount volume
 $folders = @("data", "logs")
 foreach ($folder in $folders) {
@@ -48,7 +59,11 @@ if ($envContent -match "TELEGRAM_TOKEN=\s*(\r?\n|$)") {
 
 # 5. Build va khoi dong container
 Write-Host "[--] Dang build image va khoi dong cac container..." -ForegroundColor Cyan
-docker compose up -d --build
+if ($composeCommand -eq "docker compose") {
+    & docker compose up -d --build
+} else {
+    & docker-compose up -d --build
+}
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""
@@ -56,9 +71,10 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host " [THANH CONG] Toan bo he thong da duoc khoi dong!   " -ForegroundColor Green
     Write-Host "=====================================================" -ForegroundColor Green
     Write-Host " - Web Dashboard:  http://localhost:8080" -ForegroundColor Cyan
-    Write-Host " - Xem log bot:     docker compose logs -f bot" -ForegroundColor White
-    Write-Host " - Xem log webapp:  docker compose logs -f webapp" -ForegroundColor White
-    Write-Host " - Dung he thong:   docker compose down" -ForegroundColor White
+    Write-Host " - Compose command:  $composeCommand" -ForegroundColor White
+    Write-Host " - Xem log bot:     $composeCommand logs -f bot" -ForegroundColor White
+    Write-Host " - Xem log webapp:  $composeCommand logs -f webapp" -ForegroundColor White
+    Write-Host " - Dung he thong:   $composeCommand down" -ForegroundColor White
     Write-Host "=====================================================" -ForegroundColor Green
 } else {
     Write-Host "[LOI] Khoi dong Docker compose that bai!" -ForegroundColor Red

@@ -16,6 +16,15 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
+if docker compose version >/dev/null 2>&1; then
+    COMPOSE=(docker compose)
+elif command -v docker-compose &> /dev/null; then
+    COMPOSE=(docker-compose)
+else
+    echo "[LỖI] Chưa có Docker Compose. Cài Compose plugin hoặc docker-compose."
+    exit 1
+fi
+
 # 2. Tạo các thư mục cần thiết
 mkdir -p data logs
 
@@ -33,14 +42,14 @@ fi
 
 # 4. Build và khởi chạy các container
 echo "[--] Đang build image và khởi động các container..."
-docker compose up -d --build
+"${COMPOSE[@]}" up -d --build
 
 echo ""
 echo "====================================================="
 echo " [THÀNH CÔNG] Toàn bộ hệ thống đã được khởi động!   "
 echo "====================================================="
 echo " - Web Dashboard:  http://localhost:8080"
-echo " - Xem log bot:     docker compose logs -f bot"
-echo " - Xem log webapp:  docker compose logs -f webapp"
-echo " - Dừng hệ thống:   docker compose down"
+echo " - Xem log bot:     ${COMPOSE[*]} logs -f bot"
+echo " - Xem log webapp:  ${COMPOSE[*]} logs -f webapp"
+echo " - Dừng hệ thống:   ${COMPOSE[*]} down"
 echo "====================================================="

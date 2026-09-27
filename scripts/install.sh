@@ -58,10 +58,12 @@ if ! command -v ollama >/dev/null 2>&1; then
 fi
 
 if confirm "Bật SearXNG bằng Docker Compose?"; then
-  if command -v docker >/dev/null 2>&1; then
+  if docker compose version >/dev/null 2>&1; then
     docker compose up -d searxng
+  elif command -v docker-compose >/dev/null 2>&1; then
+    docker-compose up -d searxng
   else
-    log "Docker chưa có; bỏ qua SearXNG. Có thể chạy lại installer sau."
+    log "Docker Compose chưa có; bỏ qua SearXNG. Cài Compose rồi chạy lại installer."
   fi
 fi
 

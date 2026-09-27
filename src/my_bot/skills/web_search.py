@@ -14,8 +14,6 @@ from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse, parse_qs, unquote
 
 from bs4 import BeautifulSoup
-from deep_translator import GoogleTranslator
-
 from my_bot.core import database as db
 from my_bot.core.logger import logger
 from my_bot.config import (
@@ -25,6 +23,11 @@ from my_bot.config import (
     TRUSTED_DOMAINS_ONLY,
     LOW_VALUE_SCRAPE_DOMAINS,
 )
+
+try:
+    from deep_translator import GoogleTranslator
+except ImportError:
+    GoogleTranslator = None
 
 _http_client = None
 # Executor riêng cho DDGS (sync/blocking) — tối đa 4 luồng, tách khỏi pool chung
@@ -223,6 +226,8 @@ def extract_core_keywords(query: str) -> str:
 
 
 async def _to_english(text: str) -> str:
+    if GoogleTranslator is None:
+        return ""
     loop = asyncio.get_event_loop()
     try:
         return await loop.run_in_executor(
